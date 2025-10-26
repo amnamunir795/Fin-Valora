@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     // Connect to database
     await connectDB();
 
-    const { firstName, lastName, email, password, confirmPassword, currency, profilePicture } = req.body;
+    const { firstName, lastName, email, password, confirmPassword, currency, avatar } = req.body;
 
     // Validate required fields
     if (!firstName || !lastName || !email || !password || !confirmPassword || !currency) {
@@ -67,9 +67,9 @@ export default async function handler(req, res) {
       currency
     };
 
-    // Add profile picture if provided
-    if (profilePicture) {
-      userData.profilePicture = profilePicture;
+    // Add avatar if provided
+    if (avatar) {
+      userData.avatar = avatar;
     }
 
     const user = new User(userData);
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
       lastName: user.lastName,
       email: user.email,
       currency: user.currency,
-      profilePicture: user.profilePicture,
+      avatar: user.avatar,
       fullName: user.fullName,
       createdAt: user.createdAt
     };

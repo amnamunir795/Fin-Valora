@@ -41,15 +41,19 @@ const UserSchema = new mongoose.Schema({
     ],
     default: 'INR'
   },
-  profilePicture: {
-    type: String,
-    default: null,
-    validate: {
-      validator: function(v) {
-        // Allow null/empty or valid base64 data URL
-        return !v || /^data:image\/(jpeg|jpg|png|gif|webp);base64,/.test(v);
-      },
-      message: 'Profile picture must be a valid image data URL'
+  avatar: {
+    backgroundColor: {
+      type: String,
+      default: '#B5BFC8'
+    },
+    textColor: {
+      type: String,
+      default: '#FFFFFF'
+    },
+    style: {
+      type: String,
+      enum: ['initials', 'geometric', 'abstract'],
+      default: 'initials'
     }
   },
   isActive: {

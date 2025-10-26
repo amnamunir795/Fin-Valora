@@ -10,14 +10,29 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     currency: "INR",
-    profilePicture: null,
+    avatar: {
+      backgroundColor: "#B5BFC8",
+      textColor: "#FFFFFF",
+      style: "initials"
+    },
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [profilePreview, setProfilePreview] = useState(null);
   const router = useRouter();
+
+  // Avatar options
+  const avatarBackgrounds = [
+    "#B5BFC8", "#F0D3C7", "#E8C5B5", "#A8B5C8", "#C8B5A8",
+    "#B5C8A8", "#C8A8B5", "#A8C8B5", "#B8A8C5", "#C5B8A8"
+  ];
+
+  const avatarStyles = [
+    { id: "initials", name: "Initials", icon: "👤" },
+    { id: "geometric", name: "Geometric", icon: "🔷" },
+    { id: "abstract", name: "Abstract", icon: "🎨" }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,55 +49,60 @@ export default function SignUp() {
     }
   };
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        setErrors((prev) => ({
-          ...prev,
-          profilePicture: "Please select a valid image file",
-        }));
-        return;
-      }
-
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors((prev) => ({
-          ...prev,
-          profilePicture: "Image size must be less than 5MB",
-        }));
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64String = event.target.result;
-        setFormData((prev) => ({
-          ...prev,
-          profilePicture: base64String,
-        }));
-        setProfilePreview(base64String);
-        // Clear any previous errors
-        setErrors((prev) => ({
-          ...prev,
-          profilePicture: "",
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeProfilePicture = () => {
+  const handleAvatarChange = (property, value) => {
     setFormData((prev) => ({
       ...prev,
-      profilePicture: null,
+      avatar: {
+        ...prev.avatar,
+        [property]: value
+      }
     }));
-    setProfilePreview(null);
-    // Clear the file input
-    const fileInput = document.getElementById("profilePicture");
-    if (fileInput) {
-      fileInput.value = "";
+  };
+
+  const generateInitials = () => {
+    const first = formData.firstName.charAt(0).toUpperCase();
+    const last = formData.lastName.charAt(0).toUpperCase();
+    return first + last || "??";
+  };
+
+  const renderAvatarPreview = () => {
+    const { backgroundColor, textColor, style } = formData.avatar;
+    const initials = generateInitials();
+
+    if (style === "initials") {
+      return (
+        <div 
+          className="w-full h-full rounded-full flex items-center justify-center text-2xl font-bold"
+          style={{ backgroundColor, color: textColor }}
+        >
+          {initials}
+        </div>
+      );
+    } else if (style === "geometric") {
+      return (
+        <div 
+          className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden"
+          style={{ backgroundColor }}
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 rotate-45 border-4" style={{ borderColor: textColor }}></div>
+            <div className="w-4 h-4 rounded-full absolute" style={{ backgroundColor: textColor }}></div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div 
+          className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden"
+          style={{ backgroundColor }}
+        >
+          <div className="absolute inset-0">
+            <div className="w-6 h-6 rounded-full absolute top-2 left-3" style={{ backgroundColor: textColor, opacity: 0.7 }}></div>
+            <div className="w-4 h-4 rounded-full absolute bottom-3 right-2" style={{ backgroundColor: textColor, opacity: 0.5 }}></div>
+            <div className="w-3 h-3 rounded-full absolute top-1/2 right-1/3" style={{ backgroundColor: textColor, opacity: 0.8 }}></div>
+          </div>
+        </div>
+      );
     }
   };
 
@@ -180,22 +200,83 @@ export default function SignUp() {
       </div>
 
       <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full mb-4 shadow-lg">
-            <svg
-              className="w-8 h-8 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+        {/* Avatar Creator - Before Heading */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="mb-4">
+            <div className="w-24 h-24 rounded-full border-4 border-[#B5BFC8] shadow-lg overflow-hidden">
+              {renderAvatarPreview()}
+            </div>
           </div>
+
+          <div className="w-full max-w-xs space-y-4">
+            {/* Avatar Style Selection */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2 text-center">
+                Avatar Style
+              </label>
+              <div className="flex justify-center space-x-2">
+                {avatarStyles.map((style) => (
+                  <button
+                    key={style.id}
+                    type="button"
+                    onClick={() => handleAvatarChange('style', style.id)}
+                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                      formData.avatar.style === style.id
+                        ? 'bg-[#B5BFC8] text-white shadow-md'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    <span className="mr-1">{style.icon}</span>
+                    {style.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Background Color Selection */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2 text-center">
+                Background Color
+              </label>
+              <div className="flex flex-wrap justify-center gap-2">
+                {avatarBackgrounds.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => handleAvatarChange('backgroundColor', color)}
+                    className={`w-8 h-8 rounded-full border-2 transition-all duration-200 ${
+                      formData.avatar.backgroundColor === color
+                        ? 'border-gray-800 scale-110 shadow-lg'
+                        : 'border-gray-300 hover:scale-105'
+                    }`}
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Text Color Toggle */}
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={() => handleAvatarChange('textColor', formData.avatar.textColor === '#FFFFFF' ? '#000000' : '#FFFFFF')}
+                className="inline-flex items-center px-4 py-2 border-2 border-[#B5BFC8] text-[#B5BFC8] font-medium rounded-lg hover:bg-[#B5BFC8] hover:text-white transition-all duration-200"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5H9m12 0v12a4 4 0 01-4 4H9" />
+                </svg>
+                {formData.avatar.textColor === '#FFFFFF' ? 'Light Text' : 'Dark Text'}
+              </button>
+            </div>
+          </div>
+
+          <p className="text-xs text-gray-500 text-center mt-3">
+            Customize your avatar appearance
+          </p>
+        </div>
+
+        {/* Create Account Heading */}
+        <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] bg-clip-text text-transparent mb-2">
             Create Account
           </h1>
@@ -205,112 +286,6 @@ export default function SignUp() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Profile Picture Upload */}
-          <div className="flex flex-col items-center mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-4 flex items-center">
-              <svg
-                className="w-4 h-4 mr-2 text-[#B5BFC8]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Profile Picture (Optional)
-            </label>
-
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full border-4 border-dashed border-[#B5BFC8] flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors duration-200 overflow-hidden">
-                {profilePreview ? (
-                  <img
-                    src={profilePreview}
-                    alt="Profile preview"
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : (
-                  <svg
-                    className="w-8 h-8 text-[#B5BFC8]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                )}
-              </div>
-
-              {profilePreview && (
-                <button
-                  type="button"
-                  onClick={removeProfilePicture}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-200 shadow-lg"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-
-            <input
-              type="file"
-              id="profilePicture"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              className="hidden"
-            />
-
-            <label
-              htmlFor="profilePicture"
-              className="mt-4 inline-flex items-center px-4 py-2 border-2 border-[#B5BFC8] text-[#B5BFC8] font-medium rounded-lg hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 cursor-pointer"
-            >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                />
-              </svg>
-              {profilePreview ? "Change Picture" : "Upload Picture"}
-            </label>
-
-            {errors.profilePicture && (
-              <p className="mt-2 text-sm text-red-600">
-                {errors.profilePicture}
-              </p>
-            )}
-
-            <p className="mt-2 text-xs text-gray-500 text-center">
-              JPG, PNG, GIF up to 5MB
-            </p>
-          </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label
