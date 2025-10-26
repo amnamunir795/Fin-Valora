@@ -10,11 +10,13 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     currency: "INR",
+    profilePicture: null,
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [profilePreview, setProfilePreview] = useState(null);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -29,6 +31,58 @@ export default function SignUp() {
         ...prev,
         [name]: "",
       }));
+    }
+  };
+
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        setErrors((prev) => ({
+          ...prev,
+          profilePicture: "Please select a valid image file",
+        }));
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors((prev) => ({
+          ...prev,
+          profilePicture: "Image size must be less than 5MB",
+        }));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = event.target.result;
+        setFormData((prev) => ({
+          ...prev,
+          profilePicture: base64String,
+        }));
+        setProfilePreview(base64String);
+        // Clear any previous errors
+        setErrors((prev) => ({
+          ...prev,
+          profilePicture: "",
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfilePicture = () => {
+    setFormData((prev) => ({
+      ...prev,
+      profilePicture: null,
+    }));
+    setProfilePreview(null);
+    // Clear the file input
+    const fileInput = document.getElementById("profilePicture");
+    if (fileInput) {
+      fileInput.value = "";
     }
   };
 
@@ -151,6 +205,112 @@ export default function SignUp() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Profile Picture Upload */}
+          <div className="flex flex-col items-center mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-4 flex items-center">
+              <svg
+                className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Profile Picture (Optional)
+            </label>
+
+            <div className="relative">
+              <div className="w-24 h-24 rounded-full border-4 border-dashed border-[#B5BFC8] flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors duration-200 overflow-hidden">
+                {profilePreview ? (
+                  <img
+                    src={profilePreview}
+                    alt="Profile preview"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <svg
+                    className="w-8 h-8 text-[#B5BFC8]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                )}
+              </div>
+
+              {profilePreview && (
+                <button
+                  type="button"
+                  onClick={removeProfilePicture}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-200 shadow-lg"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            <input
+              type="file"
+              id="profilePicture"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              className="hidden"
+            />
+
+            <label
+              htmlFor="profilePicture"
+              className="mt-4 inline-flex items-center px-4 py-2 border-2 border-[#B5BFC8] text-[#B5BFC8] font-medium rounded-lg hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 cursor-pointer"
+            >
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+              {profilePreview ? "Change Picture" : "Upload Picture"}
+            </label>
+
+            {errors.profilePicture && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.profilePicture}
+              </p>
+            )}
+
+            <p className="mt-2 text-xs text-gray-500 text-center">
+              JPG, PNG, GIF up to 5MB
+            </p>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label

@@ -14,13 +14,13 @@ export default async function handler(req, res) {
     // Connect to database
     await connectDB();
 
-    const { firstName, lastName, email, password, confirmPassword, currency } = req.body;
+    const { firstName, lastName, email, password, confirmPassword, currency, profilePicture } = req.body;
 
     // Validate required fields
     if (!firstName || !lastName || !email || !password || !confirmPassword || !currency) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'All required fields must be filled'
       });
     }
 
@@ -59,13 +59,20 @@ export default async function handler(req, res) {
     }
 
     // Create new user
-    const user = new User({
+    const userData = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.toLowerCase().trim(),
       password,
       currency
-    });
+    };
+
+    // Add profile picture if provided
+    if (profilePicture) {
+      userData.profilePicture = profilePicture;
+    }
+
+    const user = new User(userData);
 
     // Save user to database
     await user.save();
@@ -77,6 +84,7 @@ export default async function handler(req, res) {
       lastName: user.lastName,
       email: user.email,
       currency: user.currency,
+      profilePicture: user.profilePicture,
       fullName: user.fullName,
       createdAt: user.createdAt
     };

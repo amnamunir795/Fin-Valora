@@ -95,8 +95,18 @@ export default function Home() {
               {user ? (
                 <>
                   <div className="hidden md:flex items-center bg-gradient-to-r from-[#F0D3C7] to-[#F2E6D8] px-4 py-2 rounded-xl">
-                    <div className="w-8 h-8 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white font-semibold text-sm">{user.firstName[0]}</span>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center mr-3 overflow-hidden">
+                      {user.profilePicture ? (
+                        <img
+                          src={user.profilePicture}
+                          alt={`${user.firstName}'s profile`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center">
+                          <span className="text-white font-semibold text-sm">{user.firstName[0]}</span>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-gray-700">Welcome, {user.firstName}!</p>
@@ -216,8 +226,18 @@ export default function Home() {
             {user && (
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20">
                 <div className="text-center mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <span className="text-white font-bold text-xl">{user.firstName[0]}{user.lastName[0]}</span>
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg overflow-hidden">
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profilePicture}
+                        alt={`${user.firstName}'s profile`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold text-xl">{user.firstName[0]}{user.lastName[0]}</span>
+                      </div>
+                    )}
                   </div>
                   <h3 className="font-bold text-gray-800 text-lg">{user.fullName}</h3>
                   <p className="text-sm text-gray-500">{user.email}</p>
