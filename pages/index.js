@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { getFormattedCurrency } from "../utils/currency";
 
 export default function Home() {
   const MyName = "Amna";
@@ -78,7 +79,7 @@ export default function Home() {
               {user ? (
                 <>
                   <span className="text-gray-700">
-                    Welcome, {user.firstName}! ({user.currency})
+                    Welcome, {user.firstName}! ({getFormattedCurrency(user.currency)})
                   </span>
                   <button
                     onClick={handleLogout}
@@ -117,7 +118,7 @@ export default function Home() {
               <h3 className="font-medium text-gray-800 mb-2">Your Profile:</h3>
               <p><strong>Name:</strong> {user.fullName}</p>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Currency:</strong> {user.currency}</p>
+              <p><strong>Currency:</strong> {getFormattedCurrency(user.currency)}</p>
               <p><strong>Member since:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
             </div>
           ) : (

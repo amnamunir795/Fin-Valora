@@ -35,11 +35,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Currency is required'],
     enum: [
-      'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 
-      'INR', 'BRL', 'MXN', 'SGD', 'NZD', 'ZAR', 'SEK', 'NOK', 
-      'DKK', 'PLN', 'CZK', 'HUF'
+      'INR', 'CNY', 'JPY', 'KRW', 'SGD', 'HKD', 'THB', 'MYR', 
+      'IDR', 'PHP', 'VND', 'TWD', 'PKR', 'BDT', 'LKR', 'NPR', 
+      'MMK', 'KHR', 'LAK', 'BND'
     ],
-    default: 'USD'
+    default: 'INR'
   },
   isActive: {
     type: Boolean,

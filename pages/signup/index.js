@@ -9,7 +9,7 @@ export default function SignUp() {
     email: "",
     password: "",
     confirmPassword: "",
-    currency: "USD",
+    currency: "INR",
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -187,26 +187,26 @@ export default function SignUp() {
               }`}
             >
               <option value="">Select Currency</option>
-              <option value="USD">USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="GBP">GBP - British Pound</option>
-              <option value="CAD">CAD - Canadian Dollar</option>
-              <option value="AUD">AUD - Australian Dollar</option>
-              <option value="JPY">JPY - Japanese Yen</option>
-              <option value="CHF">CHF - Swiss Franc</option>
-              <option value="CNY">CNY - Chinese Yuan</option>
-              <option value="INR">INR - Indian Rupee</option>
-              <option value="BRL">BRL - Brazilian Real</option>
-              <option value="MXN">MXN - Mexican Peso</option>
-              <option value="SGD">SGD - Singapore Dollar</option>
-              <option value="NZD">NZD - New Zealand Dollar</option>
-              <option value="ZAR">ZAR - South African Rand</option>
-              <option value="SEK">SEK - Swedish Krona</option>
-              <option value="NOK">NOK - Norwegian Krone</option>
-              <option value="DKK">DKK - Danish Krone</option>
-              <option value="PLN">PLN - Polish Zloty</option>
-              <option value="CZK">CZK - Czech Koruna</option>
-              <option value="HUF">HUF - Hungarian Forint</option>
+              <option value="INR">₹ INR - Indian Rupee</option>
+              <option value="CNY">¥ CNY - Chinese Yuan</option>
+              <option value="JPY">¥ JPY - Japanese Yen</option>
+              <option value="KRW">₩ KRW - South Korean Won</option>
+              <option value="SGD">S$ SGD - Singapore Dollar</option>
+              <option value="HKD">HK$ HKD - Hong Kong Dollar</option>
+              <option value="THB">฿ THB - Thai Baht</option>
+              <option value="MYR">RM MYR - Malaysian Ringgit</option>
+              <option value="IDR">Rp IDR - Indonesian Rupiah</option>
+              <option value="PHP">₱ PHP - Philippine Peso</option>
+              <option value="VND">₫ VND - Vietnamese Dong</option>
+              <option value="TWD">NT$ TWD - Taiwan Dollar</option>
+              <option value="PKR">₨ PKR - Pakistani Rupee</option>
+              <option value="BDT">৳ BDT - Bangladeshi Taka</option>
+              <option value="LKR">Rs LKR - Sri Lankan Rupee</option>
+              <option value="NPR">Rs NPR - Nepalese Rupee</option>
+              <option value="MMK">K MMK - Myanmar Kyat</option>
+              <option value="KHR">៛ KHR - Cambodian Riel</option>
+              <option value="LAK">₭ LAK - Lao Kip</option>
+              <option value="BND">B$ BND - Brunei Dollar</option>
             </select>
             {errors.currency && (
               <p className="mt-1 text-sm text-red-600">{errors.currency}</p>
