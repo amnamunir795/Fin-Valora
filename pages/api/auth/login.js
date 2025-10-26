@@ -68,7 +68,6 @@ export default async function handler(req, res) {
       lastName: user.lastName,
       email: user.email,
       currency: user.currency,
-      avatar: user.avatar,
       fullName: user.fullName,
       createdAt: user.createdAt
     };

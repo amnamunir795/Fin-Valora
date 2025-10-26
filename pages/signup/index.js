@@ -10,29 +10,12 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     currency: "INR",
-    avatar: {
-      backgroundColor: "#B5BFC8",
-      textColor: "#FFFFFF",
-      style: "initials"
-    },
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
-
-  // Avatar options
-  const avatarBackgrounds = [
-    "#B5BFC8", "#F0D3C7", "#E8C5B5", "#A8B5C8", "#C8B5A8",
-    "#B5C8A8", "#C8A8B5", "#A8C8B5", "#B8A8C5", "#C5B8A8"
-  ];
-
-  const avatarStyles = [
-    { id: "initials", name: "Initials", icon: "👤" },
-    { id: "geometric", name: "Geometric", icon: "🔷" },
-    { id: "abstract", name: "Abstract", icon: "🎨" }
-  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,62 +32,7 @@ export default function SignUp() {
     }
   };
 
-  const handleAvatarChange = (property, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      avatar: {
-        ...prev.avatar,
-        [property]: value
-      }
-    }));
-  };
 
-  const generateInitials = () => {
-    const first = formData.firstName.charAt(0).toUpperCase();
-    const last = formData.lastName.charAt(0).toUpperCase();
-    return first + last || "??";
-  };
-
-  const renderAvatarPreview = () => {
-    const { backgroundColor, textColor, style } = formData.avatar;
-    const initials = generateInitials();
-
-    if (style === "initials") {
-      return (
-        <div 
-          className="w-full h-full rounded-full flex items-center justify-center text-2xl font-bold"
-          style={{ backgroundColor, color: textColor }}
-        >
-          {initials}
-        </div>
-      );
-    } else if (style === "geometric") {
-      return (
-        <div 
-          className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden"
-          style={{ backgroundColor }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-8 h-8 rotate-45 border-4" style={{ borderColor: textColor }}></div>
-            <div className="w-4 h-4 rounded-full absolute" style={{ backgroundColor: textColor }}></div>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div 
-          className="w-full h-full rounded-full flex items-center justify-center relative overflow-hidden"
-          style={{ backgroundColor }}
-        >
-          <div className="absolute inset-0">
-            <div className="w-6 h-6 rounded-full absolute top-2 left-3" style={{ backgroundColor: textColor, opacity: 0.7 }}></div>
-            <div className="w-4 h-4 rounded-full absolute bottom-3 right-2" style={{ backgroundColor: textColor, opacity: 0.5 }}></div>
-            <div className="w-3 h-3 rounded-full absolute top-1/2 right-1/3" style={{ backgroundColor: textColor, opacity: 0.8 }}></div>
-          </div>
-        </div>
-      );
-    }
-  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -200,83 +128,23 @@ export default function SignUp() {
       </div>
 
       <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300">
-        {/* Avatar Creator - Before Heading */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="mb-4">
-            <div className="w-24 h-24 rounded-full border-4 border-[#B5BFC8] shadow-lg overflow-hidden">
-              {renderAvatarPreview()}
-            </div>
-          </div>
-
-          <div className="w-full max-w-xs space-y-4">
-            {/* Avatar Style Selection */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2 text-center">
-                Avatar Style
-              </label>
-              <div className="flex justify-center space-x-2">
-                {avatarStyles.map((style) => (
-                  <button
-                    key={style.id}
-                    type="button"
-                    onClick={() => handleAvatarChange('style', style.id)}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
-                      formData.avatar.style === style.id
-                        ? 'bg-[#B5BFC8] text-white shadow-md'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span className="mr-1">{style.icon}</span>
-                    {style.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Background Color Selection */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2 text-center">
-                Background Color
-              </label>
-              <div className="flex flex-wrap justify-center gap-2">
-                {avatarBackgrounds.map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    onClick={() => handleAvatarChange('backgroundColor', color)}
-                    className={`w-8 h-8 rounded-full border-2 transition-all duration-200 ${
-                      formData.avatar.backgroundColor === color
-                        ? 'border-gray-800 scale-110 shadow-lg'
-                        : 'border-gray-300 hover:scale-105'
-                    }`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Text Color Toggle */}
-            <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={() => handleAvatarChange('textColor', formData.avatar.textColor === '#FFFFFF' ? '#000000' : '#FFFFFF')}
-                className="inline-flex items-center px-4 py-2 border-2 border-[#B5BFC8] text-[#B5BFC8] font-medium rounded-lg hover:bg-[#B5BFC8] hover:text-white transition-all duration-200"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5H9m12 0v12a4 4 0 01-4 4H9" />
-                </svg>
-                {formData.avatar.textColor === '#FFFFFF' ? 'Light Text' : 'Dark Text'}
-              </button>
-            </div>
-          </div>
-
-          <p className="text-xs text-gray-500 text-center mt-3">
-            Customize your avatar appearance
-          </p>
-        </div>
-
         {/* Create Account Heading */}
         <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full mb-4 shadow-lg">
+            <svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] bg-clip-text text-transparent mb-2">
             Create Account
           </h1>

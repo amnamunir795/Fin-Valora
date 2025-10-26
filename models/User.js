@@ -41,21 +41,7 @@ const UserSchema = new mongoose.Schema({
     ],
     default: 'INR'
   },
-  avatar: {
-    backgroundColor: {
-      type: String,
-      default: '#B5BFC8'
-    },
-    textColor: {
-      type: String,
-      default: '#FFFFFF'
-    },
-    style: {
-      type: String,
-      enum: ['initials', 'geometric', 'abstract'],
-      default: 'initials'
-    }
-  },
+
   isActive: {
     type: Boolean,
     default: true
