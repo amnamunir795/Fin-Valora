@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -74,16 +75,37 @@ export default function SignUp() {
     }
 
     setIsLoading(true);
+    setErrors({}); // Clear any previous errors
 
     try {
-      // Here you would typically make an API call to create the user
-      // For now, we'll just simulate a successful signup
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Redirect to success page or login
-      router.push("/");
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle API errors
+        if (data.errors && Array.isArray(data.errors)) {
+          // Handle validation errors from mongoose
+          setErrors({ submit: data.errors.join(', ') });
+        } else {
+          setErrors({ submit: data.message || 'Something went wrong. Please try again.' });
+        }
+        return;
+      }
+
+      // Success - redirect to home page or show success message
+      console.log('User created successfully:', data.user);
+      router.push('/?signup=success');
+      
     } catch (error) {
-      setErrors({ submit: "Something went wrong. Please try again." });
+      console.error('Signup error:', error);
+      setErrors({ submit: 'Network error. Please check your connection and try again.' });
     } finally {
       setIsLoading(false);
     }
@@ -280,12 +302,9 @@ export default function SignUp() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <a
-              href="/login"
-              className="text-amber-600 hover:text-amber-700 font-medium"
-            >
+            <Link href="/login" className="text-amber-600 hover:text-amber-700 font-medium">
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>
