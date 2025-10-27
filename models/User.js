@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { SUPPORTED_CURRENCIES, DEFAULT_CURRENCY } from '../constants/currencies';
 
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -34,12 +35,11 @@ const UserSchema = new mongoose.Schema({
   currency: {
     type: String,
     required: [true, 'Currency is required'],
-    enum: [
-      'INR', 'CNY', 'JPY', 'KRW', 'SGD', 'HKD', 'THB', 'MYR', 
-      'IDR', 'PHP', 'VND', 'TWD', 'PKR', 'BDT', 'LKR', 'NPR', 
-      'MMK', 'KHR', 'LAK', 'BND'
-    ],
-    default: 'INR'
+    enum: {
+      values: SUPPORTED_CURRENCIES,
+      message: '{VALUE} is not a supported currency'
+    },
+    default: DEFAULT_CURRENCY
   },
 
   isActive: {
@@ -102,4 +102,9 @@ UserSchema.set('toJSON', {
   }
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+// Clear any existing model to ensure fresh schema
+if (mongoose.models.User) {
+  delete mongoose.models.User;
+}
+
+export default mongoose.model('User', UserSchema);

@@ -1,5 +1,7 @@
 import connectDB from '../../../lib/mongodb';
 import User from '../../../models/User';
+import { generateToken, createTokenPayload } from '../../../lib/jwt';
+import { SUPPORTED_CURRENCIES } from '../../../constants/currencies';
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -49,6 +51,14 @@ export default async function handler(req, res) {
       });
     }
 
+    // Validate currency
+    if (!SUPPORTED_CURRENCIES.includes(currency)) {
+      return res.status(400).json({
+        success: false,
+        message: `Currency ${currency} is not supported`
+      });
+    }
+
     // Check if user already exists
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
@@ -74,7 +84,11 @@ export default async function handler(req, res) {
     // Save user to database
     await user.save();
 
-    // Return success response (without password)
+    // Create JWT token
+    const tokenPayload = createTokenPayload(user);
+    const token = generateToken(tokenPayload);
+
+    // Return success response with token
     const userResponse = {
       id: user._id,
       firstName: user.firstName,
@@ -88,7 +102,8 @@ export default async function handler(req, res) {
     res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user: userResponse
+      user: userResponse,
+      token: token
     });
 
   } catch (error) {

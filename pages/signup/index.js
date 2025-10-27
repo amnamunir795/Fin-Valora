@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { signup } from "../../utils/auth";
+import { CURRENCY_OPTIONS, DEFAULT_CURRENCY } from "../../constants/currencies";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -9,7 +11,7 @@ export default function SignUp() {
     email: "",
     password: "",
     confirmPassword: "",
-    currency: "INR",
+    currency: DEFAULT_CURRENCY,
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -82,32 +84,22 @@ export default function SignUp() {
     setErrors({}); // Clear any previous errors
 
     try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await signup(formData);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (result.success) {
+        // Success - redirect to home page
+        console.log("User created successfully:", result.user);
+        router.push("/?signup=success");
+      } else {
         // Handle API errors
-        if (data.errors && Array.isArray(data.errors)) {
-          // Handle validation errors from mongoose
-          setErrors({ submit: data.errors.join(", ") });
+        if (result.errors && Array.isArray(result.errors)) {
+          setErrors({ submit: result.errors.join(", ") });
         } else {
           setErrors({
-            submit: data.message || "Something went wrong. Please try again.",
+            submit: result.message || "Something went wrong. Please try again.",
           });
         }
-        return;
       }
-
-      // Success - redirect to home page or show success message
-      console.log("User created successfully:", data.user);
-      router.push("/?signup=success");
     } catch (error) {
       console.error("Signup error:", error);
       setErrors({
@@ -264,26 +256,11 @@ export default function SignUp() {
               }`}
             >
               <option value="">Select Currency</option>
-              <option value="INR">₹ INR - Indian Rupee</option>
-              <option value="CNY">¥ CNY - Chinese Yuan</option>
-              <option value="JPY">¥ JPY - Japanese Yen</option>
-              <option value="KRW">₩ KRW - South Korean Won</option>
-              <option value="SGD">S$ SGD - Singapore Dollar</option>
-              <option value="HKD">HK$ HKD - Hong Kong Dollar</option>
-              <option value="THB">฿ THB - Thai Baht</option>
-              <option value="MYR">RM MYR - Malaysian Ringgit</option>
-              <option value="IDR">Rp IDR - Indonesian Rupiah</option>
-              <option value="PHP">₱ PHP - Philippine Peso</option>
-              <option value="VND">₫ VND - Vietnamese Dong</option>
-              <option value="TWD">NT$ TWD - Taiwan Dollar</option>
-              <option value="PKR">₨ PKR - Pakistani Rupee</option>
-              <option value="BDT">৳ BDT - Bangladeshi Taka</option>
-              <option value="LKR">Rs LKR - Sri Lankan Rupee</option>
-              <option value="NPR">Rs NPR - Nepalese Rupee</option>
-              <option value="MMK">K MMK - Myanmar Kyat</option>
-              <option value="KHR">៛ KHR - Cambodian Riel</option>
-              <option value="LAK">₭ LAK - Lao Kip</option>
-              <option value="BND">B$ BND - Brunei Dollar</option>
+              {CURRENCY_OPTIONS.map((currency) => (
+                <option key={currency.code} value={currency.code}>
+                  {currency.symbol} {currency.code} - {currency.name}
+                </option>
+              ))}
             </select>
             {errors.currency && (
               <p className="mt-1 text-sm text-red-600">{errors.currency}</p>

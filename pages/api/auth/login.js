@@ -1,5 +1,6 @@
 import connectDB from '../../../lib/mongodb';
 import User from '../../../models/User';
+import { generateToken, createTokenPayload } from '../../../lib/jwt';
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -61,7 +62,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // Return success response (without password)
+    // Create JWT token
+    const tokenPayload = createTokenPayload(user);
+    const token = generateToken(tokenPayload);
+
+    // Return success response with token
     const userResponse = {
       id: user._id,
       firstName: user.firstName,
@@ -75,7 +80,8 @@ export default async function handler(req, res) {
     res.status(200).json({
       success: true,
       message: 'Login successful',
-      user: userResponse
+      user: userResponse,
+      token: token
     });
 
   } catch (error) {

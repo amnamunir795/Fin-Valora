@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { login } from '../../utils/auth';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -55,29 +56,15 @@ export default function Login() {
     setErrors({}); // Clear any previous errors
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await login(formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setErrors({ submit: data.message || 'Login failed. Please try again.' });
-        return;
+      if (result.success) {
+        // Success - redirect to home page
+        console.log('Login successful:', result.user);
+        router.push('/?login=success');
+      } else {
+        setErrors({ submit: result.message || 'Login failed. Please try again.' });
       }
-
-      // Success - store user data and redirect
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(data.user));
-      }
-      
-      console.log('Login successful:', data.user);
-      router.push('/?login=success');
-      
     } catch (error) {
       console.error('Login error:', error);
       setErrors({ submit: 'Network error. Please check your connection and try again.' });
