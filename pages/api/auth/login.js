@@ -35,14 +35,17 @@ export default async function handler(req, res) {
     }
 
     // Find user by email and include password for comparison
-    const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
+    const user = await User.findByEmail(email).select('+password');
     
     if (!user) {
+      console.log(`Login attempt failed: User not found for email: ${email.toLowerCase().trim()}`);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
       });
     }
+
+    console.log(`Login attempt: User found for email: ${email.toLowerCase().trim()}, isActive: ${user.isActive}`);
 
     // Check if user account is active
     if (!user.isActive) {
@@ -56,11 +59,14 @@ export default async function handler(req, res) {
     const isPasswordValid = await user.comparePassword(password);
     
     if (!isPasswordValid) {
+      console.log(`Login attempt failed: Invalid password for email: ${email.toLowerCase().trim()}`);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
       });
     }
+
+    console.log(`Login successful for email: ${email.toLowerCase().trim()}`);
 
     // Create JWT token
     const tokenPayload = createTokenPayload(user);

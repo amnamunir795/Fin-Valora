@@ -84,7 +84,7 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
 
 // Static method to find user by email
 UserSchema.statics.findByEmail = function(email) {
-  return this.findOne({ email: email.toLowerCase() });
+  return this.findOne({ email: email.toLowerCase().trim() });
 };
 
 // Virtual for full name

@@ -114,6 +114,15 @@ export const login = async (email, password) => {
 
 // Signup function
 export const signup = async (userData) => {
+  console.log('Signup data being sent:', {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email,
+    currency: userData.currency,
+    hasPassword: !!userData.password,
+    hasConfirmPassword: !!userData.confirmPassword
+  });
+
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     headers: {
@@ -123,6 +132,7 @@ export const signup = async (userData) => {
   });
 
   const data = await response.json();
+  console.log('Signup API response:', data);
 
   if (response.ok && data.token) {
     setToken(data.token);

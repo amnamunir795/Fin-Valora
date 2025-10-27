@@ -68,21 +68,40 @@ export default async function handler(req, res) {
       });
     }
 
-    // Create new user
+    // Create new user with all required data
     const userData = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.toLowerCase().trim(),
       password,
-      currency
+      currency,
+      isActive: true, // Explicitly set active status
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
-
+    console.log('Creating user with data:', {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      currency: userData.currency,
+      isActive: userData.isActive
+    });
 
     const user = new User(userData);
 
     // Save user to database
     await user.save();
+    
+    console.log('User saved successfully:', {
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      currency: user.currency,
+      isActive: user.isActive,
+      createdAt: user.createdAt
+    });
 
     // Create JWT token
     const tokenPayload = createTokenPayload(user);
