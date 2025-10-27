@@ -258,7 +258,7 @@ export default function SignUp() {
               <option value="">Select Currency</option>
               {CURRENCY_OPTIONS.map((currency) => (
                 <option key={currency.code} value={currency.code}>
-                  {currency.symbol} {currency.code} - {currency.name}
+                  {currency.country} ({currency.symbol})
                 </option>
               ))}
             </select>
