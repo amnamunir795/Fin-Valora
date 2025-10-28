@@ -59,9 +59,9 @@ export default function Login() {
       const result = await login(formData.email, formData.password);
 
       if (result.success) {
-        // Success - redirect to home page
+        // Success - redirect to budget setup page
         console.log('Login successful:', result.user);
-        router.push('/?login=success');
+        router.push('/budget-setup?login=success');
       } else {
         setErrors({ submit: result.message || 'Login failed. Please try again.' });
       }

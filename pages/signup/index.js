@@ -87,9 +87,9 @@ export default function SignUp() {
       const result = await signup(formData);
 
       if (result.success) {
-        // Success - redirect to home page
+        // Success - redirect to budget setup page
         console.log("User created successfully:", result.user);
-        router.push("/?signup=success");
+        router.push("/budget-setup?signup=success");
       } else {
         // Handle API errors
         if (result.errors && Array.isArray(result.errors)) {

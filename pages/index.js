@@ -9,7 +9,6 @@ import {
 } from "../utils/auth";
 
 export default function Home() {
-  const MyName = "Amna";
   const router = useRouter();
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -231,8 +230,7 @@ export default function Home() {
                 </h2>
               </div>
 
-              {user ? (
-                <div className="space-y-4">
+              <div className="space-y-6">
                   <p className="text-lg text-gray-700 mb-6">
                     Hello{" "}
                     <span className="font-semibold text-[#B5BFC8]">
@@ -245,8 +243,57 @@ export default function Home() {
                     ?
                   </p>
 
+                  {/* Budget Setup CTA */}
+                  <div className="bg-gradient-to-r from-[#B5BFC8]/10 to-[#9FAAB5]/10 rounded-xl p-6 border-2 border-dashed border-[#B5BFC8]/30 text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-[#B5BFC8] mb-2">Set Up Your Budget 💰</h3>
+                    <p className="text-gray-600 mb-4">
+                      Start your financial journey by creating your first monthly budget plan!
+                    </p>
+                    <a
+                      href="/budget-setup"
+                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white font-semibold rounded-xl hover:from-[#9FAAB5] hover:to-[#8A95A2] transition-all duration-200 transform hover:scale-105 shadow-lg"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Create Budget Plan
+                    </a>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30">
+                    <a
+                      href="/dashboard"
+                      className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 hover:shadow-xl transition-all duration-200 transform hover:scale-105 cursor-pointer group"
+                    >
+                      <div className="flex items-center mb-2">
+                        <svg
+                          className="w-5 h-5 text-[#B5BFC8] mr-2 group-hover:text-[#9FAAB5] transition-colors"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          />
+                        </svg>
+                        <h4 className="font-semibold text-gray-800 group-hover:text-[#B5BFC8] transition-colors">
+                          Dashboard
+                        </h4>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        View your budget overview
+                      </p>
+                    </a>
+
+                    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30 opacity-50">
                       <div className="flex items-center mb-2">
                         <svg
                           className="w-5 h-5 text-[#B5BFC8] mr-2"
@@ -262,35 +309,11 @@ export default function Home() {
                           />
                         </svg>
                         <h4 className="font-semibold text-gray-800">
-                          Portfolio
-                        </h4>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Track your investments
-                      </p>
-                    </div>
-
-                    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/30">
-                      <div className="flex items-center mb-2">
-                        <svg
-                          className="w-5 h-5 text-[#B5BFC8] mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                        <h4 className="font-semibold text-gray-800">
                           Analytics
                         </h4>
                       </div>
                       <p className="text-sm text-gray-600">
-                        View detailed reports
+                        Coming soon...
                       </p>
                     </div>
                   </div>
@@ -310,22 +333,31 @@ export default function Home() {
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
-                  <p className="text-lg text-gray-600 mb-6">
-                    Please login or create an account to access your financial
-                    dashboard.
+                  <h3 className="text-2xl font-bold text-[#B5BFC8] mb-4">Start Your Financial Journey! 🚀</h3>
+                  <p className="text-lg text-gray-600 mb-2">
+                    Join thousands of users managing their budgets smartly
+                  </p>
+                  <p className="text-sm text-gray-500 mb-6">
+                    Create an account or login to access your Budget Setup and Dashboard
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <a
                       href="/login"
-                      className="inline-flex items-center px-6 py-3 border-2 border-[#B5BFC8] text-[#B5BFC8] font-semibold rounded-xl hover:bg-[#B5BFC8] hover:text-white transition-all duration-200"
+                      className="inline-flex items-center px-6 py-3 border-2 border-[#B5BFC8] text-[#B5BFC8] font-semibold rounded-xl hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 transform hover:scale-105 shadow-md"
                     >
-                      Login
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                      </svg>
+                      Already have an account? Login
                     </a>
                     <a
                       href="/signup"
-                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white font-semibold rounded-xl hover:from-[#9FAAB5] hover:to-[#8A95A2] transition-all duration-200 shadow-lg"
+                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white font-semibold rounded-xl hover:from-[#9FAAB5] hover:to-[#8A95A2] transition-all duration-200 shadow-lg transform hover:scale-105"
                     >
-                      Get Started
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Create Free Account
                     </a>
                   </div>
                 </div>
