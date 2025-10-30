@@ -1,6 +1,7 @@
-import { connectToDatabase } from '../../../lib/mongodb';
+import connectDB from '../../../lib/mongodb';
 import Budget from '../../../models/Budget';
-import { verifyToken } from '../../../lib/jwt';
+import { authenticateToken } from '../../../middleware/auth';
+import mongoose from 'mongoose';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -8,41 +9,65 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verify authentication
-    const token = req.headers.authorization?.replace('Bearer ', '') || req.cookies.token;
-    
-    if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
+    // Connect to DB
+    await connectDB();
+
+    // Support authenticateToken middleware that calls next(req, res)
+    const user = await new Promise((resolve, reject) => {
+      // If authenticateToken returns a promise, prefer that
+      try {
+        const maybePromise = authenticateToken(req, res, (err) => {
+          if (err) return reject(err);
+          // expect authenticateToken to set req.user
+          if (!req.user) return reject(new Error('Authentication failed: no user on request'));
+          resolve(req.user);
+        });
+
+        // If authenticateToken returns a Promise (async version), await it
+        if (maybePromise && typeof maybePromise.then === 'function') {
+          maybePromise
+            .then(() => {
+              if (!req.user) return reject(new Error('Authentication failed: no user on request'));
+              resolve(req.user);
+            })
+            .catch(reject);
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+    // user id may be on user.id or user._id
+    const userId = user.id || user._id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return res.status(401).json({ message: 'Invalid token' });
-    }
-
-    const userId = decoded.userId;
-
-    // Connect to database
-    await connectToDatabase();
+    // Make sure we pass an ObjectId or string accepted by mongoose
+    const idToQuery = mongoose.Types.ObjectId.isValid(userId)
+  ? new mongoose.Types.ObjectId(userId)
+  : userId;
 
     // Find current month's budget
-    const currentBudget = await Budget.findCurrentBudget(userId);
+    const currentBudget = await Budget.findCurrentBudget(idToQuery);
 
     if (!currentBudget) {
-      return res.status(404).json({ 
-        message: 'No active budget found for current month' 
+      return res.status(404).json({
+        success: false,
+        message: 'No active budget found for current month'
       });
     }
 
+    // Return summary (getSummary is an instance method on schema)
     return res.status(200).json({
       success: true,
       budget: currentBudget.getSummary()
     });
-
   } catch (error) {
     console.error('Get current budget error:', error);
-    return res.status(500).json({ 
-      message: 'Internal server error' 
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error'
     });
   }
 }

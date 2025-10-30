@@ -6,7 +6,12 @@ import User from '../models/User';
 export const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = extractTokenFromHeader(authHeader);
+    let token = extractTokenFromHeader(authHeader);
+
+    // If no token in header, check cookies as fallback
+    if (!token && req.cookies && req.cookies.token) {
+      token = req.cookies.token;
+    }
 
     if (!token) {
       return res.status(401).json({

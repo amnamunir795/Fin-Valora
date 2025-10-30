@@ -94,22 +94,31 @@ export const authenticatedFetch = async (url, options = {}) => {
 
 // Login function
 export const login = async (email, password) => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  console.log('Login function called with:', { email, hasPassword: !!password });
+  
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await response.json();
+    console.log('Login API response status:', response.status);
+    const data = await response.json();
+    console.log('Login API response data:', data);
 
-  if (response.ok && data.token) {
-    setToken(data.token);
-    return { success: true, user: data.user };
+    if (response.ok && data.token) {
+      setToken(data.token);
+      return { success: true, user: data.user };
+    }
+
+    return { success: false, message: data.message };
+  } catch (error) {
+    console.error('Login function error:', error);
+    return { success: false, message: 'Network error occurred' };
   }
-
-  return { success: false, message: data.message };
 };
 
 // Signup function

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { login } from '../../utils/auth';
+import { login, isAuthenticated } from '../../utils/auth';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,25 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const checkAuth = async () => {
+      if (isAuthenticated()) {
+        try {
+          const response = await fetch('/api/auth/me');
+          if (response.ok) {
+            // User is authenticated, redirect to dashboard
+            router.push('/dashboard');
+          }
+        } catch (error) {
+          console.error('Auth check error:', error);
+        }
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,8 +66,10 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Login form submitted with data:', { email: formData.email, hasPassword: !!formData.password });
 
     if (!validateForm()) {
+      console.log('Form validation failed');
       return;
     }
 
@@ -56,13 +77,29 @@ export default function Login() {
     setErrors({}); // Clear any previous errors
 
     try {
+      console.log('Calling login function...');
       const result = await login(formData.email, formData.password);
+      console.log('Login result:', result);
 
       if (result.success) {
-        // Success - redirect to budget setup page
+        // Success - check if user has active budget
         console.log('Login successful:', result.user);
-        router.push('/budget-setup?login=success');
+        
+        try {
+          const budgetResponse = await fetch('/api/budget/current');
+          if (budgetResponse.ok) {
+            // User has active budget, go to dashboard
+            router.push('/dashboard?login=success');
+          } else {
+            // No active budget, go to budget setup
+            router.push('/budget-setup?login=success');
+          }
+        } catch (error) {
+          // Default to budget setup if there's an error
+          router.push('/budget-setup?login=success');
+        }
       } else {
+        console.log('Login failed:', result.message);
         setErrors({ submit: result.message || 'Login failed. Please try again.' });
       }
     } catch (error) {
@@ -74,7 +111,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6D8] via-[#F0D3C7] to-[#E8C5B5] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#B5BFC8] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>

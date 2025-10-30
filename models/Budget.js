@@ -112,6 +112,7 @@ budgetSchema.methods.getSummary = function() {
     currentSaved: this.currentSaved,
     savingsProgress: this.savingsProgress,
     spendingProgress: this.spendingProgress,
+    currency: this.currency,
     isOverBudget: this.isOverBudget()
   };
 };

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { signup } from "../../utils/auth";
+import { signup, isAuthenticated } from "../../utils/auth";
 import { CURRENCY_OPTIONS, DEFAULT_CURRENCY } from "../../constants/currencies";
 
 export default function SignUp() {
@@ -18,6 +18,25 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const checkAuth = async () => {
+      if (isAuthenticated()) {
+        try {
+          const response = await fetch('/api/auth/me');
+          if (response.ok) {
+            // User is authenticated, redirect to dashboard
+            router.push('/dashboard');
+          }
+        } catch (error) {
+          console.error('Auth check error:', error);
+        }
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,7 +130,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6D8] via-[#F0D3C7] to-[#E8C5B5] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#B5BFC8] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>

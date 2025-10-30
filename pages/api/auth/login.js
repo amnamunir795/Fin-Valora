@@ -72,6 +72,9 @@ export default async function handler(req, res) {
     const tokenPayload = createTokenPayload(user);
     const token = generateToken(tokenPayload);
 
+    // Set token as HTTP-only cookie
+    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`);
+
     // Return success response with token
     const userResponse = {
       id: user._id,
