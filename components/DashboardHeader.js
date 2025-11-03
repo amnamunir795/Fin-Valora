@@ -34,6 +34,9 @@ export default function DashboardHeader({ user }) {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/" className="text-gray-600 hover:text-[#B5BFC8] font-medium transition-colors">
+              Home
+            </Link>
             <Link href="/dashboard" className="text-gray-600 hover:text-[#B5BFC8] font-medium transition-colors">
               Dashboard
             </Link>
@@ -96,6 +99,9 @@ export default function DashboardHeader({ user }) {
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
             <div className="flex flex-col space-y-4">
+              <Link href="/" className="text-gray-600 hover:text-[#B5BFC8] font-medium">
+                Home
+              </Link>
               <Link href="/dashboard" className="text-gray-600 hover:text-[#B5BFC8] font-medium">
                 Dashboard
               </Link>

@@ -56,13 +56,37 @@ export default async function handler(req, res) {
         const budgetMonth = budgetStartDate.getMonth() + 1; // JavaScript months are 0-indexed
         const budgetYear = budgetStartDate.getFullYear();
 
-        // Check if budget already exists for this month/year
-        const existingBudget = await Budget.findOne({
+        // First, try to find any existing active budget for this user (for editing)
+        let existingBudget = await Budget.findOne({
           userId,
-          budgetMonth,
-          budgetYear,
           isActive: true,
-        });
+        }).sort({ createdAt: -1 }); // Get the most recent active budget
+
+        // If we're updating and there's a date change, we might need to check for conflicts
+        if (existingBudget) {
+          // Check if there's already a budget for the new month/year (different from current)
+          const conflictingBudget = await Budget.findOne({
+            userId,
+            budgetMonth,
+            budgetYear,
+            isActive: true,
+            _id: { $ne: existingBudget._id } // Exclude the current budget
+          });
+
+          if (conflictingBudget) {
+            // If there's a conflict, deactivate the conflicting budget
+            conflictingBudget.isActive = false;
+            await conflictingBudget.save();
+          }
+        } else {
+          // If no active budget found, check for budget in the specific month/year
+          existingBudget = await Budget.findOne({
+            userId,
+            budgetMonth,
+            budgetYear,
+            isActive: true,
+          });
+        }
 
         if (existingBudget) {
           // Update existing budget
@@ -71,6 +95,8 @@ export default async function handler(req, res) {
           existingBudget.spendingLimit = spendingLimit;
           existingBudget.savingGoal = savingGoal;
           existingBudget.currency = currency || "USD";
+          existingBudget.budgetMonth = budgetMonth;
+          existingBudget.budgetYear = budgetYear;
 
           await existingBudget.save();
 

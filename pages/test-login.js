@@ -104,6 +104,21 @@ export default function TestLogin() {
     }
   };
 
+  const checkBudgetStatus = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/debug/budget-status', {
+        credentials: 'include' // Include cookies
+      });
+      const data = await response.json();
+      setResult({ budgetStatus: data, status: response.status });
+    } catch (error) {
+      setResult({ error: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const checkUsers = async () => {
     setLoading(true);
     try {
