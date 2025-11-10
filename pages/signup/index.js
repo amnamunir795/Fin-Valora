@@ -17,6 +17,9 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,13 +27,13 @@ export default function SignUp() {
     const checkAuth = async () => {
       if (isAuthenticated()) {
         try {
-          const response = await fetch('/api/auth/me');
+          const response = await fetch("/api/auth/me");
           if (response.ok) {
             // User is authenticated, redirect to dashboard
-            router.push('/dashboard');
+            router.push("/dashboard");
           }
         } catch (error) {
-          console.error('Auth check error:', error);
+          console.error("Auth check error:", error);
         }
       }
     };
@@ -53,7 +56,50 @@ export default function SignUp() {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setErrors((prev) => ({
+          ...prev,
+          profileImage: "Image size should be less than 2MB",
+        }));
+        return;
+      }
 
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        setErrors((prev) => ({
+          ...prev,
+          profileImage: "Please select a valid image file",
+        }));
+        return;
+      }
+
+      setProfileImage(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Clear error
+      if (errors.profileImage) {
+        setErrors((prev) => ({
+          ...prev,
+          profileImage: "",
+        }));
+      }
+    }
+  };
+
+  const removeImage = () => {
+    setProfileImage(null);
+    setImagePreview(null);
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -86,6 +132,10 @@ export default function SignUp() {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!acceptedTerms) {
+      newErrors.terms = "You must accept the Terms and Conditions to continue";
     }
 
     setErrors(newErrors);
@@ -130,36 +180,123 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#E7EFC7] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#B5BFC8] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#F0D3C7] rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#F2E6D8] rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
       </div>
 
-      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-white/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300" style={{boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'}}>
-        {/* Create Account Heading */}
+      <div
+        className="max-w-md w-full bg-white backdrop-blur-md rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300"
+        style={{
+          boxShadow:
+            "0 25px 50px -12px rgba(59, 59, 26, 0.15), 0 0 0 1px rgba(59, 59, 26, 0.2)",
+        }}
+      >
+        {/* Create Account Heading with Avatar */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full mb-4 shadow-lg drop-shadow-lg" style={{boxShadow: '0 10px 25px -3px rgba(181, 191, 200, 0.4), 0 4px 6px -2px rgba(181, 191, 200, 0.2)'}}>
-            <svg
-              className="w-8 h-8 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+          {/* Avatar Upload Section */}
+          <div className="mb-6">
+            <div className="relative inline-block">
+              {/* Circular Avatar */}
+              <div
+                className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-[#8A784E] to-[#796944] shadow-lg drop-shadow-lg flex items-center justify-center border-2 border-[#3B3B1A]/20"
+                style={{
+                  boxShadow:
+                    "0 10px 25px -3px rgba(121, 105, 68, 0.3), 0 4px 6px -2px rgba(121, 105, 68, 0.2)",
+                }}
+              >
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Profile preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <svg
+                    className="w-16 h-16 text-[#3B3B1A]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                )}
+              </div>
+
+              {/* Upload/Remove Button Overlay */}
+              {imagePreview ? (
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute bottom-0 right-0 w-10 h-10 bg-red-500 hover:bg-red-600 text-[#3B3B1A] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110"
+                  title="Remove image"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              ) : (
+                <label
+                  htmlFor="avatarUpload"
+                  className="absolute bottom-0 right-0 w-10 h-10 bg-[#796944] hover:bg-[#6E603E] text-[#3B3B1A] rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all duration-200 transform hover:scale-110"
+                  title="Upload image"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  <input
+                    type="file"
+                    id="avatarUpload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+              )}
+            </div>
+
+            {/* Upload Instructions */}
+            <p className="text-xs text-[#3B3B1A]/70 mt-3">
+              {imagePreview
+                ? "Profile picture selected"
+                : "Click + to add profile picture (optional)"}
+            </p>
+
+            {errors.profileImage && (
+              <p className="mt-1 text-sm text-red-600">{errors.profileImage}</p>
+            )}
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] bg-clip-text text-transparent mb-2">
-            Create Account
-          </h1>
-          <p className="text-gray-600 text-sm">
+
+          <h1 className="text-3xl font-bold text-[#3B3B1A] mb-2">Create Account</h1>
+          <p className="text-[#3B3B1A]/80 text-sm">
             Join us today and get started on your financial journey
           </p>
         </div>
@@ -169,10 +306,10 @@ export default function SignUp() {
             <div>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+                className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
               >
                 <svg
-                  className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                  className="w-4 h-4 mr-2 text-[#3B3B1A]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -192,10 +329,10 @@ export default function SignUp() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.firstName
                     ? "border-red-400 bg-red-50"
-                    : "border-gray-200 hover:border-[#B5BFC8]"
+                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="Enter your first name"
               />
@@ -207,10 +344,10 @@ export default function SignUp() {
             <div>
               <label
                 htmlFor="lastName"
-                className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+                className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
               >
                 <svg
-                  className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                  className="w-4 h-4 mr-2 text-[#3B3B1A]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -230,10 +367,10 @@ export default function SignUp() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.lastName
                     ? "border-red-400 bg-red-50"
-                    : "border-gray-200 hover:border-[#B5BFC8]"
+                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="Enter your last name"
               />
@@ -246,10 +383,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="currency"
-              className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                className="w-4 h-4 mr-2 text-[#3B3B1A]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -268,10 +405,10 @@ export default function SignUp() {
               name="currency"
               value={formData.currency}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white cursor-pointer shadow-sm hover:shadow-md focus:shadow-lg ${
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] cursor-pointer shadow-sm hover:shadow-md focus:shadow-lg ${
                 errors.currency
                   ? "border-red-400 bg-red-50"
-                  : "border-gray-200 hover:border-[#B5BFC8]"
+                  : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
               }`}
             >
               <option value="">Select Currency</option>
@@ -289,10 +426,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                className="w-4 h-4 mr-2 text-[#3B3B1A]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -312,10 +449,10 @@ export default function SignUp() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                 errors.email
                   ? "border-red-400 bg-red-50"
-                  : "border-gray-200 hover:border-[#B5BFC8]"
+                  : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
               }`}
               placeholder="Enter your email address"
             />
@@ -327,10 +464,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                className="w-4 h-4 mr-2 text-[#3B3B1A]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -351,17 +488,17 @@ export default function SignUp() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.password
                     ? "border-red-400 bg-red-50"
-                    : "border-gray-200 hover:border-[#B5BFC8]"
+                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="Create a strong password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#B5BFC8] transition-colors duration-200"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#3B3B1A]/60 hover:text-[#3B3B1A] transition-colors duration-200"
               >
                 {showPassword ? (
                   <svg
@@ -408,10 +545,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-semibold text-gray-700 mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#B5BFC8]"
+                className="w-4 h-4 mr-2 text-[#3B3B1A]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -432,17 +569,17 @@ export default function SignUp() {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.confirmPassword
                     ? "border-red-400 bg-red-50"
-                    : "border-gray-200 hover:border-[#B5BFC8]"
+                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="Confirm your password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#B5BFC8] transition-colors duration-200"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#3B3B1A]/60 hover:text-[#3B3B1A] transition-colors duration-200"
               >
                 {showConfirmPassword ? (
                   <svg
@@ -511,16 +648,66 @@ export default function SignUp() {
             </div>
           )}
 
+          {/* Terms and Conditions Checkbox */}
+          <div className="space-y-3">
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => {
+                    setAcceptedTerms(e.target.checked);
+                    if (errors.terms) {
+                      setErrors((prev) => ({ ...prev, terms: "" }));
+                    }
+                  }}
+                  className="w-5 h-5 border-2 border-[#3B3B1A]/25 rounded bg-[#E7EFC7] text-[#3B3B1A] focus:ring-2 focus:ring-[#8A784E] focus:ring-offset-0 cursor-pointer transition-all"
+                />
+              </div>
+              <div className="ml-3">
+                <label
+                  htmlFor="terms"
+                  className="text-sm text-[#3B3B1A]/90 cursor-pointer"
+                >
+                  I agree to the{" "}
+                  <Link
+                    href="/terms"
+                    className="text-[#3B3B1A] hover:text-[#3B3B1A] underline font-medium transition-colors"
+                    target="_blank"
+                  >
+                    Terms and Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy"
+                    className="text-[#3B3B1A] hover:text-[#3B3B1A] underline font-medium transition-colors"
+                    target="_blank"
+                  >
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+            </div>
+            {errors.terms && (
+              <p className="text-sm text-red-400 ml-8">{errors.terms}</p>
+            )}
+          </div>
+
           <button
             type="submit"
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-[#9FAAB5] hover:to-[#8A95A2] focus:outline-none focus:ring-4 focus:ring-[#B5BFC8]/30 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
-            style={{boxShadow: '0 10px 25px -3px rgba(181, 191, 200, 0.5), 0 4px 6px -2px rgba(181, 191, 200, 0.3)'}}
+            disabled={isLoading || !acceptedTerms}
+            className="w-full bg-[#796944] text-[#3B3B1A] py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#6E603E] focus:outline-none focus:ring-2 focus:ring-[#8A784E] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
+            style={{
+              boxShadow:
+                "0 10px 25px -3px rgba(121, 105, 68, 0.4), 0 4px 6px -2px rgba(121, 105, 68, 0.3)",
+            }}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#3B3B1A]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -560,15 +747,21 @@ export default function SignUp() {
               </div>
             )}
           </button>
+
+          {/* Consent Text Below Button */}
+          <p className="text-xs text-[#3B3B1A]/60 text-center mt-4">
+            By signing up, you agree to our Terms of Service and Privacy Policy.
+            We'll use your information to provide and improve our services.
+          </p>
         </form>
 
         <div className="mt-8 text-center">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-[#3B3B1A]/25"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">
+              <span className="px-4 bg-white text-[#3B3B1A]/80">
                 Already have an account?
               </span>
             </div>
@@ -576,7 +769,7 @@ export default function SignUp() {
           <div className="mt-4">
             <Link
               href="/login"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#B5BFC8] text-[#B5BFC8] font-semibold rounded-xl hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+              className="inline-flex items-center px-6 py-3 border-2 border-[#D174D2] text-[#3B3B1A] font-semibold rounded-xl hover:bg-[#D174D2] hover:border-[#8A784E] transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
             >
               <svg
                 className="w-4 h-4 mr-2"

@@ -41,7 +41,10 @@ const UserSchema = new mongoose.Schema({
     },
     default: DEFAULT_CURRENCY
   },
-
+  profileImage: {
+    type: String,
+    default: null
+  },
   isActive: {
     type: Boolean,
     default: true

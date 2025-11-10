@@ -61,7 +61,7 @@ export default function Home() {
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Take Control of Your
-              <span className="block bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-[#78B9B5] to-[#0F828C] bg-clip-text text-transparent">
                 Financial Future
               </span>
             </h1>
@@ -72,13 +72,13 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/signup"
-                className="bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-[#9FAAB5] hover:to-[#8A95A2] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-gradient-to-r from-[#78B9B5] to-[#0F828C] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-[#0F828C] hover:to-[#065084] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Start Free Today
               </Link>
               <Link
                 href="/login"
-                className="border-2 border-[#B5BFC8] text-[#B5BFC8] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#B5BFC8] hover:text-white transition-all duration-200"
+                className="border-2 border-[#78B9B5] text-[#78B9B5] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#78B9B5] hover:text-white transition-all duration-200"
               >
                 Sign In
               </Link>
@@ -102,7 +102,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#78B9B5] to-[#0F828C] rounded-lg flex items-center justify-center mb-6">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -127,7 +127,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#78B9B5] to-[#0F828C] rounded-lg flex items-center justify-center mb-6">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -152,7 +152,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-lg flex items-center justify-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#78B9B5] to-[#0F828C] rounded-lg flex items-center justify-center mb-6">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -245,7 +245,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="bg-gradient-to-br from-[#F2E6D8] to-[#E8C5B5] rounded-2xl p-8 text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-[#78B9B5] to-[#0F828C] rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
                   className="w-12 h-12 text-white"
                   fill="none"
@@ -272,7 +272,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5]">
+      <section className="py-20 bg-gradient-to-r from-[#78B9B5] to-[#0F828C]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to take control of your finances?
@@ -283,7 +283,7 @@ export default function Home() {
           </p>
           <Link
             href="/signup"
-            className="bg-white text-[#B5BFC8] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block"
+            className="bg-white text-[#78B9B5] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block"
           >
             Get Started for Free
           </Link>
@@ -294,3 +294,4 @@ export default function Home() {
     </div>
   );
 }
+
