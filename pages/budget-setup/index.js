@@ -186,39 +186,39 @@ export default function BudgetSetup() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#F2E6D8] via-[#F0D3C7] to-[#E8C5B5] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#B5BFC8]"></div>
+      <div className="min-h-screen bg-[#E7EFC7] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8A784E]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#E7EFC7] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#B5BFC8] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#F0D3C7] rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#F2E6D8] rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#AEC8A4] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#AEC8A4] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#AEC8A4] rounded-full mix-blend-multiply filter blur-2xl opacity-10 animate-pulse delay-500"></div>
       </div>
 
       <div
-        className="max-w-lg w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-white/20 p-8 relative z-10 transition-all duration-300"
+        className="max-w-lg w-full bg-[#AEC8A4] backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transition-all duration-300"
         style={{
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 25px 50px -12px rgba(59, 59, 26, 0.15), 0 0 0 1px rgba(59, 59, 26, 0.2)",
         }}
       >
         {showSuccess && (
-          <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 shadow-lg backdrop-blur-sm transform animate-bounce">
+          <div className="mb-6 bg-gradient-to-r from-[#AEC8A4]/20 to-[#AEC8A4]/30 border border-[#AEC8A4] rounded-2xl p-6 shadow-lg backdrop-blur-sm transform animate-bounce">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-r from-[#8A784E] to-[#796944] rounded-full flex items-center justify-center shadow-lg">
                   <svg className="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-semibold text-green-800">{successMessage}</p>
+                <p className="text-sm font-semibold text-[#3B3B1A]">{successMessage}</p>
               </div>
             </div>
           </div>
@@ -227,16 +227,16 @@ export default function BudgetSetup() {
         <div className="flex justify-between items-center mb-8">
           <a
             href={router.query.edit ? "/dashboard" : "/"}
-            className="inline-flex items-center text-[#B5BFC8] hover:text-[#9FAAB5] font-semibold transition-colors duration-200"
+            className="inline-flex items-center text-[#3B3B1A] hover:text-[#8A784E] font-semibold transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             {router.query.edit ? 'Back to Dashboard' : 'Back to Home'}
           </a>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-[#3B3B1A]/70">
             Logged in as <span className="font-semibold text-[#B5BFC8]">{user?.firstName}</span>
-            <span className="ml-2 px-2 py-1 bg-gray-100 rounded text-xs">
+            <span className="ml-2 px-2 py-1 bg-[#AEC8A4]/30 rounded text-xs">
               {getCurrencySymbol(user?.currency)} {user?.currency}
             </span>
           </div>
@@ -244,26 +244,26 @@ export default function BudgetSetup() {
 
         <div className="text-center mb-8">
           <div
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#B5BFC8] to-[#9FAAB5] rounded-full mb-4 shadow-lg drop-shadow-lg"
+            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#8A784E] to-[#796944] rounded-full mb-4 shadow-lg drop-shadow-lg"
             style={{
-              boxShadow: "0 10px 25px -3px rgba(181, 191, 200, 0.4), 0 4px 6px -2px rgba(181, 191, 200, 0.2)",
+              boxShadow: "0 10px 25px -3px rgba(121, 105, 68, 0.3), 0 4px 6px -2px rgba(121, 105, 68, 0.2)",
             }}
           >
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold text-[#3B3B1A] mb-2">
             {router.query.edit ? 'Edit Budget' : 'Budget Setup'}
           </h1>
-          <p className="text-gray-600 text-sm mb-2">
+          <p className="text-[#3B3B1A] text-sm mb-2">
             {router.query.edit 
               ? 'Update your monthly budget settings' 
               : 'Set up your monthly budget to track your income, expenses, and savings goals'
             }
           </p>
           {user?.currency && (
-            <p className="text-xs text-gray-500 mb-6">
+            <p className="text-xs text-[#3B3B1A]/70 mb-6">
               💰 Using your account currency: <span className="font-semibold">{getCurrencySymbol(user.currency)} {user.currency}</span>
             </p>
           )}
@@ -271,11 +271,11 @@ export default function BudgetSetup() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="monthlyIncome" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="monthlyIncome" className="block text-sm font-semibold text-[#3B3B1A] mb-2">
               Monthly Income
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">
+              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#3B3B1A]/70 font-semibold">
                 {getCurrencySymbol(formData.currency)}
               </span>
               <input
@@ -286,8 +286,8 @@ export default function BudgetSetup() {
                 onChange={handleChange}
                 step="0.01"
                 min="0"
-                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
-                  errors.monthlyIncome ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-[#B5BFC8]"
+                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                  errors.monthlyIncome ? "border-red-400 bg-red-50" : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="5000.00"
               />
@@ -298,7 +298,7 @@ export default function BudgetSetup() {
           </div>
 
           <div>
-            <label htmlFor="startDate" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="startDate" className="block text-sm font-semibold text-[#3B3B1A] mb-2">
               Budget Start Date
             </label>
             <input
@@ -307,8 +307,8 @@ export default function BudgetSetup() {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
-                errors.startDate ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-[#B5BFC8]"
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                errors.startDate ? "border-red-400 bg-red-50" : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
               }`}
             />
             {errors.startDate && (
@@ -317,11 +317,11 @@ export default function BudgetSetup() {
           </div>
 
           <div>
-            <label htmlFor="spendingLimit" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="spendingLimit" className="block text-sm font-semibold text-[#3B3B1A] mb-2">
               Spending Limit
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">
+              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#3B3B1A]/70 font-semibold">
                 {getCurrencySymbol(formData.currency)}
               </span>
               <input
@@ -332,8 +332,8 @@ export default function BudgetSetup() {
                 onChange={handleChange}
                 step="0.01"
                 min="0"
-                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
-                  errors.spendingLimit ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-[#B5BFC8]"
+                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                  errors.spendingLimit ? "border-red-400 bg-red-50" : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="3000.00"
               />
@@ -344,11 +344,11 @@ export default function BudgetSetup() {
           </div>
 
           <div>
-            <label htmlFor="savingGoal" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="savingGoal" className="block text-sm font-semibold text-[#3B3B1A] mb-2">
               Saving Goal
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">
+              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#3B3B1A]/70 font-semibold">
                 {getCurrencySymbol(formData.currency)}
               </span>
               <input
@@ -359,8 +359,8 @@ export default function BudgetSetup() {
                 onChange={handleChange}
                 step="0.01"
                 min="0"
-                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg ${
-                  errors.savingGoal ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-[#B5BFC8]"
+                className={`w-full pl-8 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                  errors.savingGoal ? "border-red-400 bg-red-50" : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
                 }`}
                 placeholder="1000.00"
               />
@@ -371,7 +371,7 @@ export default function BudgetSetup() {
           </div>
 
           <div>
-            <label htmlFor="currency" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="currency" className="block text-sm font-semibold text-[#3B3B1A] mb-2">
               Currency
             </label>
             <select
@@ -379,7 +379,7 @@ export default function BudgetSetup() {
               name="currency"
               value={formData.currency}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-gray-50/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg border-gray-200 hover:border-[#B5BFC8] cursor-pointer"
+              className="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg border-[#3B3B1A]/25 hover:border-[#8A784E] cursor-pointer"
             >
               {CURRENCY_OPTIONS.map((currency) => (
                 <option key={currency.code} value={currency.code}>
@@ -387,7 +387,7 @@ export default function BudgetSetup() {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-[#3B3B1A]/70">
               This is the currency you selected when creating your account. You can change it if needed.
             </p>
           </div>
@@ -406,9 +406,9 @@ export default function BudgetSetup() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-[#9FAAB5] hover:to-[#8A95A2] focus:outline-none focus:ring-4 focus:ring-[#B5BFC8]/30 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
+            className="w-full bg-[#796944] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#6E603E] focus:outline-none focus:ring-2 focus:ring-[#8A784E] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
             style={{
-              boxShadow: "0 10px 25px -3px rgba(181, 191, 200, 0.5), 0 4px 6px -2px rgba(181, 191, 200, 0.3)",
+              boxShadow: "0 10px 25px -3px rgba(121, 105, 68, 0.4), 0 4px 6px -2px rgba(121, 105, 68, 0.3)",
             }}
           >
             {isLoading ? (

@@ -119,9 +119,9 @@ export default function Login() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
       </div>
       
-      <div className="max-w-md w-full bg-white backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300" style={{boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'}}>
+      <div className="max-w-md w-full bg-white backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300" style={{boxShadow: '0 25px 50px -12px rgba(59, 59, 26, 0.15), 0 0 0 1px rgba(59, 59, 26, 0.2)'}}>
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#8A784E] to-[#796944] rounded-full mb-4 shadow-lg drop-shadow-lg" style={{boxShadow: '0 10px 25px -3px rgba(181, 191, 200, 0.4), 0 4px 6px -2px rgba(181, 191, 200, 0.2)'}}>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#8A784E] to-[#796944] rounded-full mb-4 shadow-lg drop-shadow-lg" style={{boxShadow: '0 10px 25px -3px rgba(121, 105, 68, 0.3), 0 4px 6px -2px rgba(121, 105, 68, 0.2)'}}>
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
@@ -144,8 +144,8 @@ export default function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
-                errors.email ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#B5BFC8]'
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                errors.email ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#8A784E]'
               }`}
               placeholder="Enter your email address"
             />
@@ -168,8 +168,8 @@ export default function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B5BFC8] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
-                  errors.password ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#B5BFC8]'
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
+                  errors.password ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#8A784E]'
                 }`}
                 placeholder="Enter your password"
               />
@@ -232,8 +232,8 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#B5BFC8] to-[#9FAAB5] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-[#9FAAB5] hover:to-[#8A95A2] focus:outline-none focus:ring-4 focus:ring-[#B5BFC8]/30 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
-            style={{boxShadow: '0 10px 25px -3px rgba(181, 191, 200, 0.5), 0 4px 6px -2px rgba(181, 191, 200, 0.3)'}}
+            className="w-full bg-[#796944] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#6E603E] focus:outline-none focus:ring-2 focus:ring-[#8A784E] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
+            style={{boxShadow: '0 10px 25px -3px rgba(121, 105, 68, 0.4), 0 4px 6px -2px rgba(121, 105, 68, 0.3)'}}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
