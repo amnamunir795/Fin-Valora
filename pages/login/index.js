@@ -111,29 +111,29 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EFC7] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#C4C4DB] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
       </div>
       
-      <div className="max-w-md w-full bg-white backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300" style={{boxShadow: '0 25px 50px -12px rgba(59, 59, 26, 0.15), 0 0 0 1px rgba(59, 59, 26, 0.2)'}}>
+      <div className="max-w-md w-full bg-[#8ABFB2] backdrop-blur-sm rounded-2xl shadow-2xl drop-shadow-2xl border border-[#01332B]/25 p-8 relative z-10 transform hover:scale-105 transition-all duration-300" style={{boxShadow: '0 25px 50px -12px rgba(37, 27, 40, 0.15), 0 0 0 1px rgba(1, 51, 43, 0.25)'}}>
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#8A784E] to-[#796944] rounded-full mb-4 shadow-lg drop-shadow-lg" style={{boxShadow: '0 10px 25px -3px rgba(121, 105, 68, 0.3), 0 4px 6px -2px rgba(121, 105, 68, 0.2)'}}>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#01332B] to-[#0E463B] rounded-full mb-4 shadow-lg drop-shadow-lg" style={{boxShadow: '0 10px 25px -3px rgba(1, 51, 43, 0.3), 0 4px 6px -2px rgba(1, 51, 43, 0.2)'}}>
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-[#3B3B1A] mb-2">Welcome Back</h1>
-          <p className="text-[#3B3B1A] text-sm">Sign in to continue your financial journey</p>
+          <h1 className="text-3xl font-bold text-[#251B28] mb-2">Welcome Back</h1>
+          <p className="text-[#251B28] text-sm">Sign in to continue your financial journey</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center">
-              <svg className="w-4 h-4 mr-2 text-[#3B3B1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <label htmlFor="email" className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-[#251B28]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
               Email Address
@@ -144,8 +144,8 @@ export default function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
-                errors.email ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#8A784E]'
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] shadow-sm hover:shadow-md focus:shadow-lg ${
+                errors.email ? 'border-red-400 bg-red-50' : 'border-[#01332B]/25 hover:border-[#8ABFB2]'
               }`}
               placeholder="Enter your email address"
             />
@@ -155,8 +155,8 @@ export default function Login() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center">
-              <svg className="w-4 h-4 mr-2 text-[#3B3B1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <label htmlFor="password" className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center">
+              <svg className="w-4 h-4 mr-2 text-[#251B28]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               Password
@@ -168,15 +168,15 @@ export default function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] shadow-sm hover:shadow-md focus:shadow-lg ${
-                  errors.password ? 'border-red-400 bg-red-50' : 'border-[#3B3B1A]/25 hover:border-[#8A784E]'
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] shadow-sm hover:shadow-md focus:shadow-lg ${
+                  errors.password ? 'border-red-400 bg-red-50' : 'border-[#01332B]/25 hover:border-[#8ABFB2]'
                 }`}
                 placeholder="Enter your password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#3B3B1A]/60 hover:text-[#3B3B1A] transition-colors duration-200"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#251B28]/60 hover:text-[#251B28] transition-colors duration-200"
               >
                 {showPassword ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -201,15 +201,15 @@ export default function Login() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-5 w-5 text-[#3B3B1A] focus:ring-[#B5BFC8] border-[#3B3B1A]/25 rounded-md transition-colors duration-200"
+                className="h-5 w-5 text-[#251B28] focus:ring-[#B5BFC8] border-[#01332B]/25 rounded-md transition-colors duration-200"
               />
-              <label htmlFor="remember-me" className="ml-3 block text-sm font-medium text-[#3B3B1A]">
+              <label htmlFor="remember-me" className="ml-3 block text-sm font-medium text-[#251B28]">
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="text-[#3B3B1A] hover:text-[#9FAAB5] font-semibold transition-colors duration-200 flex items-center">
+              <a href="#" className="text-[#251B28] hover:text-[#9FAAB5] font-semibold transition-colors duration-200 flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -232,8 +232,8 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#796944] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#6E603E] focus:outline-none focus:ring-2 focus:ring-[#8A784E] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
-            style={{boxShadow: '0 10px 25px -3px rgba(121, 105, 68, 0.4), 0 4px 6px -2px rgba(121, 105, 68, 0.3)'}}
+            className="w-full bg-[#01332B] text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#251B28] focus:outline-none focus:ring-2 focus:ring-[#01332B] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
+            style={{boxShadow: '0 10px 25px -3px rgba(1, 51, 43, 0.4), 0 4px 6px -2px rgba(1, 51, 43, 0.3)'}}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -257,16 +257,16 @@ export default function Login() {
         <div className="mt-8 text-center">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#3B3B1A]/25"></div>
+              <div className="w-full border-t border-[#01332B]/25"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#E7EFC7] text-[#3B3B1A]/80">Don't have an account?</span>
+              <span className="px-4 bg-[#C4C4DB] text-[#251B28]/80">Don't have an account?</span>
             </div>
           </div>
           <div className="mt-4">
             <Link
               href="/signup"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#B5BFC8] text-[#3B3B1A] font-semibold rounded-xl hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+              className="inline-flex items-center px-6 py-3 border-2 border-[#B5BFC8] text-[#251B28] font-semibold rounded-xl hover:bg-[#B5BFC8] hover:text-white transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />

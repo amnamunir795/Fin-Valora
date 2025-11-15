@@ -180,19 +180,19 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EFC7] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#C4C4DB] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#E7EFC7] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#C4C4DB] rounded-full mix-blend-multiply filter blur-2xl opacity-5 animate-pulse delay-500"></div>
       </div>
 
       <div
-        className="max-w-md w-full bg-white backdrop-blur-md rounded-2xl shadow-2xl drop-shadow-2xl border border-[#3B3B1A]/20 p-8 relative z-10 transform hover:scale-105 transition-all duration-300"
+        className="max-w-md w-full bg-[#8ABFB2] backdrop-blur-md rounded-2xl shadow-2xl drop-shadow-2xl border border-[#01332B]/25 p-8 relative z-10 transform hover:scale-105 transition-all duration-300"
         style={{
           boxShadow:
-            "0 25px 50px -12px rgba(59, 59, 26, 0.15), 0 0 0 1px rgba(59, 59, 26, 0.2)",
+            "0 25px 50px -12px rgba(37, 27, 40, 0.15), 0 0 0 1px rgba(1, 51, 43, 0.25)",
         }}
       >
         {/* Create Account Heading with Avatar */}
@@ -202,10 +202,10 @@ export default function SignUp() {
             <div className="relative inline-block">
               {/* Circular Avatar */}
               <div
-                className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-[#8A784E] to-[#796944] shadow-lg drop-shadow-lg flex items-center justify-center border-2 border-[#3B3B1A]/20"
+                className="w-32 h-32 rounded-full overflow-hidden bg-[#8ABFB2] shadow-lg drop-shadow-lg flex items-center justify-center border-2 border-[#01332B]/25"
                 style={{
                   boxShadow:
-                    "0 10px 25px -3px rgba(121, 105, 68, 0.3), 0 4px 6px -2px rgba(121, 105, 68, 0.2)",
+                    "0 10px 25px -3px rgba(138, 191, 178, 0.3), 0 4px 6px -2px rgba(138, 191, 178, 0.2)",
                 }}
               >
                 {imagePreview ? (
@@ -216,7 +216,7 @@ export default function SignUp() {
                   />
                 ) : (
                   <svg
-                    className="w-16 h-16 text-[#3B3B1A]"
+                    className="w-16 h-16 text-[#251B28]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -236,7 +236,7 @@ export default function SignUp() {
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="absolute bottom-0 right-0 w-10 h-10 bg-red-500 hover:bg-red-600 text-[#3B3B1A] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110"
+                  className="absolute bottom-0 right-0 w-10 h-10 bg-red-500 hover:bg-red-600 text-[#251B28] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110"
                   title="Remove image"
                 >
                   <svg
@@ -256,7 +256,7 @@ export default function SignUp() {
               ) : (
                 <label
                   htmlFor="avatarUpload"
-                  className="absolute bottom-0 right-0 w-10 h-10 bg-[#796944] hover:bg-[#6E603E] text-[#3B3B1A] rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all duration-200 transform hover:scale-110"
+                  className="absolute bottom-0 right-0 w-10 h-10 bg-[#01332B] hover:bg-[#251B28] text-[#251B28] rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all duration-200 transform hover:scale-110"
                   title="Upload image"
                 >
                   <svg
@@ -284,7 +284,7 @@ export default function SignUp() {
             </div>
 
             {/* Upload Instructions */}
-            <p className="text-xs text-[#3B3B1A]/70 mt-3">
+            <p className="text-xs text-[#251B28]/70 mt-3">
               {imagePreview
                 ? "Profile picture selected"
                 : "Click + to add profile picture (optional)"}
@@ -295,8 +295,8 @@ export default function SignUp() {
             )}
           </div>
 
-          <h1 className="text-3xl font-bold text-[#3B3B1A] mb-2">Create Account</h1>
-          <p className="text-[#3B3B1A]/80 text-sm">
+          <h1 className="text-3xl font-bold text-[#251B28] mb-2">Create Account</h1>
+          <p className="text-[#251B28]/80 text-sm">
             Join us today and get started on your financial journey
           </p>
         </div>
@@ -306,10 +306,10 @@ export default function SignUp() {
             <div>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+                className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
               >
                 <svg
-                  className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                  className="w-4 h-4 mr-2 text-[#251B28]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -329,10 +329,10 @@ export default function SignUp() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] placeholder-[#251B28]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.firstName
                     ? "border-red-400 bg-red-50"
-                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                    : "border-[#01332B]/25 hover:border-[#8ABFB2]"
                 }`}
                 placeholder="Enter your first name"
               />
@@ -344,10 +344,10 @@ export default function SignUp() {
             <div>
               <label
                 htmlFor="lastName"
-                className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+                className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
               >
                 <svg
-                  className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                  className="w-4 h-4 mr-2 text-[#251B28]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -367,10 +367,10 @@ export default function SignUp() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] placeholder-[#251B28]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.lastName
                     ? "border-red-400 bg-red-50"
-                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                    : "border-[#01332B]/25 hover:border-[#8ABFB2]"
                 }`}
                 placeholder="Enter your last name"
               />
@@ -383,10 +383,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="currency"
-              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                className="w-4 h-4 mr-2 text-[#251B28]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -405,10 +405,10 @@ export default function SignUp() {
               name="currency"
               value={formData.currency}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] cursor-pointer shadow-sm hover:shadow-md focus:shadow-lg ${
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] cursor-pointer shadow-sm hover:shadow-md focus:shadow-lg ${
                 errors.currency
                   ? "border-red-400 bg-red-50"
-                  : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                  : "border-[#01332B]/25 hover:border-[#8ABFB2]"
               }`}
             >
               <option value="">Select Currency</option>
@@ -426,10 +426,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                className="w-4 h-4 mr-2 text-[#251B28]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -449,10 +449,10 @@ export default function SignUp() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] placeholder-[#251B28]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                 errors.email
                   ? "border-red-400 bg-red-50"
-                  : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                  : "border-[#01332B]/25 hover:border-[#8ABFB2]"
               }`}
               placeholder="Enter your email address"
             />
@@ -464,10 +464,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                className="w-4 h-4 mr-2 text-[#251B28]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -488,17 +488,17 @@ export default function SignUp() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] placeholder-[#251B28]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.password
                     ? "border-red-400 bg-red-50"
-                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                    : "border-[#01332B]/25 hover:border-[#8ABFB2]"
                 }`}
                 placeholder="Create a strong password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#3B3B1A]/60 hover:text-[#3B3B1A] transition-colors duration-200"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#251B28]/60 hover:text-[#251B28] transition-colors duration-200"
               >
                 {showPassword ? (
                   <svg
@@ -545,10 +545,10 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-semibold text-[#3B3B1A] mb-2 flex items-center"
+              className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center"
             >
               <svg
-                className="w-4 h-4 mr-2 text-[#3B3B1A]"
+                className="w-4 h-4 mr-2 text-[#251B28]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -569,17 +569,17 @@ export default function SignUp() {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8A784E] focus:border-transparent transition-all duration-200 bg-[#E7EFC7] hover:bg-[#E7EFC7] text-[#3B3B1A] placeholder-[#3B3B1A]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#01332B] focus:border-transparent transition-all duration-200 bg-[#C4C4DB] hover:bg-[#C4C4DB] text-[#251B28] placeholder-[#251B28]/50 shadow-sm hover:shadow-md focus:shadow-lg ${
                   errors.confirmPassword
                     ? "border-red-400 bg-red-50"
-                    : "border-[#3B3B1A]/25 hover:border-[#8A784E]"
+                    : "border-[#01332B]/25 hover:border-[#8ABFB2]"
                 }`}
                 placeholder="Confirm your password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#3B3B1A]/60 hover:text-[#3B3B1A] transition-colors duration-200"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#251B28]/60 hover:text-[#251B28] transition-colors duration-200"
               >
                 {showConfirmPassword ? (
                   <svg
@@ -663,18 +663,18 @@ export default function SignUp() {
                       setErrors((prev) => ({ ...prev, terms: "" }));
                     }
                   }}
-                  className="w-5 h-5 border-2 border-[#3B3B1A]/25 rounded bg-[#E7EFC7] text-[#3B3B1A] focus:ring-2 focus:ring-[#8A784E] focus:ring-offset-0 cursor-pointer transition-all"
+                  className="w-5 h-5 border-2 border-[#01332B]/25 rounded bg-[#C4C4DB] text-[#251B28] focus:ring-2 focus:ring-[#01332B] focus:ring-offset-0 cursor-pointer transition-all"
                 />
               </div>
               <div className="ml-3">
                 <label
                   htmlFor="terms"
-                  className="text-sm text-[#3B3B1A]/90 cursor-pointer"
+                  className="text-sm text-[#251B28]/90 cursor-pointer"
                 >
                   I agree to the{" "}
                   <Link
                     href="/terms"
-                    className="text-[#3B3B1A] hover:text-[#3B3B1A] underline font-medium transition-colors"
+                    className="text-[#251B28] hover:text-[#251B28] underline font-medium transition-colors"
                     target="_blank"
                   >
                     Terms and Conditions
@@ -682,7 +682,7 @@ export default function SignUp() {
                   and{" "}
                   <Link
                     href="/privacy"
-                    className="text-[#3B3B1A] hover:text-[#3B3B1A] underline font-medium transition-colors"
+                    className="text-[#251B28] hover:text-[#251B28] underline font-medium transition-colors"
                     target="_blank"
                   >
                     Privacy Policy
@@ -698,7 +698,7 @@ export default function SignUp() {
           <button
             type="submit"
             disabled={isLoading || !acceptedTerms}
-            className="w-full bg-[#796944] text-[#3B3B1A] py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#6E603E] focus:outline-none focus:ring-2 focus:ring-[#8A784E] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
+            className="w-full bg-[#251B28] text-[#FFFFFF] py-4 px-6 rounded-xl font-semibold text-lg hover:bg-[#8ABFB2] focus:outline-none focus:ring-2 focus:ring-[#01332B] disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-2xl drop-shadow-lg"
             style={{
               boxShadow:
                 "0 10px 25px -3px rgba(121, 105, 68, 0.4), 0 4px 6px -2px rgba(121, 105, 68, 0.3)",
@@ -707,7 +707,7 @@ export default function SignUp() {
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#3B3B1A]"
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#251B28]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -749,7 +749,7 @@ export default function SignUp() {
           </button>
 
           {/* Consent Text Below Button */}
-          <p className="text-xs text-[#3B3B1A]/60 text-center mt-4">
+          <p className="text-xs text-[#251B28]/60 text-center mt-4">
             By signing up, you agree to our Terms of Service and Privacy Policy.
             We'll use your information to provide and improve our services.
           </p>
@@ -758,10 +758,10 @@ export default function SignUp() {
         <div className="mt-8 text-center">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#3B3B1A]/25"></div>
+              <div className="w-full border-t border-[#01332B]/25"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-[#3B3B1A]/80">
+              <span className="px-4 bg-[#8ABFB2] text-[#251B28]/80">
                 Already have an account?
               </span>
             </div>
@@ -769,7 +769,7 @@ export default function SignUp() {
           <div className="mt-4">
             <Link
               href="/login"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#D174D2] text-[#3B3B1A] font-semibold rounded-xl hover:bg-[#D174D2] hover:border-[#8A784E] transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+              className="inline-flex items-center px-6 py-3 border-2 border-[#251B28] text-[#251B28] font-semibold rounded-xl hover:bg-[#01332B] hover:text-white hover:border-[#01332B] transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
             >
               <svg
                 className="w-4 h-4 mr-2"
