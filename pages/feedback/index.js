@@ -22,7 +22,9 @@ export default function Feedback() {
 
   /* Confetti burst */
   const confettiBurst = () => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (reduce) return;
     const confetti = document.getElementById("confetti");
     for (let i = 0; i < 80; i++) {
@@ -76,7 +78,10 @@ export default function Feedback() {
       </div>
 
       {/* Confetti */}
-      <div id="confetti" className="confetti absolute inset-0 z-10 pointer-events-none"></div>
+      <div
+        id="confetti"
+        className="confetti absolute inset-0 z-10 pointer-events-none"
+      ></div>
 
       {/* Success Modal */}
       {showSuccess && (
@@ -93,8 +98,12 @@ export default function Feedback() {
                 />
               </svg>
             </div>
-            <h2 className="text-[#577E89] text-xl mb-1">Thanks for your feedback!</h2>
-            <p className="text-[#5a7076] text-sm">We’ll use this to improve things.</p>
+            <h2 className="text-[#577E89] text-xl mb-1">
+              Thanks for your feedback!
+            </h2>
+            <p className="text-[#5a7076] text-sm">
+              We’ll use this to improve things.
+            </p>
           </div>
         </div>
       )}

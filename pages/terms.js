@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function Terms() {
   const [accepted, setAccepted] = useState(false);
@@ -13,7 +14,12 @@ export default function Terms() {
   };
 
   return (
-    <div className="min-h-screen bg-[#C4C4DB] py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      <Head>
+        <title>Terms and Conditions - Fin-Valora</title>
+        <meta name="description" content="Terms and Conditions for Fin-Valora financial management platform" />
+      </Head>
+      <div className="min-h-screen bg-[#C4C4DB] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -220,5 +226,6 @@ export default function Terms() {
         </div>
       </div>
     </div>
+    </>
   );
 }

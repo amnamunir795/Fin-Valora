@@ -295,7 +295,9 @@ export default function SignUp() {
             )}
           </div>
 
-          <h1 className="text-3xl font-bold text-[#251B28] mb-2">Create Account</h1>
+          <h1 className="text-3xl font-bold text-[#251B28] mb-2">
+            Create Account
+          </h1>
           <p className="text-[#251B28]/80 text-sm">
             Join us today and get started on your financial journey
           </p>
