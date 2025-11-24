@@ -88,25 +88,49 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* Right Animated Image */}
             <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl group">
                 <img
                   src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop"
-                  alt="Financial Planning"
-                  className="w-full h-auto object-cover"
+                  alt="Financial management and budgeting"
+                  className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                {/* Floating Cards */}
-                <div className="absolute top-8 left-8 bg-white rounded-lg shadow-lg p-4 animate-float">
+                {/* Animated gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#8ABFB2]/20 via-transparent to-[#01332B]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Floating animated particles */}
+                <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-[#8ABFB2] rounded-full animate-ping opacity-75"></div>
+                <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-[#FF6B35] rounded-full animate-ping opacity-75" style={{animationDelay: '0.5s'}}></div>
+                <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-[#8ABFB2] rounded-full animate-ping opacity-75" style={{animationDelay: '1s'}}></div>
+                
+                {/* Floating Cards with enhanced animations */}
+                <div className="absolute top-8 left-8 bg-white rounded-lg shadow-lg p-4 animate-float transform hover:scale-105 transition-transform cursor-pointer">
                   <div className="text-sm text-[#251B28]/60 mb-1">Monthly Savings</div>
-                  <div className="text-2xl font-bold text-[#01332B]">$12,450</div>
+                  <div className="text-2xl font-bold text-[#01332B] animate-pulse">$12,450</div>
+                  <div className="mt-2 flex items-center text-green-600 text-xs">
+                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="animate-pulse">+12.5%</span>
+                  </div>
                 </div>
                 
-                <div className="absolute bottom-8 right-8 bg-white rounded-lg shadow-lg p-4 animate-float" style={{animationDelay: '1s'}}>
+                <div className="absolute bottom-8 right-8 bg-white rounded-lg shadow-lg p-4 animate-float transform hover:scale-105 transition-transform cursor-pointer" style={{animationDelay: '1s'}}>
                   <div className="text-sm text-[#251B28]/60 mb-1">Investment Growth</div>
-                  <div className="text-2xl font-bold text-[#01332B]">24.5%</div>
+                  <div className="text-2xl font-bold text-[#01332B] animate-pulse" style={{animationDelay: '0.5s'}}>24.5%</div>
+                  <div className="mt-2 flex items-center text-green-600 text-xs">
+                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="animate-pulse" style={{animationDelay: '0.3s'}}>+8.2%</span>
+                  </div>
                 </div>
+                
+                {/* Animated dollar signs */}
+                <div className="absolute top-16 right-16 text-4xl animate-bounce opacity-60" style={{animationDelay: '0.2s'}}>💰</div>
+                <div className="absolute bottom-24 left-16 text-3xl animate-bounce opacity-60" style={{animationDelay: '0.8s'}}>📈</div>
               </div>
             </div>
           </div>
@@ -118,12 +142,17 @@ export default function Home() {
       {/* Simple Steps to Financial Freedom */}
       <section id="steps" className="py-20 bg-[#C4C4DB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#251B28] text-center mb-16">
-            Simple Steps to Financial Freedom
+          <h2 className="text-3xl md:text-4xl font-bold text-[#251B28] text-center mb-6">
+            How the Process Flows
           </h2>
+          <p className="text-lg text-[#251B28]/70 text-center max-w-4xl mx-auto mb-16">
+            Our platform makes it very easy for you to keep track of your money. You can quickly record your expenses, set your budget, and clearly see where your money is going. The system can also read information from your receipts automatically using OCR, and our smart AI chatbot is always there to guide you with helpful financial advice.
+          </p>
           
-          {/* Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 relative">
+          {/* Steps Container Box */}
+          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-[#8ABFB2]/20">
+            {/* Steps Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 relative">
             {/* Step 1: Signup/Login */}
             <div className="flex flex-col items-center text-center relative">
               <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6 hover:shadow-xl transition-shadow">
@@ -236,6 +265,7 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
