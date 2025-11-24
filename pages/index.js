@@ -92,8 +92,8 @@ export default function Home() {
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl group">
                 <img
-                  src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop"
-                  alt="Financial management and budgeting"
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
+                  alt="Financial analytics and data visualization"
                   className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
                 
