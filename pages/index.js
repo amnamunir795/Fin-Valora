@@ -390,15 +390,15 @@ export default function Home() {
           </div>
 
           {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 px-4">
             {['All', 'Getting Started', 'Features', 'Technical'].map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base transition-all duration-200 whitespace-nowrap ${
                   activeCategory === category
-                    ? 'bg-[#01332B] text-white'
-                    : 'bg-white text-[#251B28] hover:bg-[#01332B] hover:text-white'
+                    ? 'bg-[#01332B] text-white shadow-lg'
+                    : 'bg-white text-[#251B28] hover:bg-[#01332B] hover:text-white shadow-md'
                 }`}
               >
                 {category}
