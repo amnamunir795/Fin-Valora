@@ -8,52 +8,63 @@ export default function LandingHeader() {
           {/* Logo */}
           <Link href="/" className="flex items-center group cursor-pointer relative">
             <div className="relative w-14 h-14 mr-3">
-              {/* Outer rotating ring */}
-              <div className="absolute inset-0 rounded-full border-2 border-[#8ABFB2]/30 group-hover:border-[#8ABFB2] group-hover:rotate-180 transition-all duration-700"></div>
-              
               {/* Animated glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500 animate-pulse-slow"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
               
-              {/* Main circular background with gradient */}
-              <div className="absolute inset-1 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-full shadow-xl group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300 overflow-hidden">
-                {/* Shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              {/* Main circular background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-full shadow-2xl group-hover:shadow-[0_20px_50px_rgba(138,191,178,0.5)] transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
+                {/* Animated shine overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </div>
               
-              {/* Logo icon with animations */}
-              <svg className="relative w-14 h-14 p-3" viewBox="0 0 32 32" fill="none">
-                {/* Rising bars with stagger animation */}
-                <g>
-                  <rect x="3" y="20" width="4" height="9" rx="2" fill="white" opacity="0.6" className="group-hover:opacity-100 group-hover:translate-y-[-3px] transition-all duration-300"/>
-                  <rect x="9" y="15" width="4" height="14" rx="2" fill="white" opacity="0.7" className="group-hover:opacity-100 group-hover:translate-y-[-3px] transition-all duration-300 delay-75"/>
-                  <rect x="15" y="10" width="4" height="19" rx="2" fill="white" opacity="0.8" className="group-hover:opacity-100 group-hover:translate-y-[-3px] transition-all duration-300 delay-150"/>
+              {/* Logo icon - Finance themed */}
+              <svg className="relative w-14 h-14 p-2.5" viewBox="0 0 48 48" fill="none">
+                {/* Coin stack */}
+                <g className="group-hover:translate-y-[-2px] transition-transform duration-300">
+                  {/* Bottom coin */}
+                  <ellipse cx="16" cy="38" rx="8" ry="3" fill="white" opacity="0.6"/>
+                  <ellipse cx="16" cy="35" rx="8" ry="3" fill="white" opacity="0.7"/>
+                  <ellipse cx="16" cy="32" rx="8" ry="3" fill="white" opacity="0.8"/>
+                  <ellipse cx="16" cy="29" rx="8" ry="3" fill="white"/>
+                  <text x="16" y="31" textAnchor="middle" fill="#01332B" fontSize="6" fontWeight="bold">$</text>
                 </g>
                 
-                {/* Dynamic upward arrow */}
-                <g className="group-hover:translate-x-[3px] group-hover:translate-y-[-3px] transition-transform duration-500">
-                  <path d="M21 20 L25 16 L29 18" stroke="#8ABFB2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300"/>
-                  <path d="M25 16 L25 26" stroke="#8ABFB2" strokeWidth="2.5" strokeLinecap="round" className="group-hover:stroke-white transition-colors duration-300"/>
-                  <path d="M21 16 L25 12 L29 16" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="white" className="group-hover:fill-[#8ABFB2] transition-all duration-300"/>
+                {/* Growth chart */}
+                <g className="group-hover:scale-105 transition-transform duration-300">
+                  {/* Chart bars */}
+                  <rect x="28" y="32" width="3" height="8" rx="1.5" fill="white" opacity="0.7" className="group-hover:opacity-100 transition-opacity duration-300"/>
+                  <rect x="33" y="28" width="3" height="12" rx="1.5" fill="white" opacity="0.8" className="group-hover:opacity-100 transition-opacity duration-300"/>
+                  <rect x="38" y="24" width="3" height="16" rx="1.5" fill="white" className="group-hover:opacity-100 transition-opacity duration-300"/>
                 </g>
                 
-                {/* Animated sparkles */}
-                <circle cx="5" cy="8" r="1.5" fill="#8ABFB2" className="animate-ping-slow opacity-75">
-                  <animate attributeName="r" values="1;2;1" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="28" cy="5" r="1.5" fill="white" className="animate-ping-slow opacity-75" style={{animationDelay: '0.7s'}}>
-                  <animate attributeName="r" values="1;2;1" dur="2s" repeatCount="indefinite" begin="0.7s"/>
-                </circle>
+                {/* Upward arrow */}
+                <g className="group-hover:translate-x-[2px] group-hover:translate-y-[-2px] transition-transform duration-300">
+                  <path d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12" stroke="#8ABFB2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300"/>
+                </g>
+                
+                {/* Currency symbols floating */}
+                <g className="animate-pulse" style={{animationDuration: '2s'}}>
+                  <text x="8" y="12" fill="#8ABFB2" fontSize="6" fontWeight="bold" opacity="0.8">$</text>
+                  <text x="38" y="14" fill="white" fontSize="5" fontWeight="bold" opacity="0.7">€</text>
+                  <text x="6" y="22" fill="white" fontSize="5" fontWeight="bold" opacity="0.6">£</text>
+                </g>
+                
+                {/* Sparkle effects */}
+                <circle cx="42" cy="10" r="1.5" fill="white" className="animate-ping" style={{animationDuration: '2s'}}/>
+                <circle cx="10" cy="38" r="1" fill="#8ABFB2" className="animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}/>
               </svg>
             </div>
             
             <div className="relative overflow-hidden">
-              <h1 className="text-2xl font-bold text-white tracking-tight group-hover:text-[#8ABFB2] transition-all duration-300 group-hover:tracking-wider relative">
-                FIN-VALORA
+              <h1 className="text-2xl font-bold text-white tracking-tight group-hover:text-[#8ABFB2] transition-all duration-300 relative">
+                <span className="inline-block group-hover:scale-105 transition-transform duration-300">FIN</span>
+                <span className="text-[#8ABFB2] mx-0.5">-</span>
+                <span className="inline-block group-hover:scale-105 transition-transform duration-300">VALORA</span>
                 {/* Shimmer effect */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
               </h1>
-              <div className="h-0.5 bg-gradient-to-r from-[#8ABFB2] via-white to-transparent w-0 group-hover:w-full transition-all duration-700 rounded-full"></div>
-              <p className="text-xs text-[#8ABFB2]/60 group-hover:text-[#8ABFB2] -mt-0.5 transition-all duration-300 group-hover:tracking-wider font-medium">
+              <div className="h-0.5 bg-gradient-to-r from-[#8ABFB2] via-white to-transparent w-0 group-hover:w-full transition-all duration-700 rounded-full mt-0.5"></div>
+              <p className="text-xs text-[#8ABFB2]/70 group-hover:text-[#8ABFB2] transition-all duration-300 font-medium mt-0.5 tracking-wide">
                 Smart Finance Solutions
               </p>
             </div>
