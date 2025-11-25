@@ -246,17 +246,16 @@ export default function SignUp() {
         }}
       >
         {/* Create Account Heading with Avatar */}
-        <div className="text-center mb-8 animate-fade-in-up">
+        <div className="text-center mb-6 animate-fade-in-up">
           {/* Avatar Upload Section */}
-          <div className="mb-6">
-            <div className="relative inline-block">
-              {/* Circular Avatar */}
+          <div className="mb-4">
+            <div className="relative inline-block group">
+              {/* Circular Avatar with gradient border */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] p-[3px] group-hover:p-[4px] transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white"></div>
+              </div>
               <div
-                className="w-32 h-32 rounded-full overflow-hidden bg-[#8ABFB2] shadow-lg drop-shadow-lg flex items-center justify-center border-2 border-[#01332B]/25"
-                style={{
-                  boxShadow:
-                    "0 10px 25px -3px rgba(138, 191, 178, 0.3), 0 4px 6px -2px rgba(138, 191, 178, 0.2)",
-                }}
+                className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-[#C4C4DB]/30 to-[#8ABFB2]/20 flex items-center justify-center transition-all duration-300 group-hover:scale-105"
               >
                 {imagePreview ? (
                   <img
@@ -266,7 +265,7 @@ export default function SignUp() {
                   />
                 ) : (
                   <svg
-                    className="w-16 h-16 text-[#251B28]"
+                    className="w-12 h-12 text-[#8ABFB2] group-hover:text-[#01332B] transition-colors duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -274,7 +273,7 @@ export default function SignUp() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeWidth={1.5}
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                     />
                   </svg>
@@ -286,11 +285,11 @@ export default function SignUp() {
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="absolute bottom-0 right-0 w-10 h-10 bg-red-500 hover:bg-red-600 text-[#251B28] rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110"
+                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:rotate-90 ring-2 ring-white"
                   title="Remove image"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -298,7 +297,7 @@ export default function SignUp() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeWidth={2.5}
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
@@ -306,11 +305,11 @@ export default function SignUp() {
               ) : (
                 <label
                   htmlFor="avatarUpload"
-                  className="absolute bottom-0 right-0 w-10 h-10 bg-[#01332B] hover:bg-[#251B28] text-[#251B28] rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all duration-200 transform hover:scale-110"
+                  className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] hover:from-[#01332B] hover:to-[#251B28] text-white rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-110 hover:rotate-90 ring-2 ring-white"
                   title="Upload image"
                 >
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -318,7 +317,7 @@ export default function SignUp() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeWidth={2.5}
                       d="M12 4v16m8-8H4"
                     />
                   </svg>
@@ -334,10 +333,10 @@ export default function SignUp() {
             </div>
 
             {/* Upload Instructions */}
-            <p className="text-xs text-[#251B28]/70 mt-3">
+            <p className="text-xs text-[#8ABFB2]/80 mt-2 font-medium">
               {imagePreview
-                ? "Profile picture selected"
-                : "Click + to add profile picture (optional)"}
+                ? "✓ Profile picture added"
+                : "Optional: Add profile picture"}
             </p>
 
             {errors.profileImage && (
@@ -345,12 +344,32 @@ export default function SignUp() {
             )}
           </div>
 
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#251B28] via-[#01332B] to-[#8ABFB2] bg-clip-text text-transparent mb-2">
-            Create Account
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#251B28] via-[#01332B] to-[#8ABFB2] bg-clip-text text-transparent mb-1">
+            Create Your Account
           </h1>
-          <p className="text-[#251B28]/70 text-sm">
-            Join us today and get started on your financial journey
+          <p className="text-[#251B28]/60 text-sm">
+            Start your financial journey in minutes
           </p>
+        </div>
+
+        {/* Progress indicator */}
+        <div className="mb-6 animate-fade-in-up" style={{animationDelay: '0.05s', opacity: 0, animationFillMode: 'forwards'}}>
+          <div className="flex items-center justify-center space-x-2">
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#8ABFB2] to-[#01332B] flex items-center justify-center text-white text-xs font-bold shadow-md">1</div>
+              <span className="ml-2 text-xs font-semibold text-[#01332B]">Account</span>
+            </div>
+            <div className="w-8 h-0.5 bg-[#C4C4DB]"></div>
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full bg-[#C4C4DB] flex items-center justify-center text-[#251B28]/50 text-xs font-bold">2</div>
+              <span className="ml-2 text-xs font-medium text-[#251B28]/50">Budget</span>
+            </div>
+            <div className="w-8 h-0.5 bg-[#C4C4DB]"></div>
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full bg-[#C4C4DB] flex items-center justify-center text-[#251B28]/50 text-xs font-bold">3</div>
+              <span className="ml-2 text-xs font-medium text-[#251B28]/50">Start</span>
+            </div>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -804,11 +823,13 @@ export default function SignUp() {
             )}
           </button>
 
-          {/* Consent Text Below Button */}
-          <p className="text-xs text-[#251B28]/60 text-center mt-4">
-            By signing up, you agree to our Terms of Service and Privacy Policy.
-            We'll use your information to provide and improve our services.
-          </p>
+          {/* Security Badge */}
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-[#8ABFB2]/80 animate-fade-in">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span className="font-medium">Your data is secure and encrypted</span>
+          </div>
         </form>
 
         <div className="mt-8 text-center animate-fade-in-up" style={{animationDelay: '0.8s', opacity: 0, animationFillMode: 'forwards'}}>

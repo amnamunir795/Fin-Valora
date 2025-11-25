@@ -170,9 +170,21 @@ export default function Login() {
       `}</style>
       
       <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-[#8ABFB2]/30 p-8 relative z-10 animate-scale-in" style={{boxShadow: '0 25px 50px -12px rgba(1, 51, 43, 0.25), 0 0 0 1px rgba(138, 191, 178, 0.2)'}}>
-        <div className="text-center mb-8 animate-fade-in-up">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#251B28] via-[#01332B] to-[#8ABFB2] bg-clip-text text-transparent mb-2">Welcome Back</h1>
-          <p className="text-[#251B28]/70 text-sm">Sign in to continue your financial journey</p>
+        {/* Logo/Brand Icon */}
+        <div className="flex justify-center mb-6 animate-fade-in-up">
+          <div className="relative w-16 h-16">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-2xl rotate-6 opacity-20 blur-sm"></div>
+            <div className="relative w-16 h-16 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center mb-6 animate-fade-in-up" style={{animationDelay: '0.05s', opacity: 0, animationFillMode: 'forwards'}}>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#251B28] via-[#01332B] to-[#8ABFB2] bg-clip-text text-transparent mb-1">Welcome Back</h1>
+          <p className="text-[#251B28]/60 text-sm">Sign in to access your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -246,16 +258,16 @@ export default function Login() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-5 w-5 text-[#8ABFB2] focus:ring-[#8ABFB2] border-[#8ABFB2]/30 rounded-md transition-all duration-300 cursor-pointer hover:scale-110"
+                className="h-4 w-4 text-[#8ABFB2] focus:ring-[#8ABFB2] border-[#8ABFB2]/30 rounded transition-all duration-300 cursor-pointer hover:scale-110"
               />
-              <label htmlFor="remember-me" className="ml-3 block text-sm font-medium text-[#251B28] cursor-pointer group-hover:text-[#01332B] transition-colors duration-300">
-                Remember me
+              <label htmlFor="remember-me" className="ml-2 block text-xs font-medium text-[#251B28]/70 cursor-pointer group-hover:text-[#01332B] transition-colors duration-300">
+                Keep me signed in
               </label>
             </div>
 
-            <div className="text-sm">
+            <div className="text-xs">
               <a href="#" className="text-[#8ABFB2] hover:text-[#01332B] font-semibold transition-all duration-300 flex items-center group">
-                <svg className="w-4 h-4 mr-1 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 mr-1 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Forgot password?
@@ -303,15 +315,23 @@ export default function Login() {
               </div>
             )}
           </button>
+
+          {/* Security Badge */}
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-[#8ABFB2]/80 animate-fade-in">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span className="font-medium">Secure login with encryption</span>
+          </div>
         </form>
 
-        <div className="mt-8 text-center animate-fade-in-up" style={{animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards'}}>
+        <div className="mt-6 text-center animate-fade-in-up" style={{animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards'}}>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-[#8ABFB2]/30"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white/95 text-[#251B28]/70">Don't have an account?</span>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-4 bg-white/95 text-[#251B28]/60">New to FIN-VALORA?</span>
             </div>
           </div>
           <div className="mt-4">
