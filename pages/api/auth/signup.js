@@ -93,6 +93,15 @@ export default async function handler(req, res) {
     // Save user to database
     await user.save();
     
+    // Create default categories for the new user
+    try {
+      const { createDefaultCategories } = await import('../../../lib/seedData');
+      await createDefaultCategories(user._id);
+    } catch (categoryError) {
+      console.error('Error creating default categories:', categoryError);
+      // Don't fail signup if category creation fails
+    }
+    
     console.log('User saved successfully:', {
       id: user._id,
       email: user.email,
