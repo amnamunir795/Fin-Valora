@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
+import { logout } from '../../utils/auth';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -89,11 +90,53 @@ export default function Dashboard() {
       <div className="w-64 bg-[#FFFFFF] shadow-xl border-r border-[#C4C4DB]/40">
         {/* Logo */}
         <div className="p-6 border-b border-[#C4C4DB]/30 bg-gradient-to-r from-[#FFFFFF] to-[#C4C4DB]/10">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-lg flex items-center justify-center mr-3 shadow-md">
-              <span className="text-[#FFFFFF] font-bold text-sm">F</span>
+          <div className="flex items-center group cursor-pointer">
+            <div className="relative w-10 h-10 mr-3">
+              {/* Animated glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
+              
+              {/* Main circular background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
+                {/* Animated shine overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </div>
+              
+              {/* Logo icon - Finance themed */}
+              <svg className="relative w-10 h-10 p-1.5" viewBox="0 0 48 48" fill="none">
+                {/* Coin stack */}
+                <g className="group-hover:translate-y-[-1px] transition-transform duration-300">
+                  <ellipse cx="16" cy="38" rx="8" ry="3" fill="white" opacity="0.6"/>
+                  <ellipse cx="16" cy="35" rx="8" ry="3" fill="white" opacity="0.7"/>
+                  <ellipse cx="16" cy="32" rx="8" ry="3" fill="white" opacity="0.8"/>
+                  <ellipse cx="16" cy="29" rx="8" ry="3" fill="white"/>
+                  <text x="16" y="31" textAnchor="middle" fill="#01332B" fontSize="6" fontWeight="bold">$</text>
+                </g>
+                
+                {/* Growth chart */}
+                <g className="group-hover:scale-105 transition-transform duration-300">
+                  <rect x="28" y="32" width="3" height="8" rx="1.5" fill="white" opacity="0.7" className="group-hover:opacity-100 transition-opacity duration-300"/>
+                  <rect x="33" y="28" width="3" height="12" rx="1.5" fill="white" opacity="0.8" className="group-hover:opacity-100 transition-opacity duration-300"/>
+                  <rect x="38" y="24" width="3" height="16" rx="1.5" fill="white" className="group-hover:opacity-100 transition-opacity duration-300"/>
+                </g>
+                
+                {/* Upward arrow */}
+                <g className="group-hover:translate-x-[1px] group-hover:translate-y-[-1px] transition-transform duration-300">
+                  <path d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12" stroke="#8ABFB2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300"/>
+                </g>
+                
+                {/* Currency symbols floating */}
+                <g className="animate-pulse" style={{animationDuration: '2s'}}>
+                  <text x="8" y="12" fill="#8ABFB2" fontSize="6" fontWeight="bold" opacity="0.8">$</text>
+                  <text x="38" y="14" fill="#01332B" fontSize="5" fontWeight="bold" opacity="0.7">€</text>
+                  <text x="6" y="22" fill="#01332B" fontSize="5" fontWeight="bold" opacity="0.6">£</text>
+                </g>
+                
+                {/* Sparkle effects */}
+                <circle cx="42" cy="10" r="1.5" fill="#8ABFB2" className="animate-ping" style={{animationDuration: '2s'}}/>
+                <circle cx="10" cy="38" r="1" fill="#01332B" className="animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}/>
+              </svg>
             </div>
-            <span className="text-xl font-bold text-[#251B28]">FinValora</span>
+            <span className="text-xl font-bold text-[#251B28] group-hover:text-[#01332B] transition-colors duration-300">FinValora</span>
           </div>
         </div>
 
@@ -149,9 +192,8 @@ export default function Dashboard() {
         {/* Logout */}
         <div className="absolute bottom-6 left-6">
           <button 
-            onClick={() => {
-              localStorage.removeItem('token');
-              router.push('/');
+            onClick={async () => {
+              await logout();
             }}
             className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200"
           >
