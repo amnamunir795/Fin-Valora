@@ -18,6 +18,13 @@ export default function Dashboard() {
     return currency ? currency.symbol : "$";
   };
 
+  const scrollToOCR = () => {
+    const ocrSection = document.getElementById('ocr-scanner-section');
+    if (ocrSection) {
+      ocrSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   useEffect(() => {
     // Check for success messages
     if (router.query.login === 'success') {
@@ -172,6 +179,20 @@ export default function Dashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               Reports
+            </a>
+            <a 
+              href="#ocr-scanner-section" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToOCR();
+              }}
+              className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200"
+            >
+              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              OCR Scanner
             </a>
             <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -446,7 +467,7 @@ export default function Dashboard() {
           </div>
 
           {/* OCR Tool Section */}
-          <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 mb-6 shadow-md">
+          <div id="ocr-scanner-section" className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 mb-6 shadow-md scroll-mt-6">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-lg font-semibold text-[#251B28] mb-2">OCR Receipt Scanner</h3>
