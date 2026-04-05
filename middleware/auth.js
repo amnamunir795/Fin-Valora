@@ -1,6 +1,48 @@
-import { verifyToken, extractTokenFromHeader } from '../lib/jwt';
+import { verifyToken as verifyJwtToken, extractTokenFromHeader } from '../lib/jwt';
 import connectDB from '../lib/mongodb';
 import User from '../models/User';
+
+/**
+ * Next.js API helper: Bearer or HttpOnly cookie → user payload.
+ * Use this in API routes that expect `await verifyToken(req)`-style auth.
+ */
+export async function verifyRequestAuth(req) {
+  try {
+    await connectDB();
+
+    let token = extractTokenFromHeader(req.headers?.authorization);
+    if (!token && req.cookies?.token) {
+      token = req.cookies.token;
+    }
+
+    if (!token) {
+      return { success: false, message: 'Access token is required' };
+    }
+
+    const decoded = verifyJwtToken(token);
+    const user = await User.findById(decoded.id);
+
+    if (!user || !user.isActive) {
+      return { success: false, message: 'User not found or inactive' };
+    }
+
+    return {
+      success: true,
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        currency: user.currency,
+        fullName: user.fullName,
+        createdAt: user.createdAt
+      }
+    };
+  } catch (error) {
+    console.error('verifyRequestAuth error:', error);
+    return { success: false, message: 'Invalid or expired token' };
+  }
+}
 
 // Middleware to authenticate JWT token
 export const authenticateToken = async (req, res, next) => {
@@ -21,7 +63,7 @@ export const authenticateToken = async (req, res, next) => {
     }
 
     // Verify the token
-    const decoded = verifyToken(token);
+    const decoded = verifyJwtToken(token);
     
     // Connect to database and get user
     await connectDB();
@@ -62,7 +104,7 @@ export const optionalAuth = async (req, res, next) => {
     const token = extractTokenFromHeader(authHeader);
 
     if (token) {
-      const decoded = verifyToken(token);
+      const decoded = verifyJwtToken(token);
       await connectDB();
       const user = await User.findById(decoded.id);
 

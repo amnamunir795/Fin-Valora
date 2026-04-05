@@ -1,12 +1,12 @@
 import connectDB from '../../../lib/mongodb';
 import OCRScan from '../../../models/OCRScan';
-import { verifyToken } from '../../../middleware/auth';
+import { verifyRequestAuth } from '../../../middleware/auth';
 
 export default async function handler(req, res) {
   await connectDB();
 
   // Verify authentication
-  const authResult = await verifyToken(req);
+  const authResult = await verifyRequestAuth(req);
   if (!authResult.success) {
     return res.status(401).json({ success: false, message: authResult.message });
   }

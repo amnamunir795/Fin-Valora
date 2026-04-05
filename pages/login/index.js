@@ -111,12 +111,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#C4C4DB] via-[#C4C4DB]/90 to-[#8ABFB2]/20 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-mist via-mist/90 to-teal/20 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#8ABFB2] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#01332B] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#251B28] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-forest rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-void rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
       </div>
       
       <style jsx>{`
@@ -169,12 +169,12 @@ export default function Login() {
         }
       `}</style>
       
-      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-[#8ABFB2]/30 p-8 relative z-10 animate-scale-in" style={{boxShadow: '0 25px 50px -12px rgba(1, 51, 43, 0.25), 0 0 0 1px rgba(138, 191, 178, 0.2)'}}>
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-teal/30 p-8 relative z-10 animate-scale-in" style={{boxShadow: '0 25px 50px -12px rgba(1, 51, 43, 0.25), 0 0 0 1px rgba(138, 191, 178, 0.2)'}}>
         {/* Logo/Brand Icon */}
         <div className="flex justify-center mb-6 animate-fade-in-up">
           <div className="relative w-16 h-16">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-2xl rotate-6 opacity-20 blur-sm"></div>
-            <div className="relative w-16 h-16 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-teal via-forest to-void rounded-2xl rotate-6 opacity-20 blur-sm"></div>
+            <div className="relative w-16 h-16 bg-gradient-to-br from-teal via-forest to-void rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
               </svg>
@@ -183,14 +183,14 @@ export default function Login() {
         </div>
 
         <div className="text-center mb-6 animate-fade-in-up" style={{animationDelay: '0.05s', opacity: 0, animationFillMode: 'forwards'}}>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#251B28] via-[#01332B] to-[#8ABFB2] bg-clip-text text-transparent mb-1">Welcome Back</h1>
-          <p className="text-[#251B28]/60 text-sm">Sign in to access your account</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-void via-forest to-teal bg-clip-text text-transparent mb-1">Welcome Back</h1>
+          <p className="text-void/60 text-sm">Sign in to access your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="animate-fade-in-up" style={{animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards'}}>
-            <label htmlFor="email" className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center group">
-              <svg className="w-4 h-4 mr-2 text-[#8ABFB2] group-hover:text-[#01332B] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <label htmlFor="email" className="block text-sm font-semibold text-void mb-2 flex items-center group">
+              <svg className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
               Email Address
@@ -201,8 +201,8 @@ export default function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8ABFB2] focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
-                errors.email ? 'border-red-400 bg-red-50' : 'border-[#8ABFB2]/30 hover:border-[#8ABFB2]'
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
+                errors.email ? 'border-red-400 bg-red-50' : 'border-teal/30 hover:border-teal'
               }`}
               placeholder="Enter your email address"
             />
@@ -212,8 +212,8 @@ export default function Login() {
           </div>
 
           <div className="animate-fade-in-up" style={{animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards'}}>
-            <label htmlFor="password" className="block text-sm font-semibold text-[#251B28] mb-2 flex items-center group">
-              <svg className="w-4 h-4 mr-2 text-[#8ABFB2] group-hover:text-[#01332B] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <label htmlFor="password" className="block text-sm font-semibold text-void mb-2 flex items-center group">
+              <svg className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               Password
@@ -225,15 +225,15 @@ export default function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8ABFB2] focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
-                  errors.password ? 'border-red-400 bg-red-50' : 'border-[#8ABFB2]/30 hover:border-[#8ABFB2]'
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
+                  errors.password ? 'border-red-400 bg-red-50' : 'border-teal/30 hover:border-teal'
                 }`}
                 placeholder="Enter your password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-[#8ABFB2] hover:text-[#01332B] transition-all duration-300 hover:scale-110"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-teal hover:text-forest transition-all duration-300 hover:scale-110"
               >
                 {showPassword ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -258,15 +258,15 @@ export default function Login() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-[#8ABFB2] focus:ring-[#8ABFB2] border-[#8ABFB2]/30 rounded transition-all duration-300 cursor-pointer hover:scale-110"
+                className="h-4 w-4 text-teal focus:ring-teal border-teal/30 rounded transition-all duration-300 cursor-pointer hover:scale-110"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-xs font-medium text-[#251B28]/70 cursor-pointer group-hover:text-[#01332B] transition-colors duration-300">
+              <label htmlFor="remember-me" className="ml-2 block text-xs font-medium text-void/70 cursor-pointer group-hover:text-forest transition-colors duration-300">
                 Keep me signed in
               </label>
             </div>
 
             <div className="text-xs">
-              <a href="#" className="text-[#8ABFB2] hover:text-[#01332B] font-semibold transition-all duration-300 flex items-center group">
+              <a href="#" className="text-teal hover:text-forest font-semibold transition-all duration-300 flex items-center group">
                 <svg className="w-3.5 h-3.5 mr-1 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -289,7 +289,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#01332B] via-[#8ABFB2] to-[#01332B] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white py-4 px-6 rounded-xl font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-[#8ABFB2] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-500 shadow-lg hover:shadow-2xl animate-fade-in-up"
+            className="w-full bg-gradient-to-r from-forest via-teal to-forest bg-size-200 bg-pos-0 hover:bg-pos-100 text-white py-4 px-6 rounded-xl font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-500 shadow-lg hover:shadow-2xl animate-fade-in-up"
             style={{
               animationDelay: '0.4s',
               opacity: 0,
@@ -317,7 +317,7 @@ export default function Login() {
           </button>
 
           {/* Security Badge */}
-          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-[#8ABFB2]/80 animate-fade-in">
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-teal/80 animate-fade-in">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
@@ -328,16 +328,16 @@ export default function Login() {
         <div className="mt-6 text-center animate-fade-in-up" style={{animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards'}}>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#8ABFB2]/30"></div>
+              <div className="w-full border-t border-teal/30"></div>
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-4 bg-white/95 text-[#251B28]/60">New to FIN-VALORA?</span>
+              <span className="px-4 bg-white/95 text-void/60">New to FIN-VALORA?</span>
             </div>
           </div>
           <div className="mt-4">
             <Link
               href="/signup"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#8ABFB2] text-[#01332B] font-semibold rounded-xl hover:bg-[#01332B] hover:text-white hover:border-[#01332B] transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-md hover:shadow-xl group"
+              className="inline-flex items-center px-6 py-3 border-2 border-teal text-forest font-semibold rounded-xl hover:bg-forest hover:text-white hover:border-forest transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-md hover:shadow-xl group"
             >
               <svg className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />

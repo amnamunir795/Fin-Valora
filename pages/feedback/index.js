@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 
 export default function Feedback() {
@@ -33,8 +32,8 @@ export default function Feedback() {
       bit.style.top = -(Math.random() * 20 + 5) + "px";
       bit.style.background =
         Math.random() < 0.5
-          ? "linear-gradient(180deg, #E1A36F, #6F9F9C)"
-          : "linear-gradient(180deg, #DEC484, #E2D8A5)";
+          ? "linear-gradient(180deg, #8abfb2, #01332b)"
+          : "linear-gradient(180deg, #eaf4f2, #c4c4db)";
       bit.style.position = "absolute";
       bit.style.width = "8px";
       bit.style.height = "12px";
@@ -69,7 +68,7 @@ export default function Feedback() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f6f7f7] font-sans text-[#20282B] overflow-x-hidden">
+    <div className="relative min-h-screen overflow-x-hidden bg-mist font-sans text-void">
       {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="aurora"></div>
@@ -85,9 +84,9 @@ export default function Feedback() {
 
       {/* Success Modal */}
       {showSuccess && (
-        <div className="success fixed inset-0 z-20 grid place-items-center bg-[rgba(0,0,0,0.35)]">
-          <div className="bg-white rounded-2xl p-6 text-center shadow-lg w-[90%] max-w-md">
-            <div className="w-16 h-16 rounded-full mx-auto mb-3 grid place-items-center bg-gradient-to-br from-[#E1A36F] to-[#6F9F9C] text-white shadow-lg">
+        <div className="success fixed inset-0 z-20 grid place-items-center bg-void/40">
+          <div className="w-[90%] max-w-md rounded-2xl bg-surface p-6 text-center shadow-fv-lg">
+            <div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-full bg-forest text-white shadow-fv-md">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M20 6L9 17l-5-5"
@@ -98,10 +97,10 @@ export default function Feedback() {
                 />
               </svg>
             </div>
-            <h2 className="text-[#577E89] text-xl mb-1">
+            <h2 className="mb-1 text-xl font-semibold text-forest">
               Thanks for your feedback!
             </h2>
-            <p className="text-[#5a7076] text-sm">
+            <p className="text-sm text-ink-secondary">
               We’ll use this to improve things.
             </p>
           </div>
@@ -110,16 +109,16 @@ export default function Feedback() {
 
       {/* Main Card */}
       <main className="relative z-10 max-w-3xl mx-auto my-12 px-4">
-        <div className="card bg-white rounded-2xl border border-[#e7e9ec] shadow-lg overflow-hidden">
-          <div className="header p-6 border-b border-dashed border-[#577E89]/25 bg-gradient-to-b from-[#E1A36F1F] to-transparent">
-            <h1 className="text-3xl font-semibold text-[#577E89]">Feedback</h1>
+        <div className="card overflow-hidden rounded-2xl border border-border-subtle bg-surface shadow-fv-lg">
+          <div className="header border-b border-dashed border-teal/30 bg-teal-soft p-6">
+            <h1 className="font-display text-3xl font-semibold text-forest">Feedback</h1>
           </div>
 
           <div className="p-6">
-            <p className="text-xs text-[#5a7076] mb-1">Progress: {progress}%</p>
-            <div className="w-full h-2 bg-[#eef0f2] rounded-full overflow-hidden mb-5">
+            <p className="mb-1 text-xs text-ink-secondary">Progress: {progress}%</p>
+            <div className="mb-5 h-2 w-full overflow-hidden rounded-full bg-mist">
               <div
-                className="h-full bg-gradient-to-r from-[#E1A36F] to-[#6F9F9C] transition-all duration-300"
+                className="h-full bg-gradient-to-r from-teal to-forest transition-all duration-300"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
@@ -141,11 +140,11 @@ export default function Feedback() {
                       className="absolute opacity-0"
                     />
                     <span
-                      className={`grid place-items-center w-14 h-14 rounded-full border ${
+                      className={`grid h-14 w-14 place-items-center rounded-full border transition ${
                         mood === m
-                          ? "border-[#6F9F9C] shadow-md"
-                          : "border-[#d6dee0]"
-                      } bg-[#fbfbfc] hover:border-[#E1A36F] transition`}
+                          ? "border-teal shadow-fv-sm"
+                          : "border-lavender/60"
+                      } bg-mist hover:border-teal`}
                     >
                       {m === "happy" ? "😊" : m === "neutral" ? "😐" : "😔"}
                     </span>
@@ -171,11 +170,11 @@ export default function Feedback() {
                       className="absolute opacity-0"
                     />
                     <span
-                      className={`flex items-center justify-center w-12 h-12 rounded-full border ${
+                      className={`flex h-12 w-12 items-center justify-center rounded-full border font-bold shadow-sm ${
                         rating === String(num)
-                          ? "bg-gradient-to-br from-[#E1A36F] to-[#6F9F9C] text-white"
-                          : "bg-[#fbfbfc] border-[#d6dee0]"
-                      } font-bold shadow-sm`}
+                          ? "border-transparent bg-forest text-white"
+                          : "border-lavender/60 bg-mist"
+                      }`}
                     >
                       {num}
                     </span>
@@ -197,17 +196,17 @@ export default function Feedback() {
                 ].map(([value, label]) => (
                   <label
                     key={value}
-                    className={`flex gap-2 items-start p-3 rounded-xl border ${
+                    className={`flex items-start gap-2 rounded-xl border p-3 shadow-sm transition ${
                       features.includes(value)
-                        ? "border-[#6F9F9C] bg-white"
-                        : "border-[#e3e7ea] bg-[#fafbfb]"
-                    } shadow-sm transition`}
+                        ? "border-teal bg-surface"
+                        : "border-border-subtle bg-mist"
+                    }`}
                   >
                     <input
                       type="checkbox"
                       checked={features.includes(value)}
                       onChange={() => toggleFeature(value)}
-                      className="mt-1 accent-[#E1A36F]"
+                      className="mt-1 accent-teal"
                     />
                     <span>{label}</span>
                   </label>
@@ -224,24 +223,24 @@ export default function Feedback() {
                   onChange={(e) => setFeedback(e.target.value)}
                   maxLength={600}
                   placeholder="Anything you'd like to add?"
-                  className="w-full min-h-[140px] border border-[#d6dee0] rounded-xl p-3 bg-[#fbfbfc] outline-none shadow-sm focus:border-[#E1A36F] focus:ring-2 focus:ring-[#E1A36F]/20"
+                  className="min-h-[140px] w-full rounded-xl border border-lavender bg-surface p-3 text-void shadow-sm outline-none transition focus:border-teal focus:ring-2 focus:ring-teal/30"
                 />
-                <div className="absolute bottom-2 right-3 text-xs text-[#7b8e93]">
+                <div className="absolute bottom-2 right-3 text-xs text-ink-muted">
                   {feedback.length}/600
                 </div>
               </div>
-              <p className="text-sm text-[#6b7f85] mt-2">We read every note.</p>
+              <p className="mt-2 text-sm text-ink-secondary">We read every note.</p>
             </fieldset>
           </div>
 
-          <div className="footer flex justify-between items-center border-t border-dashed border-[#577E89]/25 p-5 flex-wrap gap-3">
-            <span className="text-sm text-[#6b7f85]">
+          <div className="footer flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-teal/25 p-5">
+            <span className="text-sm text-ink-secondary">
               Press Send and we’ll log your response.
             </span>
             <button
               onClick={handleSend}
               disabled={loading}
-              className="px-6 py-3 min-w-[180px] rounded-xl text-white bg-gradient-to-br from-[#E1A36F] to-[#6F9F9C] shadow-md hover:shadow-lg transition relative flex items-center justify-center"
+              className="fv-btn-primary relative flex min-w-[180px] items-center justify-center px-6 py-3"
             >
               {loading ? (
                 <>

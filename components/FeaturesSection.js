@@ -101,7 +101,7 @@ export default function FeaturesSection() {
   }, []);
 
   return (
-    <div className="features-section">
+    <div id="features" className="features-section">
       <h2 className="section-title">Features</h2>
 
       <div className="features-container">

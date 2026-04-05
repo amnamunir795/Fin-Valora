@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
-import { logout } from '../../utils/auth';
+import { logout, authenticatedFetch } from '../../utils/auth';
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -9,8 +15,16 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('December');
+  const [selectedMonth, setSelectedMonth] = useState(() => MONTHS[new Date().getMonth()]);
   const [showMonthFilter, setShowMonthFilter] = useState(false);
+  const [monthTransactions, setMonthTransactions] = useState([]);
+  const [transactionFilter, setTransactionFilter] = useState('all');
+  const [loadingTx, setLoadingTx] = useState(false);
+  const [recentScans, setRecentScans] = useState([]);
+  const [ocrUploading, setOcrUploading] = useState(false);
+  const [ocrMessage, setOcrMessage] = useState('');
+  const fileInputRef = useRef(null);
+  const filterPanelRef = useRef(null);
   const router = useRouter();
 
   const getCurrencySymbol = (currencyCode) => {
@@ -61,28 +75,148 @@ export default function Dashboard() {
     fetchData();
   }, [router]);
 
+  useEffect(() => {
+    if (!budget) return;
+
+    const loadMonthData = async () => {
+      setLoadingTx(true);
+      try {
+        const year = new Date().getFullYear();
+        const monthIndex = MONTHS.indexOf(selectedMonth);
+        const safeMonthIndex = monthIndex >= 0 ? monthIndex : new Date().getMonth();
+        const start = new Date(year, safeMonthIndex, 1).toISOString();
+        const end = new Date(year, safeMonthIndex + 1, 0, 23, 59, 59).toISOString();
+        let url = `/api/transactions?startDate=${encodeURIComponent(start)}&endDate=${encodeURIComponent(end)}&limit=500`;
+        if (transactionFilter !== 'all') {
+          url += `&type=${transactionFilter}`;
+        }
+        const res = await authenticatedFetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setMonthTransactions(data.transactions || []);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingTx(false);
+      }
+    };
+
+    loadMonthData();
+  }, [budget, selectedMonth, transactionFilter]);
+
+  useEffect(() => {
+    if (!showMonthFilter) return;
+    const onPointerDown = (e) => {
+      if (filterPanelRef.current && !filterPanelRef.current.contains(e.target)) {
+        setShowMonthFilter(false);
+      }
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [showMonthFilter]);
+
+  useEffect(() => {
+    if (!budget) return;
+
+    const loadScans = async () => {
+      try {
+        const res = await authenticatedFetch('/api/ocr/scans?limit=5');
+        if (res.ok) {
+          const data = await res.json();
+          setRecentScans(data.scans || []);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    loadScans();
+  }, [budget]);
+
+  const incomeRecorded = monthTransactions
+    .filter((t) => t.type === 'Income')
+    .reduce((s, t) => s + (t.amount || 0), 0);
+  const expenseRecorded = monthTransactions
+    .filter((t) => t.type === 'Expense')
+    .reduce((s, t) => s + (t.amount || 0), 0);
+  const netRecorded = incomeRecorded - expenseRecorded;
+
+  const breakdownSource = monthTransactions;
+  const expenseByCategory = breakdownSource
+    .filter((t) => t.type === 'Expense')
+    .reduce((acc, t) => {
+      const name = t.category?.name || 'Uncategorized';
+      acc[name] = (acc[name] || 0) + (t.amount || 0);
+      return acc;
+    }, {});
+  const incomeByCategory = breakdownSource
+    .filter((t) => t.type === 'Income')
+    .reduce((acc, t) => {
+      const name = t.category?.name || 'Uncategorized';
+      acc[name] = (acc[name] || 0) + (t.amount || 0);
+      return acc;
+    }, {});
+  const expenseCategoryRows = Object.entries(expenseByCategory).sort((a, b) => b[1] - a[1]);
+  const incomeCategoryRows = Object.entries(incomeByCategory).sort((a, b) => b[1] - a[1]);
+  const maxExpenseBar = Math.max(...expenseCategoryRows.map(([, v]) => v), 1);
+
+  const handleOcrFile = async (e) => {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+    setOcrMessage('');
+    setOcrUploading(true);
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('finvalora_token') : null;
+      const formData = new FormData();
+      formData.append('receipt', file);
+      const res = await fetch('/api/ocr/upload', {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: formData,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setOcrMessage('Receipt uploaded. Processing will complete shortly.');
+        const listRes = await authenticatedFetch('/api/ocr/scans?limit=5');
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          setRecentScans(listData.scans || []);
+        }
+      } else {
+        setOcrMessage(data.message || 'Upload failed');
+      }
+    } catch (err) {
+      setOcrMessage('Upload failed');
+      console.error(err);
+    } finally {
+      setOcrUploading(false);
+      if (e.target) e.target.value = '';
+    }
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#C4C4DB] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8ABFB2]"></div>
+      <div className="min-h-screen bg-mist flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal"></div>
       </div>
     );
   }
 
   if (!budget) {
     return (
-      <div className="min-h-screen bg-[#C4C4DB] flex items-center justify-center">
-        <div className="max-w-md mx-auto bg-[#FFFFFF] rounded-2xl shadow-xl border border-[#C4C4DB]/40 p-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full mb-4 shadow-lg">
-            <svg className="w-8 h-8 text-[#FFFFFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="min-h-screen bg-mist flex items-center justify-center">
+        <div className="max-w-md mx-auto bg-surface rounded-2xl shadow-xl border border-lavender/40 p-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal to-forest rounded-full mb-4 shadow-lg">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-[#251B28] mb-4">No Budget Found</h1>
-          <p className="text-[#01332B] mb-6">Let's set up your first budget to get started!</p>
+          <h1 className="text-2xl font-bold text-void mb-4">No Budget Found</h1>
+          <p className="text-forest mb-6">Let's set up your first budget to get started!</p>
           <button
             onClick={() => router.push('/budget-setup')}
-            className="w-full bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] py-3 px-6 rounded-xl font-semibold hover:from-[#01332B] hover:to-[#251B28] transition-all duration-200 shadow-lg"
+            className="w-full bg-gradient-to-r from-teal to-forest text-white py-3 px-6 rounded-xl font-semibold hover:from-forest hover:to-void transition-all duration-200 shadow-lg"
           >
             Set Up Budget
           </button>
@@ -92,18 +226,18 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#C4C4DB] flex">
+    <div className="min-h-screen bg-mist flex">
       {/* Sidebar */}
-      <div className="w-64 bg-[#FFFFFF] shadow-xl border-r border-[#C4C4DB]/40">
+      <div className="w-64 bg-surface shadow-xl border-r border-lavender/40 relative min-h-screen">
         {/* Logo */}
-        <div className="p-6 border-b border-[#C4C4DB]/30 bg-gradient-to-r from-[#FFFFFF] to-[#C4C4DB]/10">
+        <div className="p-6 border-b border-lavender/30 bg-gradient-to-r from-surface to-mist/10">
           <div className="flex items-center group cursor-pointer">
             <div className="relative w-10 h-10 mr-3">
               {/* Animated glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-teal to-forest rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
               
               {/* Main circular background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2] via-[#01332B] to-[#251B28] rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal via-forest to-void rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
                 {/* Animated shine overlay */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </div>
@@ -116,7 +250,7 @@ export default function Dashboard() {
                   <ellipse cx="16" cy="35" rx="8" ry="3" fill="white" opacity="0.7"/>
                   <ellipse cx="16" cy="32" rx="8" ry="3" fill="white" opacity="0.8"/>
                   <ellipse cx="16" cy="29" rx="8" ry="3" fill="white"/>
-                  <text x="16" y="31" textAnchor="middle" fill="#01332B" fontSize="6" fontWeight="bold">$</text>
+                  <text x="16" y="31" textAnchor="middle" fill="var(--color-forest)" fontSize="6" fontWeight="bold">$</text>
                 </g>
                 
                 {/* Growth chart */}
@@ -128,85 +262,82 @@ export default function Dashboard() {
                 
                 {/* Upward arrow */}
                 <g className="group-hover:translate-x-[1px] group-hover:translate-y-[-1px] transition-transform duration-300">
-                  <path d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12" stroke="#8ABFB2" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300"/>
+                  <path d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12" stroke="var(--color-teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300"/>
                 </g>
                 
                 {/* Currency symbols floating */}
                 <g className="animate-pulse" style={{animationDuration: '2s'}}>
-                  <text x="8" y="12" fill="#8ABFB2" fontSize="6" fontWeight="bold" opacity="0.8">$</text>
-                  <text x="38" y="14" fill="#01332B" fontSize="5" fontWeight="bold" opacity="0.7">€</text>
-                  <text x="6" y="22" fill="#01332B" fontSize="5" fontWeight="bold" opacity="0.6">£</text>
+                  <text x="8" y="12" fill="var(--color-teal)" fontSize="6" fontWeight="bold" opacity="0.8">$</text>
+                  <text x="38" y="14" fill="var(--color-forest)" fontSize="5" fontWeight="bold" opacity="0.7">€</text>
+                  <text x="6" y="22" fill="var(--color-forest)" fontSize="5" fontWeight="bold" opacity="0.6">£</text>
                 </g>
                 
                 {/* Sparkle effects */}
-                <circle cx="42" cy="10" r="1.5" fill="#8ABFB2" className="animate-ping" style={{animationDuration: '2s'}}/>
-                <circle cx="10" cy="38" r="1" fill="#01332B" className="animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}/>
+                <circle cx="42" cy="10" r="1.5" fill="var(--color-teal)" className="animate-ping" style={{animationDuration: '2s'}}/>
+                <circle cx="10" cy="38" r="1" fill="var(--color-forest)" className="animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}/>
               </svg>
             </div>
-            <span className="text-xl font-bold text-[#251B28] group-hover:text-[#01332B] transition-colors duration-300">FinValora</span>
+            <span className="text-xl font-bold text-void group-hover:text-forest transition-colors duration-300">FinValora</span>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="mt-6">
           <div className="px-4 space-y-2">
-            <a href="#" className="flex items-center px-4 py-3 text-[#FFFFFF] bg-gradient-to-r from-[#8ABFB2] to-[#01332B] rounded-lg shadow-md">
+            <Link href="/dashboard" className="flex items-center px-4 py-3 text-white bg-gradient-to-r from-teal to-forest rounded-lg shadow-md">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7" />
               </svg>
               Dashboard
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </Link>
+            <Link href="/categories" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a.997.997 0 01-1.414 0l-7-7A1.997 1.997 0 013 12V7a4 4 0 014-4z" />
               </svg>
               Categories
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </Link>
+            <Link href="/income" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
               Income
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </Link>
+            <Link href="/expenses" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
               Expenses
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </Link>
+            <Link href="/reports" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               Reports
-            </a>
-            <a 
-              href="#ocr-scanner-section" 
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToOCR();
-              }}
-              className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200"
+            </Link>
+            <button
+              type="button"
+              onClick={scrollToOCR}
+              className="w-full flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200 text-left"
             >
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               OCR Scanner
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </button>
+            <Link href="/ai-chat" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               AI Chat
-            </a>
-            <a href="#" className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200">
+            </Link>
+            <Link href="/settings" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Setting
-            </a>
+              Settings
+            </Link>
           </div>
         </nav>
 
@@ -216,7 +347,7 @@ export default function Dashboard() {
             onClick={async () => {
               await logout();
             }}
-            className="flex items-center px-4 py-3 text-[#251B28] hover:bg-[#C4C4DB]/30 hover:text-[#01332B] rounded-lg transition-all duration-200"
+            className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200"
           >
             <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -229,87 +360,86 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#FFFFFF] to-[#C4C4DB]/20 shadow-lg border-b border-[#C4C4DB]/40 px-6 py-4">
+        <div className="bg-gradient-to-r from-surface to-mist/20 shadow-lg border-b border-lavender/40 px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-[#251B28]">Dashboard</h1>
-            <div className="flex items-center space-x-4">
-              {/* Month Selector Dropdown */}
-              <select 
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="px-4 py-2 border border-[#C4C4DB] rounded-lg text-[#251B28] bg-[#FFFFFF] hover:border-[#8ABFB2] focus:ring-2 focus:ring-[#8ABFB2] focus:border-transparent transition-all duration-200"
+            <h1 className="text-2xl font-bold text-void">Dashboard</h1>
+            <div ref={filterPanelRef} className="relative flex items-center">
+              <button
+                type="button"
+                onClick={() => setShowMonthFilter((open) => !open)}
+                className="px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void flex items-center font-medium shadow-md transition-all duration-200 gap-2"
+                aria-expanded={showMonthFilter}
+                aria-haspopup="dialog"
               >
-                <option>January</option>
-                <option>February</option>
-                <option>March</option>
-                <option>April</option>
-                <option>May</option>
-                <option>June</option>
-                <option>July</option>
-                <option>August</option>
-                <option>September</option>
-                <option>October</option>
-                <option>November</option>
-                <option>December</option>
-              </select>
+                <span>Filters</span>
+                <span className="text-sm font-normal opacity-90 hidden sm:inline">
+                  {selectedMonth} · {transactionFilter === 'all' ? 'all types' : transactionFilter}
+                </span>
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-              {/* Filter Data Button with Dropdown */}
-              <div className="relative">
-                <button 
-                  onClick={() => setShowMonthFilter(!showMonthFilter)}
-                  className="px-4 py-2 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] rounded-lg hover:from-[#01332B] hover:to-[#251B28] flex items-center font-medium shadow-md transition-all duration-200"
+              {showMonthFilter && (
+                <div
+                  className="absolute right-0 top-full mt-2 w-72 bg-surface rounded-lg shadow-xl border border-lavender/40 z-50 py-3"
+                  role="dialog"
+                  aria-label="Dashboard filters"
                 >
-                  Filter Data
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                
-                {showMonthFilter && (
-                  <div className="absolute right-0 mt-2 w-56 bg-[#FFFFFF] rounded-lg shadow-xl border border-[#C4C4DB]/40 z-10">
-                    <div className="py-2">
-                      <div className="px-4 py-2 text-sm font-medium text-[#251B28] border-b border-[#C4C4DB]/30">Filter Options</div>
-                      
-                      {/* Date Range Filter */}
-                      <div className="px-4 py-3 border-b border-[#C4C4DB]/30">
-                        <label className="block text-xs font-medium text-[#251B28] mb-2">Date Range</label>
-                        <div className="space-y-2">
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">Last 7 days</button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">Last 30 days</button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">This Quarter</button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">This Year</button>
-                        </div>
-                      </div>
-
-                      {/* Transaction Type Filter */}
-                      <div className="px-4 py-3 border-b border-[#C4C4DB]/30">
-                        <label className="block text-xs font-medium text-[#251B28] mb-2">Transaction Type</label>
-                        <div className="space-y-2">
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">All Transactions</button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">Income Only</button>
-                          <button className="w-full text-left px-3 py-2 text-sm text-[#251B28] hover:bg-[#C4C4DB]/30 rounded">Expenses Only</button>
-                        </div>
-                      </div>
-
-                      {/* Apply/Reset Buttons */}
-                      <div className="px-4 py-3 flex space-x-2">
-                        <button 
-                          onClick={() => setShowMonthFilter(false)}
-                          className="flex-1 px-3 py-2 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] text-sm rounded hover:from-[#01332B] hover:to-[#251B28] transition-all duration-200"
-                        >
-                          Apply Filters
-                        </button>
-                        <button 
-                          onClick={() => setShowMonthFilter(false)}
-                          className="px-3 py-2 border border-[#C4C4DB] text-[#251B28] text-sm rounded hover:bg-[#C4C4DB]/30 transition-all duration-200"
-                        >
-                          Reset
-                        </button>
-                      </div>
+                  <div className="px-4 pb-3 border-b border-lavender/30">
+                    <label htmlFor="dashboard-month" className="block text-xs font-semibold text-forest mb-2">
+                      Month
+                    </label>
+                    <select
+                      id="dashboard-month"
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      className="w-full px-3 py-2 border border-lavender rounded-lg text-void bg-surface hover:border-teal focus:ring-2 focus:ring-teal focus:border-transparent text-sm"
+                    >
+                      {MONTHS.map((m) => (
+                        <option key={m} value={m}>
+                          {m}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="px-4 pt-3">
+                    <p className="text-xs font-semibold text-forest mb-2">Transaction type</p>
+                    <div className="space-y-1">
+                      <button
+                        type="button"
+                        onClick={() => setTransactionFilter('all')}
+                        className={`w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-mist/30 ${transactionFilter === 'all' ? 'bg-teal/20 text-forest font-medium' : 'text-void'}`}
+                      >
+                        All transactions
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTransactionFilter('Income')}
+                        className={`w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-mist/30 ${transactionFilter === 'Income' ? 'bg-teal/20 text-forest font-medium' : 'text-void'}`}
+                      >
+                        Income only
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTransactionFilter('Expense')}
+                        className={`w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-mist/30 ${transactionFilter === 'Expense' ? 'bg-teal/20 text-forest font-medium' : 'text-void'}`}
+                      >
+                        Expenses only
+                      </button>
                     </div>
                   </div>
-                )}
-              </div>
+                  <div className="px-4 pt-3 mt-2 border-t border-lavender/30">
+                    <button
+                      type="button"
+                      onClick={() => setShowMonthFilter(false)}
+                      className="w-full px-3 py-2 text-sm text-forest border border-lavender rounded-lg hover:bg-mist/30"
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -317,28 +447,30 @@ export default function Dashboard() {
         <main className="p-6 space-y-6">
           {/* Success Messages */}
           {showSuccess && (
-            <div className="bg-gradient-to-r from-[#8ABFB2]/20 to-[#01332B]/20 border border-[#8ABFB2]/40 rounded-lg p-4 shadow-md">
+            <div className="bg-gradient-to-r from-teal/20 to-forest/20 border border-teal/40 rounded-lg p-4 shadow-md">
               <div className="flex items-center">
-                <svg className="w-5 h-5 text-[#01332B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-forest mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <p className="text-sm font-medium text-[#251B28]">{successMessage}</p>
+                <p className="text-sm font-medium text-void">{successMessage}</p>
               </div>
             </div>
           )}
 
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-[#C4C4DB]/20 via-[#FFFFFF] to-[#8ABFB2]/20 rounded-xl p-6 border border-[#C4C4DB]/40 shadow-lg">
+          <div className="bg-gradient-to-r from-mist/20 via-surface to-teal/20 rounded-xl p-6 border border-lavender/40 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-[#251B28] mb-2">
+                <h1 className="text-2xl font-bold text-void mb-2">
                   Welcome back! 👋
                 </h1>
-                <p className="text-[#01332B]">Here's your financial overview for {selectedMonth}</p>
+                <p className="text-forest">
+                  {loadingTx ? 'Loading transactions…' : `Recorded activity for ${selectedMonth} (${transactionFilter === 'all' ? 'all types' : transactionFilter})`}
+                </p>
               </div>
               <div className="hidden md:block">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#8ABFB2]/30 to-[#01332B]/30 rounded-full flex items-center justify-center shadow-md">
-                  <svg className="w-8 h-8 text-[#01332B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 bg-gradient-to-br from-teal/30 to-forest/30 rounded-full flex items-center justify-center shadow-md">
+                  <svg className="w-8 h-8 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
@@ -346,40 +478,49 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Top Stats Cards */}
+          {/* Top Stats Cards — transaction totals for selected month; budget plan shown as reference */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
-              <h3 className="text-sm font-medium text-[#01332B] mb-2">Total Income</h3>
-              <p className="text-2xl font-bold text-[#8ABFB2]">Rs.{budget.totalIncome.toLocaleString()}</p>
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
+              <h3 className="text-sm font-medium text-forest mb-2">Income (recorded)</h3>
+              <p className="text-2xl font-bold text-teal">
+                {getCurrencySymbol(user?.currency)}{incomeRecorded.toLocaleString()}
+              </p>
+              <p className="text-xs text-forest/80 mt-2">Budget plan: {getCurrencySymbol(user?.currency)}{budget.totalIncome?.toLocaleString()}</p>
             </div>
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
-              <h3 className="text-sm font-medium text-[#01332B] mb-2">Total Expenses</h3>
-              <p className="text-2xl font-bold text-[#251B28]">Rs.{budget.currentSpent.toLocaleString()}</p>
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
+              <h3 className="text-sm font-medium text-forest mb-2">Expenses (recorded)</h3>
+              <p className="text-2xl font-bold text-void">
+                {getCurrencySymbol(user?.currency)}{expenseRecorded.toLocaleString()}
+              </p>
+              <p className="text-xs text-forest/80 mt-2">Tracked in budget: {getCurrencySymbol(user?.currency)}{budget.currentSpent?.toLocaleString()}</p>
             </div>
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
-              <h3 className="text-sm font-medium text-[#01332B] mb-2">Net Balance</h3>
-              <p className="text-2xl font-bold text-[#01332B]">Rs.{(budget.totalIncome - budget.currentSpent).toLocaleString()}</p>
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
+              <h3 className="text-sm font-medium text-forest mb-2">Net (recorded)</h3>
+              <p className="text-2xl font-bold text-forest">
+                {getCurrencySymbol(user?.currency)}{netRecorded.toLocaleString()}
+              </p>
+              <p className="text-xs text-forest/80 mt-2">Plan net: {getCurrencySymbol(user?.currency)}{(budget.totalIncome - budget.currentSpent).toLocaleString()}</p>
             </div>
           </div>
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-[#251B28] mb-4">Expenses</h3>
-              <div className="h-64 flex items-center justify-center text-[#01332B]">
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-void mb-4">Expenses</h3>
+              <div className="h-64 flex items-center justify-center text-forest">
                 <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto mb-4 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-12 h-12 mx-auto mb-4 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                   <p>Chart will be displayed here</p>
                 </div>
               </div>
             </div>
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-[#251B28] mb-4">Expenses Breakdown</h3>
-              <div className="h-64 flex items-center justify-center text-[#01332B]">
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-void mb-4">Expenses Breakdown</h3>
+              <div className="h-64 flex items-center justify-center text-forest">
                 <div className="text-center">
-                  <svg className="w-12 h-12 mx-auto mb-4 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-12 h-12 mx-auto mb-4 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                   </svg>
                   <p>Pie chart will be displayed here</p>
@@ -391,67 +532,67 @@ export default function Dashboard() {
           {/* Categories Breakdown and AI Assistant Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Categories Breakdown */}
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-[#251B28] mb-6">Categories Breakdown</h3>
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-void mb-6">Categories Breakdown</h3>
               
               <div className="space-y-6">
                 {/* Expenses Section */}
                 <div>
                   <div className="flex items-center mb-3">
-                    <svg className="w-5 h-5 text-[#01332B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-forest mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                     </svg>
-                    <span className="text-sm font-medium text-[#01332B]">Expenses (0)</span>
+                    <span className="text-sm font-medium text-forest">Expenses (0)</span>
                   </div>
-                  <div className="bg-gradient-to-r from-[#C4C4DB]/20 to-[#C4C4DB]/10 rounded-lg p-8 text-center border border-[#C4C4DB]/30">
-                    <span className="text-2xl font-bold text-[#8ABFB2]">N/A</span>
+                  <div className="bg-gradient-to-r from-mist/20 to-mist/10 rounded-lg p-8 text-center border border-lavender/30">
+                    <span className="text-2xl font-bold text-teal">N/A</span>
                   </div>
                 </div>
 
                 {/* Incomes Section */}
                 <div>
                   <div className="flex items-center mb-3">
-                    <svg className="w-5 h-5 text-[#01332B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-forest mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
-                    <span className="text-sm font-medium text-[#01332B]">Incomes (0)</span>
+                    <span className="text-sm font-medium text-forest">Incomes (0)</span>
                   </div>
-                  <div className="bg-gradient-to-r from-[#C4C4DB]/20 to-[#C4C4DB]/10 rounded-lg p-8 text-center border border-[#C4C4DB]/30">
-                    <span className="text-2xl font-bold text-[#8ABFB2]">N/A</span>
+                  <div className="bg-gradient-to-r from-mist/20 to-mist/10 rounded-lg p-8 text-center border border-lavender/30">
+                    <span className="text-2xl font-bold text-teal">N/A</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* FinValora AI Assistant */}
-            <div className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 shadow-md">
+            <div className="bg-surface rounded-lg border border-lavender/40 p-6 shadow-md">
               <div className="h-full flex flex-col">
                 {/* AI Chat Interface */}
-                <div className="flex-1 bg-gradient-to-br from-[#C4C4DB]/20 to-[#C4C4DB]/10 rounded-lg p-4 mb-4 border border-[#C4C4DB]/30">
+                <div className="flex-1 bg-gradient-to-br from-mist/20 to-mist/10 rounded-lg p-4 mb-4 border border-lavender/30">
                   <div className="space-y-3">
                     {/* AI Message Bubbles */}
                     <div className="flex items-start space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full flex items-center justify-center text-[#FFFFFF] text-sm font-medium shadow-md">
+                      <div className="w-8 h-8 bg-gradient-to-br from-teal to-forest rounded-full flex items-center justify-center text-white text-sm font-medium shadow-md">
                         AI
                       </div>
-                      <div className="bg-gradient-to-r from-[#01332B] to-[#251B28] text-[#FFFFFF] rounded-lg px-3 py-2 max-w-xs shadow-md">
+                      <div className="bg-gradient-to-r from-forest to-void text-white rounded-lg px-3 py-2 max-w-xs shadow-md">
                         <p className="text-sm">Hello! How can I help you manage your finances today?</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full flex items-center justify-center text-[#FFFFFF] text-sm font-medium shadow-md">
+                      <div className="w-8 h-8 bg-gradient-to-br from-teal to-forest rounded-full flex items-center justify-center text-white text-sm font-medium shadow-md">
                         AI
                       </div>
-                      <div className="bg-gradient-to-r from-[#01332B] to-[#251B28] text-[#FFFFFF] rounded-lg px-3 py-2 max-w-xs shadow-md">
+                      <div className="bg-gradient-to-r from-forest to-void text-white rounded-lg px-3 py-2 max-w-xs shadow-md">
                         <p className="text-sm">I can analyze your spending patterns and provide insights.</p>
                       </div>
                     </div>
 
                     {/* User Input Area */}
                     <div className="flex justify-end">
-                      <div className="bg-[#C4C4DB]/40 rounded-lg px-3 py-2 max-w-xs border border-[#C4C4DB]/50">
-                        <p className="text-sm text-[#251B28]">Type a message...</p>
+                      <div className="bg-mist/40 rounded-lg px-3 py-2 max-w-xs border border-lavender/50">
+                        <p className="text-sm text-void">Type a message...</p>
                       </div>
                     </div>
                   </div>
@@ -459,22 +600,22 @@ export default function Dashboard() {
 
                 {/* AI Assistant Info */}
                 <div>
-                  <h4 className="text-lg font-bold text-[#251B28] mb-2">FinValora AI</h4>
-                  <p className="text-sm text-[#01332B]">Get assistance with managing your expenses and income.</p>
+                  <h4 className="text-lg font-bold text-void mb-2">FinValora AI</h4>
+                  <p className="text-sm text-forest">Get assistance with managing your expenses and income.</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* OCR Tool Section */}
-          <div id="ocr-scanner-section" className="bg-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-6 mb-6 shadow-md scroll-mt-6">
+          <div id="ocr-scanner-section" className="bg-surface rounded-lg border border-lavender/40 p-6 mb-6 shadow-md scroll-mt-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-[#251B28] mb-2">OCR Receipt Scanner</h3>
-                <p className="text-sm text-[#01332B]">Upload receipts and bills to automatically extract transaction data</p>
+                <h3 className="text-lg font-semibold text-void mb-2">OCR Receipt Scanner</h3>
+                <p className="text-sm text-forest">Upload receipts and bills to automatically extract transaction data</p>
               </div>
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#8ABFB2]/30 to-[#01332B]/30 rounded-lg shadow-md">
-                <svg className="w-6 h-6 text-[#01332B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-teal/30 to-forest/30 rounded-lg shadow-md">
+                <svg className="w-6 h-6 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -483,42 +624,42 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Upload Area */}
-              <div className="border-2 border-dashed border-[#C4C4DB] rounded-lg p-6 text-center hover:border-[#8ABFB2] transition-colors cursor-pointer bg-gradient-to-br from-[#C4C4DB]/10 to-transparent">
+              <div className="border-2 border-dashed border-lavender rounded-lg p-6 text-center hover:border-teal transition-colors cursor-pointer bg-gradient-to-br from-mist/10 to-transparent">
                 <div className="flex flex-col items-center">
-                  <svg className="w-12 h-12 text-[#8ABFB2] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-12 h-12 text-teal mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <h4 className="text-lg font-medium text-[#251B28] mb-2">Upload Receipt</h4>
-                  <p className="text-sm text-[#01332B] mb-4">Drag and drop your receipt or click to browse</p>
-                  <button className="px-4 py-2 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] rounded-lg hover:from-[#01332B] hover:to-[#251B28] transition-all duration-200 shadow-md">
+                  <h4 className="text-lg font-medium text-void mb-2">Upload Receipt</h4>
+                  <p className="text-sm text-forest mb-4">Drag and drop your receipt or click to browse</p>
+                  <button className="px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 shadow-md">
                     Choose File
                   </button>
-                  <p className="text-xs text-[#01332B]/70 mt-2">Supports JPG, PNG, PDF files</p>
+                  <p className="text-xs text-forest/70 mt-2">Supports JPG, PNG, PDF files</p>
                 </div>
               </div>
 
               {/* OCR Results */}
-              <div className="bg-gradient-to-br from-[#C4C4DB]/20 to-[#C4C4DB]/10 rounded-lg p-6 border border-[#C4C4DB]/30">
-                <h4 className="text-lg font-medium text-[#251B28] mb-4">Extracted Data</h4>
+              <div className="bg-gradient-to-br from-mist/20 to-mist/10 rounded-lg p-6 border border-lavender/30">
+                <h4 className="text-lg font-medium text-void mb-4">Extracted Data</h4>
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-[#C4C4DB]/40">
-                    <span className="text-sm text-[#01332B]">Amount:</span>
-                    <span className="text-sm font-medium text-[#251B28]">--</span>
+                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
+                    <span className="text-sm text-forest">Amount:</span>
+                    <span className="text-sm font-medium text-void">--</span>
                   </div>
-                  <div className="flex justify-between items-center py-2 border-b border-[#C4C4DB]/40">
-                    <span className="text-sm text-[#01332B]">Merchant:</span>
-                    <span className="text-sm font-medium text-[#251B28]">--</span>
+                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
+                    <span className="text-sm text-forest">Merchant:</span>
+                    <span className="text-sm font-medium text-void">--</span>
                   </div>
-                  <div className="flex justify-between items-center py-2 border-b border-[#C4C4DB]/40">
-                    <span className="text-sm text-[#01332B]">Date:</span>
-                    <span className="text-sm font-medium text-[#251B28]">--</span>
+                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
+                    <span className="text-sm text-forest">Date:</span>
+                    <span className="text-sm font-medium text-void">--</span>
                   </div>
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-sm text-[#01332B]">Category:</span>
-                    <span className="text-sm font-medium text-[#251B28]">--</span>
+                    <span className="text-sm text-forest">Category:</span>
+                    <span className="text-sm font-medium text-void">--</span>
                   </div>
                 </div>
-                <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] rounded-lg hover:from-[#01332B] hover:to-[#251B28] transition-all duration-200 disabled:bg-[#C4C4DB]/50 disabled:cursor-not-allowed shadow-md" disabled>
+                <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 disabled:bg-mist/50 disabled:cursor-not-allowed shadow-md" disabled>
                   Add to Expenses
                 </button>
               </div>
@@ -526,27 +667,27 @@ export default function Dashboard() {
 
             {/* Recent Scans */}
             <div className="mt-6">
-              <h4 className="text-lg font-medium text-[#251B28] mb-4">Recent Scans</h4>
-              <div className="bg-gradient-to-br from-[#C4C4DB]/20 to-[#C4C4DB]/10 rounded-lg p-4 border border-[#C4C4DB]/30">
-                <div className="text-center text-[#01332B]">
-                  <svg className="w-8 h-8 mx-auto mb-2 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <h4 className="text-lg font-medium text-void mb-4">Recent Scans</h4>
+              <div className="bg-gradient-to-br from-mist/20 to-mist/10 rounded-lg p-4 border border-lavender/30">
+                <div className="text-center text-forest">
+                  <svg className="w-8 h-8 mx-auto mb-2 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <p className="text-sm">No receipts scanned yet</p>
-                  <p className="text-xs text-[#01332B]/70">Upload your first receipt to get started</p>
+                  <p className="text-xs text-forest/70">Upload your first receipt to get started</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Bottom Section */}
-          <div className="bg-gradient-to-r from-[#FFFFFF] via-[#C4C4DB]/20 to-[#FFFFFF] rounded-lg border border-[#C4C4DB]/40 p-8 shadow-lg">
+          <div className="bg-gradient-to-r from-surface via-mist/20 to-surface rounded-lg border border-lavender/40 p-8 shadow-lg">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-[#251B28] mb-4">Unlock Your Financial Insights</h2>
-              <p className="text-[#01332B] mb-6">Get a deeper understanding of your financial performance with our detailed reports.</p>
+              <h2 className="text-2xl font-bold text-void mb-4">Unlock Your Financial Insights</h2>
+              <p className="text-forest mb-6">Get a deeper understanding of your financial performance with our detailed reports.</p>
               <button 
                 onClick={() => router.push('/budget-setup?edit=true')}
-                className="px-6 py-3 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] text-[#FFFFFF] rounded-lg hover:from-[#01332B] hover:to-[#251B28] transition-all duration-200 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 View Detailed Reports
               </button>

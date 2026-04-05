@@ -1,8 +1,12 @@
+@import "./design-tokens.css";
+
 .features-section {
-  max-width: 1200px;
+  max-width: var(--container-max);
   margin: 0 auto;
+  padding: var(--space-20) var(--space-4);
   text-align: center;
   position: relative;
+  background: var(--bg-secondary);
 }
 
 /* Animated background */
@@ -34,9 +38,10 @@
 }
 
 .features-section .section-title {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #251B28;
+  color: var(--text-primary);
   margin-bottom: 3rem;
   position: relative;
   display: inline-block;
@@ -48,7 +53,7 @@
   position: absolute;
   width: 60%;
   height: 4px;
-  background: linear-gradient(90deg, #8ABFB2, #01332B);
+  background: linear-gradient(90deg, var(--color-teal), var(--color-forest));
   bottom: -10px;
   left: 20%;
   border-radius: 2px;
@@ -72,11 +77,12 @@
 }
 
 .features-section .feature-box {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
   padding: 30px 20px;
-  transition: all 0.3s ease;
+  transition: all var(--duration-normal) var(--ease-standard);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,16 +122,16 @@
 }
 
 .features-section .feature-box:hover {
-  transform: translateY(-15px);
-  box-shadow: 0 15px 30px rgba(138, 191, 178, 0.3);
-  border-color: #8ABFB2;
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
   animation-play-state: paused;
 }
 
 .features-section .feature-title {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #251B28;
+  color: var(--text-accent);
   margin-bottom: 15px;
   position: relative;
   overflow: hidden;
@@ -150,8 +156,7 @@
 }
 
 .features-section .feature-description {
-  color: #251B28;
-  opacity: 0.7;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 0;
   flex-grow: 1;
@@ -178,12 +183,12 @@
   border-radius: 10px;
   margin-bottom: 20px;
   position: relative;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
 
 .features-section .feature-image-container:hover {
-  box-shadow: 0 8px 25px rgba(138, 191, 178, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 .features-section .feature-image {
@@ -268,7 +273,7 @@
   position: absolute;
   bottom: 30%;
   width: 12%;
-  background: linear-gradient(to top, #8ABFB2, #01332B);
+  background: linear-gradient(to top, var(--color-teal), var(--color-forest));
   border-radius: 4px 4px 0 0;
   transform-origin: bottom;
   opacity: 0;
@@ -332,7 +337,7 @@
   left: 15%;
   width: 70%;
   height: 2px;
-  background: linear-gradient(90deg, #8ABFB2, #01332B);
+  background: linear-gradient(90deg, var(--color-teal), var(--color-forest));
   transform: scaleX(0);
   transform-origin: left;
   opacity: 0;
@@ -360,7 +365,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #8ABFB2;
+  background-color: var(--color-teal);
   transform: scale(0);
   opacity: 0;
 }
@@ -434,7 +439,7 @@
   height: 20px;
   border-radius: 50%;
   background: linear-gradient(135deg, #f1c40f, #f39c12);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -526,7 +531,7 @@
 .features-section .progress-fill {
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, #8ABFB2, #01332B);
+  background: linear-gradient(90deg, var(--color-teal), var(--color-forest));
   border-radius: 5px;
   transform-origin: left;
 }
@@ -552,7 +557,7 @@
   right: 15%;
   font-size: 14px;
   font-weight: bold;
-  color: #251B28;
+  color: var(--text-primary);
   opacity: 0;
 }
 
@@ -591,7 +596,7 @@
   max-width: 70%;
   opacity: 0;
   transform: translateY(10px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
 }
 
 .features-section .chat-bubble.left {
@@ -703,7 +708,7 @@
   position: absolute;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #8ABFB2, transparent);
+  background: linear-gradient(90deg, transparent, var(--color-teal), transparent);
   top: 0;
   left: 0;
   opacity: 0;
@@ -795,14 +800,14 @@
 .features-section .extracted-text {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #8ABFB2;
+  border: 1px solid var(--border-strong);
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 10px;
-  color: #251B28;
+  color: var(--text-primary);
   opacity: 0;
   transform: translateY(5px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
   z-index: 4;
 }
 
@@ -849,7 +854,7 @@
 
 /* Glow effect on hover */
 .features-section .feature-box:hover {
-  box-shadow: 0 0 20px rgba(138, 191, 178, 0.4), 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(138, 191, 178, 0.35), var(--shadow-lg);
 }
 
 /* Pulse animation for the feature boxes */

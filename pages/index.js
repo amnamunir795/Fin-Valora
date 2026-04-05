@@ -30,16 +30,16 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#C4C4DB]">
+    <div className="min-h-screen bg-mist">
       <LandingHeader />
 
       {showSuccess && (
-        <div className="bg-[#8ABFB2]/20 border-b border-[#8ABFB2]">
+        <div className="bg-teal/20 border-b border-teal">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg
-                  className="h-5 w-5 text-[#01332B]"
+                  className="h-5 w-5 text-forest"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -51,7 +51,7 @@ export default function Home() {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-[#01332B]">
+                <p className="text-sm font-medium text-forest">
                   {successMessage}
                 </p>
               </div>
@@ -61,55 +61,55 @@ export default function Home() {
       )}
 
       {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-[#C4C4DB] via-[#C4C4DB]/95 to-[#8ABFB2]/10 overflow-hidden">
+      <section className="relative overflow-hidden bg-surface py-16 lg:py-24">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-[#8ABFB2]/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#01332B]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 right-10 w-72 h-72 bg-teal/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-10 w-96 h-96 bg-forest/5 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#251B28] leading-tight">
-                Master Your Money,
-                <span className="block bg-gradient-to-r from-[#01332B] via-[#8ABFB2] to-[#01332B] bg-clip-text text-transparent mt-2">
-                  Shape Your Future
+              <h1 className="font-display text-4xl font-bold leading-tight text-void md:text-5xl lg:text-6xl">
+                Master Your{" "}
+                <span className="italic text-forest">Money,</span>
+                <span className="mt-2 block text-void">
+                  Shape Your <span className="italic text-forest">Future</span>
                 </span>
               </h1>
               
-              <p className="text-lg text-[#251B28]/70 max-w-xl leading-relaxed">
+              <p className="text-lg text-void/70 max-w-xl leading-relaxed">
                 Take control of your financial journey with intelligent budgeting tools, real-time insights, and personalized guidance designed for your success.
               </p>
 
               {/* Feature highlights */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm font-medium text-[#251B28]/80">Smart Budgeting</span>
+                  <span className="text-sm font-medium text-void/80">Smart Budgeting</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm font-medium text-[#251B28]/80">Real-time Tracking</span>
+                  <span className="text-sm font-medium text-void/80">Real-time Tracking</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#8ABFB2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm font-medium text-[#251B28]/80">Secure & Private</span>
+                  <span className="text-sm font-medium text-void/80">Secure & Private</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link
                   href="/signup"
-                  className="group relative inline-flex items-center justify-center bg-gradient-to-r from-[#01332B] via-[#8ABFB2] to-[#01332B] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden"
-                  style={{backgroundSize: '200% 100%'}}
+                  className="fv-btn-primary group relative min-h-[52px] overflow-hidden px-8 text-lg shadow-fv-md transition-all duration-300 hover:shadow-fv-lg"
                 >
                   <span className="relative z-10 flex items-center">
                     Get Started Free
@@ -120,7 +120,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/login"
-                  className="inline-flex items-center justify-center border-2 border-[#8ABFB2] text-[#01332B] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#8ABFB2] hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="fv-btn-secondary min-h-[52px] border-2 px-8 text-lg hover:shadow-fv-sm"
                 >
                   Sign In
                 </Link>
@@ -130,7 +130,7 @@ export default function Home() {
             {/* Right Animated Dashboard Preview */}
             <div className="relative lg:pl-8">
               {/* Decorative background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#8ABFB2]/20 to-[#01332B]/20 rounded-3xl blur-3xl transform rotate-6"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-teal/20 to-forest/20 rounded-3xl blur-3xl transform rotate-6"></div>
               
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 backdrop-blur-sm group">
                 <img
@@ -140,19 +140,19 @@ export default function Home() {
                 />
                 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#01332B]/10 via-transparent to-[#8ABFB2]/10"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-forest/10 via-transparent to-teal/10"></div>
                 
                 {/* Floating Stats Cards */}
-                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-[#8ABFB2]/20">
+                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-teal/20">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-teal to-forest rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <div className="text-xs text-[#251B28]/60 font-medium">Total Savings</div>
-                      <div className="text-xl font-bold text-[#01332B]">$12,450</div>
+                      <div className="text-xs text-void/60 font-medium">Total Savings</div>
+                      <div className="text-xl font-bold text-forest">$12,450</div>
                     </div>
                   </div>
                   <div className="mt-2 flex items-center text-green-600 text-xs font-semibold">
@@ -163,7 +163,7 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-[#8ABFB2]/20" style={{animationDelay: '1s'}}>
+                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-teal/20" style={{animationDelay: '1s'}}>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,8 +171,8 @@ export default function Home() {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-xs text-[#251B28]/60 font-medium">Growth Rate</div>
-                      <div className="text-xl font-bold text-[#01332B]">+24.5%</div>
+                      <div className="text-xs text-void/60 font-medium">Growth Rate</div>
+                      <div className="text-xl font-bold text-forest">+24.5%</div>
                     </div>
                   </div>
                   <div className="mt-2 flex items-center text-green-600 text-xs font-semibold">
@@ -184,107 +184,107 @@ export default function Home() {
                 </div>
 
                 {/* Floating particles */}
-                <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-[#8ABFB2] rounded-full animate-ping opacity-60"></div>
-                <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-[#01332B] rounded-full animate-ping opacity-60" style={{animationDelay: '0.7s'}}></div>
+                <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-teal rounded-full animate-ping opacity-60"></div>
+                <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-forest rounded-full animate-ping opacity-60" style={{animationDelay: '0.7s'}}></div>
               </div>
 
               {/* Additional decorative elements */}
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-[#8ABFB2] to-[#01332B] rounded-full opacity-20 blur-2xl"></div>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-[#01332B] to-[#251B28] rounded-full opacity-10 blur-2xl"></div>
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-teal to-forest rounded-full opacity-20 blur-2xl"></div>
+              <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-forest to-void rounded-full opacity-10 blur-2xl"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Simple Steps to Financial Freedom */}
-      <section className="py-20 bg-[#C4C4DB]">
+      <section id="steps" className="py-20 bg-mist">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#251B28] mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-void mb-6 leading-tight">
               Your Roadmap to Financial
-              <span className="block bg-gradient-to-r from-[#8ABFB2] to-[#01332B] bg-clip-text text-transparent mt-2">
+              <span className="block bg-gradient-to-r from-teal to-forest bg-clip-text text-transparent mt-2">
                 Empowerment
               </span>
             </h2>
-            <p className="text-lg text-[#251B28]/70 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg text-void/70 max-w-3xl mx-auto leading-relaxed">
               Transform your financial future with our comprehensive 8-step process. From setup to insights, 
               we guide you every step of the way to achieve complete financial clarity and control.
             </p>
           </div>
 
           {/* Steps Flow Container with Box */}
-          <div className="relative max-w-7xl mx-auto bg-gradient-to-br from-[#FFFFFF] to-[#C4C4DB]/20 rounded-3xl shadow-2xl p-12 md:p-16 animate-fade-in-up hover:shadow-3xl transition-all duration-500 border border-[#8ABFB2]/20" style={{animationDelay: '0.2s'}}>
+          <div className="relative max-w-7xl mx-auto bg-gradient-to-br from-surface to-mist/20 rounded-3xl shadow-2xl p-12 md:p-16 animate-fade-in-up hover:shadow-3xl transition-all duration-500 border border-teal/20" style={{animationDelay: '0.2s'}}>
             {/* Top Row - Steps 1-4 */}
             <div className="grid grid-cols-1 md:grid-cols-7 gap-4 mb-8 items-center">
               {/* Step 1: Signup/Login */}
               <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Signup / Login</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Signup / Login</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Create your account
                 </p>
               </div>
 
               {/* Arrow 1 */}
               <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 2: Budget Setup */}
               <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.45s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Budget Setup</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Budget Setup</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Set your budget goals
                 </p>
               </div>
 
               {/* Arrow 2 */}
               <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 3: Add Income & Expense */}
               <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.55s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Add Income & Expense</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Add Income & Expense</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Track your finances
                 </p>
               </div>
 
               {/* Arrow 3 */}
               <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 4: OCR Integration */}
               <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.65s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M21 5v6.59l-3-3.01-4 4.01-4-4-4 4-3-3.01V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2zm-3 6.42l3 3.01V19c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6.58l3 2.99 4-4 4 4 4-3.99z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">OCR Integration</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">OCR Integration</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Scan receipts automatically
                 </p>
               </div>
@@ -292,7 +292,7 @@ export default function Home() {
 
             {/* Down Arrow - positioned to the right */}
             <div className="flex justify-end mb-8 pr-16 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
-              <svg className="w-12 h-12 text-[#251B28]/60 animate-bounce" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-12 h-12 text-void/60 animate-bounce" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
               </svg>
             </div>
@@ -301,73 +301,73 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-center">
               {/* Step 8: Report Generating */}
               <div className="flex flex-col items-center text-center md:order-7 animate-fade-in-up" style={{animationDelay: '1.0s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Report Generating</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Report Generating</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Generate detailed reports
                 </p>
               </div>
 
               {/* Arrow 4 (Left pointing) */}
               <div className="hidden md:flex items-start justify-center pt-8 md:order-6 animate-fade-in-up" style={{animationDelay: '0.95s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 7: Recurring Transaction */}
               <div className="flex flex-col items-center text-center md:order-5 animate-fade-in-up" style={{animationDelay: '0.9s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Recurring Transaction</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Recurring Transaction</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Manage recurring payments
                 </p>
               </div>
 
               {/* Arrow 5 (Left pointing) */}
               <div className="hidden md:flex items-start justify-center pt-8 md:order-4 animate-fade-in-up" style={{animationDelay: '0.85s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 6: Ask AI */}
               <div className="flex flex-col items-center text-center md:order-3 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3zM7.5 11.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S9.83 13 9 13s-1.5-.67-1.5-1.5zM16 17H8v-2h8v2zm-1-4c-.83 0-1.5-.67-1.5-1.5S14.17 10 15 10s1.5.67 1.5 1.5S15.83 13 15 13z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Ask AI</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Ask AI</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Get AI financial advice
                 </p>
               </div>
 
               {/* Arrow 6 (Left pointing) */}
               <div className="hidden md:flex items-start justify-center pt-8 md:order-2 animate-fade-in-up" style={{animationDelay: '0.75s'}}>
-                <svg className="w-12 h-12 text-[#251B28]/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
                 </svg>
               </div>
 
               {/* Step 5: Categorize Items */}
               <div className="flex flex-col items-center text-center md:order-1 animate-fade-in-up" style={{animationDelay: '0.75s'}}>
-                <div className="w-40 h-40 bg-[#FFFFFF] rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-[#8ABFB2]/30 hover:border-[#8ABFB2]">
-                  <svg className="w-14 h-14 text-[#8ABFB2] group-hover:scale-110 group-hover:text-[#01332B] transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
+                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-[#251B28] mb-2 group-hover:text-[#01332B] transition-colors duration-300">Categorize Items</h3>
-                <p className="text-[#251B28]/60 text-xs leading-relaxed px-2">
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Categorize Items</h3>
+                <p className="text-void/60 text-xs leading-relaxed px-2">
                   Organize transactions
                 </p>
               </div>
@@ -379,28 +379,28 @@ export default function Home() {
     <FeaturesSection />
 
       {/* Feedback Section */}
-      <section id="feedback" className="py-20 bg-[#C4C4DB]">
+      <section id="feedback" className="py-20 bg-mist">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-[#251B28] mb-4 hover:text-[#8ABFB2] transition-colors duration-300">
+            <h2 className="text-4xl font-bold text-void mb-4 hover:text-teal transition-colors duration-300">
               Share Your Feedback
             </h2>
-            <p className="text-[#251B28]/60 text-lg">
+            <p className="text-void/60 text-lg">
               Help us improve FinValora with your valuable insights
             </p>
           </div>
 
           {/* Feedback Form Box */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-[#8ABFB2]/20 animate-fade-in-up hover:shadow-3xl hover:border-[#8ABFB2]/40 transition-all duration-500">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-teal/20 animate-fade-in-up hover:shadow-3xl hover:border-teal/40 transition-all duration-500">
             <form className="space-y-6">
             {/* Feedback Type */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
-              <label htmlFor="feedbackType" className="block text-base font-semibold text-[#251B28] mb-2">
+              <label htmlFor="feedbackType" className="block text-base font-semibold text-void mb-2">
                 Feedback Type <span className="text-red-500 animate-pulse">*</span>
               </label>
               <select
                 id="feedbackType"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#01332B] focus:ring-2 focus:ring-[#8ABFB2]/20 text-[#251B28] bg-white transition-all duration-300 hover:border-[#8ABFB2]"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void bg-white transition-all duration-300 hover:border-teal"
               >
                 <option value="">Select feedback type</option>
                 <option value="bug">Bug Report</option>
@@ -412,7 +412,7 @@ export default function Home() {
 
             {/* Rating */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
-              <label className="block text-base font-semibold text-[#251B28] mb-3">
+              <label className="block text-base font-semibold text-void mb-3">
                 Rate Your Experience <span className="text-red-500 animate-pulse">*</span>
               </label>
               <div className="flex gap-2">
@@ -425,10 +425,10 @@ export default function Home() {
                     onMouseLeave={() => setHoveredRating(0)}
                     className={`transition-all duration-300 focus:outline-none transform hover:scale-125 hover:rotate-12 ${
                       star <= rating
-                        ? 'text-[#01332B] scale-110'
+                        ? 'text-forest scale-110'
                         : star <= hoveredRating
-                        ? 'text-[#8ABFB2]'
-                        : 'text-[#C4C4DB]'
+                        ? 'text-teal'
+                        : 'text-lavender'
                     }`}
                   >
                     <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
@@ -441,26 +441,26 @@ export default function Home() {
 
             {/* Subject */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
-              <label htmlFor="subject" className="block text-base font-semibold text-[#251B28] mb-2">
+              <label htmlFor="subject" className="block text-base font-semibold text-void mb-2">
                 Subject <span className="text-red-500 animate-pulse">*</span>
               </label>
               <input
                 type="text"
                 id="subject"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#01332B] focus:ring-2 focus:ring-[#8ABFB2]/20 text-[#251B28] transition-all duration-300 hover:border-[#8ABFB2] hover:shadow-md"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void transition-all duration-300 hover:border-teal hover:shadow-md"
                 placeholder="Brief summary of your feedback"
               />
             </div>
 
             {/* Feedback Message */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
-              <label htmlFor="feedback" className="block text-base font-semibold text-[#251B28] mb-2">
+              <label htmlFor="feedback" className="block text-base font-semibold text-void mb-2">
                 Your Feedback <span className="text-red-500 animate-pulse">*</span>
               </label>
               <textarea
                 id="feedback"
                 rows="6"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#01332B] focus:ring-2 focus:ring-[#8ABFB2]/20 text-[#251B28] resize-none transition-all duration-300 hover:border-[#8ABFB2] hover:shadow-md"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void resize-none transition-all duration-300 hover:border-teal hover:shadow-md"
                 placeholder="Share your thoughts, suggestions, or report issues..."
               ></textarea>
             </div>
@@ -470,9 +470,9 @@ export default function Home() {
               <input
                 type="checkbox"
                 id="updates"
-                className="w-5 h-5 mt-0.5 border-2 border-gray-300 rounded text-[#01332B] focus:ring-2 focus:ring-[#01332B] focus:ring-offset-0 transition-all duration-300"
+                className="w-5 h-5 mt-0.5 border-2 border-gray-300 rounded text-forest focus:ring-2 focus:ring-forest focus:ring-offset-0 transition-all duration-300"
               />
-              <label htmlFor="updates" className="ml-3 text-base text-[#251B28]/60 hover:text-[#251B28] transition-colors duration-300 cursor-pointer">
+              <label htmlFor="updates" className="ml-3 text-base text-void/60 hover:text-void transition-colors duration-300 cursor-pointer">
                 I agree to receive updates about FinanceFlow
               </label>
             </div>
@@ -480,7 +480,7 @@ export default function Home() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-[#01332B] text-white py-4 rounded-lg font-semibold text-lg hover:bg-[#01332B]/90 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 active:scale-95"
+              className="w-full bg-forest text-white py-4 rounded-lg font-semibold text-lg hover:bg-forest/90 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 active:scale-95"
             >
               <span className="flex items-center justify-center">
                 Submit Feedback
@@ -495,13 +495,13 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 bg-gradient-to-br from-[#C4C4DB] to-[#8ABFB2]">
+      <section id="faq" className="bg-mist py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-[#251B28] mb-4 hover:scale-105 transition-transform duration-300">
-              Frequently <span className="text-[#01332B]">Asked Questions</span>
+            <h2 className="text-4xl font-bold text-void mb-4 hover:scale-105 transition-transform duration-300">
+              Frequently <span className="text-forest">Asked Questions</span>
             </h2>
-            <p className="text-[#251B28]/70 text-lg">
+            <p className="text-void/70 text-lg">
               Find answers to common questions about FIN-VALORA
             </p>
           </div>
@@ -512,8 +512,8 @@ export default function Home() {
               onClick={() => setActiveCategory('All')}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'All'
-                  ? 'bg-[#01332B] text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-[#251B28] hover:bg-white hover:shadow-md'
+                  ? 'bg-forest text-white shadow-lg scale-105'
+                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
               }`}
             >
               All
@@ -522,8 +522,8 @@ export default function Home() {
               onClick={() => setActiveCategory('Getting Started')}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Getting Started'
-                  ? 'bg-[#01332B] text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-[#251B28] hover:bg-white hover:shadow-md'
+                  ? 'bg-forest text-white shadow-lg scale-105'
+                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
               }`}
             >
               Getting Started
@@ -532,8 +532,8 @@ export default function Home() {
               onClick={() => setActiveCategory('Features')}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Features'
-                  ? 'bg-[#01332B] text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-[#251B28] hover:bg-white hover:shadow-md'
+                  ? 'bg-forest text-white shadow-lg scale-105'
+                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
               }`}
             >
               Features
@@ -542,8 +542,8 @@ export default function Home() {
               onClick={() => setActiveCategory('Technical')}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Technical'
-                  ? 'bg-[#01332B] text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-[#251B28] hover:bg-white hover:shadow-md'
+                  ? 'bg-forest text-white shadow-lg scale-105'
+                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
               }`}
             >
               Technical
@@ -555,8 +555,8 @@ export default function Home() {
             {/* Category: Getting Started */}
             {(activeCategory === 'All' || activeCategory === 'Getting Started') && (
             <div className="animate-fade-in-up">
-              <h3 className="text-xl font-bold text-[#251B28] mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-[#8ABFB2] rounded-full mr-3 animate-pulse"></span>
+              <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
+                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
                 Getting Started
               </h3>
               <div className="space-y-3">
@@ -566,17 +566,17 @@ export default function Home() {
                     onClick={() => setOpenFAQ(openFAQ === 1 ? null : 1)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
                   >
-                    <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                    <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                       How do I track my expenses?
                     </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 1 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 1 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 1 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>You can track your expenses by logging into your account and navigating to the Expenses section. Simply click "Add Expense" and enter the details including amount, category, and date. The system will automatically categorize and track your spending patterns.</p>
                 </div>
               )}
@@ -588,17 +588,17 @@ export default function Home() {
                     onClick={() => setOpenFAQ(openFAQ === 2 ? null : 2)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
                   >
-                    <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                    <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                       Can I categorize my transactions?
                     </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 2 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 2 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 2 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Yes! FinValora offers comprehensive categorization features. You can create custom categories, assign transactions to specific categories, and even set up automatic categorization rules based on merchant names or transaction patterns.</p>
                 </div>
                   )}
@@ -610,17 +610,17 @@ export default function Home() {
                     onClick={() => setOpenFAQ(openFAQ === 3 ? null : 3)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
                   >
-                    <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                    <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                       How do I set a budget?
                     </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 3 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 3 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 3 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Setting a budget is easy! Go to the Budget section, click "Create New Budget", and specify your monthly income and spending limits for different categories. The system will track your progress and send alerts when you're approaching your limits.</p>
                 </div>
               )}
@@ -632,8 +632,8 @@ export default function Home() {
             {/* Category: Features */}
             {(activeCategory === 'All' || activeCategory === 'Features') && (
             <div className="animate-fade-in-up">
-              <h3 className="text-xl font-bold text-[#251B28] mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-[#8ABFB2] rounded-full mr-3 animate-pulse"></span>
+              <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
+                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
                 Features
               </h3>
               <div className="space-y-3">
@@ -643,17 +643,17 @@ export default function Home() {
                 onClick={() => setOpenFAQ(openFAQ === 4 ? null : 4)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
               >
-                <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                   Can I export my financial data?
                 </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 4 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 4 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 4 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Absolutely! You can export your financial data in multiple formats including CSV, Excel, and PDF. Go to Settings &gt; Export Data, select your date range and format, and download your complete financial records for backup or analysis purposes.</p>
                 </div>
               )}
@@ -665,8 +665,8 @@ export default function Home() {
             {/* Category: Technical */}
             {(activeCategory === 'All' || activeCategory === 'Technical') && (
             <div className="animate-fade-in-up">
-              <h3 className="text-xl font-bold text-[#251B28] mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-[#8ABFB2] rounded-full mr-3 animate-pulse"></span>
+              <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
+                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
                 Technical
               </h3>
               <div className="space-y-3">
@@ -676,17 +676,17 @@ export default function Home() {
                 onClick={() => setOpenFAQ(openFAQ === 5 ? null : 5)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
               >
-                <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                   Is my financial data secure?
                 </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 5 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 5 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 5 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Yes, absolutely. We use bank-level 256-bit encryption to protect your data. Your information is stored securely and never shared with third parties without your consent. We comply with industry-standard security protocols and regularly audit our systems to ensure your financial data remains private and protected.</p>
                 </div>
               )}
@@ -698,17 +698,17 @@ export default function Home() {
                 onClick={() => setOpenFAQ(openFAQ === 6 ? null : 6)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
               >
-                <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                   How does the OCR feature work?
                 </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 6 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 6 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 6 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Our OCR (Optical Character Recognition) feature allows you to scan receipts and bills using your device's camera or by uploading images. The system automatically extracts transaction details like amount, date, merchant name, and category, saving you time on manual data entry and ensuring accuracy in your financial records.</p>
                 </div>
               )}
@@ -720,17 +720,17 @@ export default function Home() {
                 onClick={() => setOpenFAQ(openFAQ === 7 ? null : 7)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
               >
-                <span className="text-lg font-semibold text-[#251B28] group-hover:text-[#8ABFB2] transition-colors duration-300">
+                <span className="text-lg font-semibold text-void group-hover:text-teal transition-colors duration-300">
                   How does the AI assistant help with my finances?
                 </span>
-                <div className={`w-10 h-10 rounded-full bg-[#01332B] flex items-center justify-center transition-all duration-300 group-hover:bg-[#8ABFB2] group-hover:scale-110 ${openFAQ === 7 ? 'rotate-180' : ''}`}>
+                <div className={`w-10 h-10 rounded-full bg-forest flex items-center justify-center transition-all duration-300 group-hover:bg-teal group-hover:scale-110 ${openFAQ === 7 ? 'rotate-180' : ''}`}>
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
               {openFAQ === 7 && (
-                <div className="px-6 pb-5 text-[#251B28]/70 animate-fade-in">
+                <div className="px-6 pb-5 text-void/70 animate-fade-in">
                   <p>Our AI-powered assistant analyzes your spending patterns, income trends, and financial goals to provide personalized recommendations. It can answer questions about your finances, suggest budget optimizations, identify unusual spending patterns, predict future expenses, and help you make informed financial decisions 24/7.</p>
                 </div>
               )}
@@ -743,7 +743,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-[#8ABFB2] to-[#01332B] relative overflow-hidden">
+      <section className="relative overflow-hidden bg-forest py-20">
         {/* Animated background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full animate-pulse"></div>
@@ -761,8 +761,8 @@ export default function Home() {
           </p>
           <Link
             href="/signup"
-            className="bg-white text-[#01332B] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#8ABFB2] hover:text-white transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-110 hover:-translate-y-2 inline-block animate-fade-in-up group relative overflow-hidden"
-            style={{animationDelay: '0.4s'}}
+            className="group relative inline-flex min-h-[52px] animate-fade-in-up items-center justify-center overflow-hidden rounded-full bg-surface px-8 text-lg font-semibold text-forest shadow-fv-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal hover:shadow-fv-xl"
+            style={{ animationDelay: "0.4s" }}
           >
             <span className="relative z-10 flex items-center justify-center">
               Get Started for Free
