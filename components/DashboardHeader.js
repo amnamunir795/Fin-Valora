@@ -118,10 +118,6 @@ export default function DashboardHeader({ user }) {
               <span className="relative z-10">Transactions</span>
               <span className="absolute inset-0 bg-gradient-to-r from-teal/0 via-teal/10 to-teal/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></span>
             </Link>
-            <Link href="#" className="relative px-4 py-2 text-void/80 hover:text-teal font-medium transition-all duration-300 rounded-lg hover:bg-mist/30 group">
-              <span className="relative z-10">Reports</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-teal/0 via-teal/10 to-teal/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></span>
-            </Link>
           </nav>
 
           {/* User Menu */}
@@ -204,9 +200,6 @@ export default function DashboardHeader({ user }) {
               </Link>
               <Link href="#" className="px-4 py-3 text-void/80 hover:text-teal hover:bg-mist/30 font-medium rounded-lg transition-all duration-300">
                 Transactions
-              </Link>
-              <Link href="#" className="px-4 py-3 text-void/80 hover:text-teal hover:bg-mist/30 font-medium rounded-lg transition-all duration-300">
-                Reports
               </Link>
               <button
                 onClick={handleLogout}

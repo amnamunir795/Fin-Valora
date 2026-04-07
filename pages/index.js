@@ -299,16 +299,16 @@ export default function Home() {
 
             {/* Bottom Row - Steps 8-5 (Reversed) */}
             <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-center">
-              {/* Step 8: Report Generating */}
+              {/* Step 8: Financial overview */}
               <div className="flex flex-col items-center text-center md:order-7 animate-fade-in-up" style={{animationDelay: '1.0s'}}>
                 <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
                   <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Report Generating</h3>
+                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Financial overview</h3>
                 <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Generate detailed reports
+                  Review income, expenses, and budget in one place
                 </p>
               </div>
 

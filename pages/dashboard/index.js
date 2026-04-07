@@ -23,6 +23,11 @@ export default function Dashboard() {
   const [recentScans, setRecentScans] = useState([]);
   const [ocrUploading, setOcrUploading] = useState(false);
   const [ocrMessage, setOcrMessage] = useState('');
+  const [selectedOcrScanId, setSelectedOcrScanId] = useState(null);
+  const [ocrExpenseCategories, setOcrExpenseCategories] = useState([]);
+  const [ocrCategoryId, setOcrCategoryId] = useState('');
+  const [ocrAmountOverride, setOcrAmountOverride] = useState('');
+  const [ocrSavingExpense, setOcrSavingExpense] = useState(false);
   const fileInputRef = useRef(null);
   const filterPanelRef = useRef(null);
   const router = useRouter();
@@ -121,7 +126,7 @@ export default function Dashboard() {
 
     const loadScans = async () => {
       try {
-        const res = await authenticatedFetch('/api/ocr/scans?limit=5');
+        const res = await authenticatedFetch('/api/ocr/scans?limit=10');
         if (res.ok) {
           const data = await res.json();
           setRecentScans(data.scans || []);
@@ -133,6 +138,35 @@ export default function Dashboard() {
 
     loadScans();
   }, [budget]);
+
+  useEffect(() => {
+    if (!budget) return;
+    (async () => {
+      try {
+        const res = await authenticatedFetch('/api/categories?type=Expense');
+        if (!res.ok) return;
+        const data = await res.json();
+        const cats = data.categories || [];
+        setOcrExpenseCategories(cats);
+        setOcrCategoryId((prev) => {
+          if (prev) return prev;
+          const first = cats[0];
+          return first ? String(first.id) : '';
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [budget]);
+
+  const selectedOcrScan =
+    recentScans.find((s) => String(s.id) === String(selectedOcrScanId)) || recentScans[0] || null;
+
+  useEffect(() => {
+    if (!selectedOcrScan) return;
+    const v = selectedOcrScan.extractedData?.amount?.value;
+    setOcrAmountOverride(v != null && v !== '' ? String(v) : '');
+  }, [selectedOcrScan?.id]);
 
   const incomeRecorded = monthTransactions
     .filter((t) => t.type === 'Income')
@@ -177,8 +211,17 @@ export default function Dashboard() {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        setOcrMessage('Receipt uploaded. Processing will complete shortly.');
-        const listRes = await authenticatedFetch('/api/ocr/scans?limit=5');
+        setOcrMessage(
+          data.scan?.status === 'completed'
+            ? 'Receipt processed. Review extracted data below.'
+            : data.message || 'Upload finished — check status below.',
+        );
+        if (data.scan?.id) {
+          setSelectedOcrScanId(String(data.scan.id));
+          const v = data.scan.extractedData?.amount?.value;
+          setOcrAmountOverride(v != null && v !== '' ? String(v) : '');
+        }
+        const listRes = await authenticatedFetch('/api/ocr/scans?limit=10');
         if (listRes.ok) {
           const listData = await listRes.json();
           setRecentScans(listData.scans || []);
@@ -192,6 +235,52 @@ export default function Dashboard() {
     } finally {
       setOcrUploading(false);
       if (e.target) e.target.value = '';
+    }
+  };
+
+  const formatOcrScanDate = (value) => {
+    if (!value) return '—';
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString();
+  };
+
+  const handleOcrApplyExpense = async () => {
+    if (!selectedOcrScan?.id || selectedOcrScan.status !== 'completed') return;
+    if (selectedOcrScan.hasTransaction) {
+      setOcrMessage('This receipt is already linked to an expense.');
+      return;
+    }
+    if (!ocrCategoryId) {
+      setOcrMessage('Choose an expense category.');
+      return;
+    }
+    setOcrSavingExpense(true);
+    setOcrMessage('');
+    try {
+      const body = {
+        categoryId: ocrCategoryId,
+        ...(ocrAmountOverride.trim() !== '' ? { amount: parseFloat(ocrAmountOverride) } : {}),
+      };
+      const res = await authenticatedFetch(`/api/ocr/scan/${selectedOcrScan.id}/apply-expense`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setOcrMessage('Expense added from receipt.');
+        const listRes = await authenticatedFetch('/api/ocr/scans?limit=10');
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          setRecentScans(listData.scans || []);
+        }
+      } else {
+        setOcrMessage(data.message || 'Could not add expense');
+      }
+    } catch (err) {
+      setOcrMessage('Could not add expense');
+      console.error(err);
+    } finally {
+      setOcrSavingExpense(false);
     }
   };
 
@@ -309,10 +398,10 @@ export default function Dashboard() {
               Expenses
             </Link>
             <Link href="/reports" className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200">
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              Reports
+              Report
             </Link>
             <button
               type="button"
@@ -622,60 +711,193 @@ export default function Dashboard() {
               </div>
             </div>
 
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+              className="hidden"
+              onChange={handleOcrFile}
+            />
+
+            {ocrMessage ? (
+              <p className="text-sm text-forest mb-4 rounded-lg border border-lavender/40 bg-mist/30 px-3 py-2" role="status">
+                {ocrMessage}
+              </p>
+            ) : null}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Upload Area */}
-              <div className="border-2 border-dashed border-lavender rounded-lg p-6 text-center hover:border-teal transition-colors cursor-pointer bg-gradient-to-br from-mist/10 to-transparent">
-                <div className="flex flex-col items-center">
+              <div
+                className="border-2 border-dashed border-lavender rounded-lg p-6 text-center hover:border-teal transition-colors cursor-pointer bg-gradient-to-br from-mist/10 to-transparent"
+                onClick={() => {
+                  if (ocrUploading) return;
+                  fileInputRef.current?.click();
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Upload receipt file"
+              >
+                <div className="flex flex-col items-center pointer-events-none">
                   <svg className="w-12 h-12 text-teal mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
                   <h4 className="text-lg font-medium text-void mb-2">Upload Receipt</h4>
-                  <p className="text-sm text-forest mb-4">Drag and drop your receipt or click to browse</p>
-                  <button className="px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 shadow-md">
-                    Choose File
-                  </button>
-                  <p className="text-xs text-forest/70 mt-2">Supports JPG, PNG, PDF files</p>
+                  <p className="text-sm text-forest mb-4">Click to browse (JPG, PNG, WebP, PDF)</p>
+                  <span className="px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg shadow-md text-sm font-semibold inline-block">
+                    {ocrUploading ? 'Processing…' : 'Choose File'}
+                  </span>
+                  <p className="text-xs text-forest/70 mt-2">OCR runs on the server after upload</p>
                 </div>
               </div>
 
-              {/* OCR Results */}
               <div className="bg-gradient-to-br from-mist/20 to-mist/10 rounded-lg p-6 border border-lavender/30">
                 <h4 className="text-lg font-medium text-void mb-4">Extracted Data</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
-                    <span className="text-sm text-forest">Amount:</span>
-                    <span className="text-sm font-medium text-void">--</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
-                    <span className="text-sm text-forest">Merchant:</span>
-                    <span className="text-sm font-medium text-void">--</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-lavender/40">
-                    <span className="text-sm text-forest">Date:</span>
-                    <span className="text-sm font-medium text-void">--</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-sm text-forest">Category:</span>
-                    <span className="text-sm font-medium text-void">--</span>
-                  </div>
-                </div>
-                <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 disabled:bg-mist/50 disabled:cursor-not-allowed shadow-md" disabled>
-                  Add to Expenses
-                </button>
+                {!selectedOcrScan ? (
+                  <p className="text-sm text-forest">Upload a receipt or select a scan from the list below.</p>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold text-forest uppercase">Status</span>
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                          selectedOcrScan.status === 'completed'
+                            ? 'bg-teal/20 text-forest'
+                            : selectedOcrScan.status === 'failed'
+                              ? 'bg-mist text-void'
+                              : 'bg-lavender/30 text-void'
+                        }`}
+                      >
+                        {selectedOcrScan.status}
+                      </span>
+                    </div>
+                    {selectedOcrScan.status === 'failed' && selectedOcrScan.error?.message ? (
+                      <p className="text-sm text-forest mb-3">{selectedOcrScan.error.message}</p>
+                    ) : null}
+                    <div className="space-y-3">
+                      <div className="flex flex-col gap-1 py-2 border-b border-lavender/40">
+                        <span className="text-sm text-forest">Amount</span>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          className="w-full px-3 py-2 rounded-lg border border-lavender text-void text-sm bg-white"
+                          value={ocrAmountOverride}
+                          onChange={(e) => setOcrAmountOverride(e.target.value)}
+                          placeholder={
+                            selectedOcrScan.extractedData?.amount?.value != null
+                              ? String(selectedOcrScan.extractedData.amount.value)
+                              : 'Enter amount'
+                          }
+                        />
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-lavender/40 gap-2">
+                        <span className="text-sm text-forest shrink-0">Merchant</span>
+                        <span className="text-sm font-medium text-void text-right truncate">
+                          {selectedOcrScan.extractedData?.merchant?.value || '—'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-lavender/40">
+                        <span className="text-sm text-forest">Date</span>
+                        <span className="text-sm font-medium text-void">
+                          {formatOcrScanDate(selectedOcrScan.extractedData?.date?.value)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-lavender/40">
+                        <span className="text-sm text-forest">Suggested category</span>
+                        <span className="text-sm font-medium text-void text-right">
+                          {selectedOcrScan.extractedData?.category?.value || '—'}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-1 py-2">
+                        <label htmlFor="ocr-expense-category" className="text-sm text-forest">
+                          Expense category
+                        </label>
+                        <select
+                          id="ocr-expense-category"
+                          value={ocrCategoryId}
+                          onChange={(e) => setOcrCategoryId(e.target.value)}
+                          className="w-full px-3 py-2 rounded-lg border border-lavender text-void text-sm bg-white"
+                        >
+                          {ocrExpenseCategories.length === 0 ? (
+                            <option value="">No categories — add in Categories</option>
+                          ) : (
+                            ocrExpenseCategories.map((c) => (
+                              <option key={c.id} value={c.id}>
+                                {c.name}
+                              </option>
+                            ))
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleOcrApplyExpense}
+                      disabled={
+                        ocrSavingExpense ||
+                        selectedOcrScan.status !== 'completed' ||
+                        selectedOcrScan.hasTransaction ||
+                        !ocrCategoryId
+                      }
+                      className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md font-semibold text-sm"
+                    >
+                      {selectedOcrScan.hasTransaction
+                        ? 'Already added'
+                        : ocrSavingExpense
+                          ? 'Saving…'
+                          : 'Add to Expenses'}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Recent Scans */}
             <div className="mt-6">
               <h4 className="text-lg font-medium text-void mb-4">Recent Scans</h4>
               <div className="bg-gradient-to-br from-mist/20 to-mist/10 rounded-lg p-4 border border-lavender/30">
-                <div className="text-center text-forest">
-                  <svg className="w-8 h-8 mx-auto mb-2 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <p className="text-sm">No receipts scanned yet</p>
-                  <p className="text-xs text-forest/70">Upload your first receipt to get started</p>
-                </div>
+                {recentScans.length === 0 ? (
+                  <div className="text-center text-forest">
+                    <svg className="w-8 h-8 mx-auto mb-2 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p className="text-sm">No receipts scanned yet</p>
+                    <p className="text-xs text-forest/70">Upload your first receipt to get started</p>
+                  </div>
+                ) : (
+                  <ul className="space-y-2">
+                    {recentScans.map((scan) => (
+                      <li key={String(scan.id)}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedOcrScanId(String(scan.id));
+                            const v = scan.extractedData?.amount?.value;
+                            setOcrAmountOverride(v != null && v !== '' ? String(v) : '');
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-lg border transition-colors ${
+                            String(selectedOcrScanId || selectedOcrScan?.id) === String(scan.id)
+                              ? 'border-teal bg-teal/10'
+                              : 'border-lavender/40 hover:border-teal/50 bg-surface/80'
+                          }`}
+                        >
+                          <div className="flex justify-between items-start gap-2">
+                            <span className="text-sm font-medium text-void truncate">{scan.filename}</span>
+                            <span className="text-xs font-semibold text-forest shrink-0">{scan.status}</span>
+                          </div>
+                          <div className="text-xs text-forest/80 mt-1">
+                            {scan.hasTransaction ? 'Linked to expense' : 'Not linked'}
+                            {scan.overallConfidence != null ? ` · ${scan.overallConfidence}% confidence` : ''}
+                          </div>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
@@ -684,12 +906,12 @@ export default function Dashboard() {
           <div className="bg-gradient-to-r from-surface via-mist/20 to-surface rounded-lg border border-lavender/40 p-8 shadow-lg">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-void mb-4">Unlock Your Financial Insights</h2>
-              <p className="text-forest mb-6">Get a deeper understanding of your financial performance with our detailed reports.</p>
+              <p className="text-forest mb-6">Fine-tune your budget and categories to get a clearer picture of income and spending.</p>
               <button 
                 onClick={() => router.push('/budget-setup?edit=true')}
                 className="px-6 py-3 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void transition-all duration-200 shadow-md hover:shadow-lg"
               >
-                View Detailed Reports
+                Review budget setup
               </button>
             </div>
           </div>

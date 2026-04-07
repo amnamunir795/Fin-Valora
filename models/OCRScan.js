@@ -160,11 +160,7 @@ ocrScanSchema.index({ userId: 1, isReviewed: 1 });
 
 // Static method to get recent scans
 ocrScanSchema.statics.getRecentScans = function(userId, limit = 10) {
-  return this.find({ userId })
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .populate('extractedData.category.suggestedCategoryId')
-    .populate('transactionId');
+  return this.find({ userId }).sort({ createdAt: -1 }).limit(limit);
 };
 
 // Static method to get pending scans
@@ -205,7 +201,8 @@ ocrScanSchema.methods.getSummary = function() {
     isReviewed: this.isReviewed,
     isApproved: this.isApproved,
     createdAt: this.createdAt,
-    hasTransaction: !!this.transactionId
+    hasTransaction: !!this.transactionId,
+    error: this.error,
   };
 };
 

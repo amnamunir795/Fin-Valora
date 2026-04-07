@@ -4,11 +4,12 @@ import { verifyRequestAuth } from '../../../middleware/auth';
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
+import { runReceiptOcr, resolveReceiptAbsolutePath } from '../../../lib/receiptOcr';
 
-// Disable default body parser
 export const config = {
   api: {
     bodyParser: false,
+    responseLimit: false,
   },
 };
 
@@ -17,13 +18,12 @@ export default async function handler(req, res) {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({
       success: false,
-      message: 'Method not allowed'
+      message: 'Method not allowed',
     });
   }
 
   await connectDB();
 
-  // Verify authentication
   const authResult = await verifyRequestAuth(req);
   if (!authResult.success) {
     return res.status(401).json({ success: false, message: authResult.message });
@@ -32,47 +32,42 @@ export default async function handler(req, res) {
   const userId = authResult.user.id;
 
   try {
-    // Parse form data
-    const form = formidable({
-      uploadDir: './public/uploads/receipts',
-      keepExtensions: true,
-      maxFileSize: 10 * 1024 * 1024, // 10MB limit
-      filter: ({ mimetype }) => {
-        // Allow images and PDFs
-        return mimetype && (
-          mimetype.includes('image/') || 
-          mimetype.includes('application/pdf')
-        );
-      }
-    });
-
-    // Ensure upload directory exists
-    const uploadDir = './public/uploads/receipts';
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'receipts');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
 
+    const form = formidable({
+      uploadDir,
+      keepExtensions: true,
+      maxFileSize: 10 * 1024 * 1024,
+      filter: ({ mimetype }) =>
+        Boolean(
+          mimetype &&
+            (mimetype.includes('image/') ||
+              mimetype.includes('application/pdf') ||
+              mimetype === 'image/webp'),
+        ),
+    });
+
     const [fields, files] = await form.parse(req);
-    
+
     const file = Array.isArray(files.receipt) ? files.receipt[0] : files.receipt;
-    
+
     if (!file) {
       return res.status(400).json({
         success: false,
-        message: 'No file uploaded'
+        message: 'No file uploaded',
       });
     }
 
-    // Generate unique filename
     const timestamp = Date.now();
-    const ext = path.extname(file.originalFilename || '');
+    const ext = path.extname(file.originalFilename || '') || '.bin';
     const filename = `receipt_${userId}_${timestamp}${ext}`;
     const newPath = path.join(uploadDir, filename);
 
-    // Move file to permanent location
     fs.renameSync(file.filepath, newPath);
 
-    // Create OCR scan record
     const ocrScan = new OCRScan({
       userId,
       originalFile: {
@@ -80,116 +75,74 @@ export default async function handler(req, res) {
         originalName: file.originalFilename || 'unknown',
         mimetype: file.mimetype || 'application/octet-stream',
         size: file.size || 0,
-        url: `/uploads/receipts/${filename}`
+        url: `/uploads/receipts/${filename}`,
       },
-      status: 'pending'
+      status: 'processing',
     });
 
     await ocrScan.save();
 
-    // TODO: Queue OCR processing job here
-    // For now, we'll simulate processing
-    setTimeout(async () => {
-      try {
-        // Simulate OCR processing
-        await simulateOCRProcessing(ocrScan._id);
-      } catch (error) {
-        console.error('OCR processing error:', error);
+    const absPath = resolveReceiptAbsolutePath(filename);
+    const started = Date.now();
+
+    try {
+      if (!absPath || !fs.existsSync(absPath)) {
+        throw new Error('Saved file not found');
       }
-    }, 2000);
 
-    res.status(201).json({
+      const result = await runReceiptOcr({
+        absolutePath: absPath,
+        mimetype: ocrScan.originalFile.mimetype,
+      });
+
+      ocrScan.status = 'completed';
+      ocrScan.rawText = result.rawText;
+      ocrScan.extractedData = result.extractedData;
+      ocrScan.overallConfidence = result.overallConfidence;
+      ocrScan.processingTime = Date.now() - started;
+      ocrScan.ocrEngine = result.ocrEngine;
+      ocrScan.error = undefined;
+      await ocrScan.save();
+    } catch (ocrError) {
+      console.error('OCR processing error:', ocrError);
+      ocrScan.status = 'failed';
+      ocrScan.error = {
+        message: ocrError.message || 'OCR failed',
+        code: 'OCR_ERROR',
+      };
+      ocrScan.processingTime = Date.now() - started;
+      await ocrScan.save();
+    }
+
+    return res.status(201).json({
       success: true,
-      message: 'File uploaded successfully',
+      message:
+        ocrScan.status === 'completed'
+          ? 'Receipt processed successfully'
+          : 'File uploaded but OCR failed — you can try another image or PDF with selectable text',
       scanId: ocrScan._id,
-      scan: ocrScan.getSummary()
+      scan: ocrScan.getSummary(),
     });
-
   } catch (error) {
     console.error('Upload error:', error);
-    
+
     if (error.code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({
         success: false,
-        message: 'File too large. Maximum size is 10MB.'
+        message: 'File too large. Maximum size is 10MB.',
       });
     }
 
     if (error.code === 'LIMIT_UNEXPECTED_FILE') {
       return res.status(400).json({
         success: false,
-        message: 'Invalid file type. Only images and PDFs are allowed.'
+        message: 'Invalid file type. Only images and PDFs are allowed.',
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: 'Upload failed'
+      message: 'Upload failed',
     });
-  }
-}
-
-// Simulate OCR processing (replace with actual OCR service)
-async function simulateOCRProcessing(scanId) {
-  try {
-    const scan = await OCRScan.findById(scanId);
-    if (!scan) return;
-
-    // Update status to processing
-    scan.status = 'processing';
-    await scan.save();
-
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    // Simulate extracted data
-    const mockExtractedData = {
-      amount: {
-        value: 25.99,
-        confidence: 85,
-        rawText: '$25.99'
-      },
-      merchant: {
-        value: 'Sample Restaurant',
-        confidence: 90,
-        rawText: 'SAMPLE RESTAURANT'
-      },
-      date: {
-        value: new Date(),
-        confidence: 80,
-        rawText: new Date().toLocaleDateString()
-      },
-      category: {
-        value: 'Food & Dining',
-        confidence: 75
-      },
-      currency: {
-        value: 'USD',
-        confidence: 95
-      }
-    };
-
-    // Update scan with results
-    scan.status = 'completed';
-    scan.extractedData = mockExtractedData;
-    scan.overallConfidence = 83;
-    scan.processingTime = 3000;
-    scan.rawText = 'SAMPLE RESTAURANT\n$25.99\n' + new Date().toLocaleDateString();
-
-    await scan.save();
-
-  } catch (error) {
-    console.error('OCR simulation error:', error);
-    
-    // Mark as failed
-    const scan = await OCRScan.findById(scanId);
-    if (scan) {
-      scan.status = 'failed';
-      scan.error = {
-        message: error.message,
-        code: 'PROCESSING_ERROR'
-      };
-      await scan.save();
-    }
   }
 }
