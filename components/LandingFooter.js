@@ -1,23 +1,35 @@
 import Link from 'next/link';
+import FinValoraLogo from './FinValoraLogo';
 
 export default function LandingFooter() {
   return (
-    <footer className="relative overflow-hidden bg-void text-white">
+    <footer className="relative overflow-hidden border-t border-lavender/35 bg-void text-white">
       <div
-        className="absolute inset-0 opacity-90"
+        className="absolute inset-0 opacity-95"
         style={{
           background:
-            "linear-gradient(160deg, var(--bg-deep) 0%, var(--color-forest) 45%, var(--bg-deep) 100%)",
+            "linear-gradient(165deg, #251b28 0%, #01332b 42%, #1a1420 100%)",
         }}
       />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(138, 191, 178, 0.2), transparent 55%)",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-12">
           {/* FinanceFlow Info */}
           <div className="animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-            <h3 className="text-xl font-bold text-white mb-4 transition-colors duration-300 hover:text-teal">FinValora</h3>
-            <p className="text-white text-sm mb-6">
-              Empowering individuals to achieve financial freedom through smart tools and expert guidance.
+            <div className="mb-4 flex items-center gap-3">
+              <FinValoraLogo size={40} className="drop-shadow-lg opacity-95" />
+              <h3 className="text-xl font-bold text-white transition-colors duration-300 hover:text-teal">FinValora</h3>
+            </div>
+            <p className="mb-6 text-sm leading-relaxed text-white/85">
+              Empowering individuals to achieve financial clarity through thoughtful tools and a calm,
+              guided experience.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:scale-110 hover:bg-teal/40 hover:-translate-y-1" aria-label="Facebook">
@@ -45,7 +57,9 @@ export default function LandingFooter() {
 
           {/* Product */}
           <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            <h4 className="font-semibold text-white mb-4 hover:text-teal transition-colors duration-300">Product</h4>
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-teal/90">
+              Product
+            </h4>
             <ul className="space-y-2">
               <li><a href="#features" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">Features</a></li>
               <li><a href="#" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">Pricing</a></li>
@@ -56,7 +70,9 @@ export default function LandingFooter() {
 
           {/* Resources */}
           <div className="animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-            <h4 className="font-semibold text-white mb-4 hover:text-teal transition-colors duration-300">Resources</h4>
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-teal/90">
+              Resources
+            </h4>
             <ul className="space-y-2">
               <li><a href="#" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">Blog</a></li>
               <li><a href="#" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">Guides</a></li>
@@ -67,7 +83,9 @@ export default function LandingFooter() {
 
           {/* Company */}
           <div className="animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-            <h4 className="font-semibold text-white mb-4 hover:text-teal transition-colors duration-300">Company</h4>
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-teal/90">
+              Company
+            </h4>
             <ul className="space-y-2">
               <li><a href="#about" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">About Us</a></li>
               <li><a href="#" className="text-white hover:text-teal transition-all duration-300 text-sm hover:translate-x-2 inline-block">Careers</a></li>
@@ -78,8 +96,11 @@ export default function LandingFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 border-t border-white/15 pt-8 text-center animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-          <p className="text-sm text-white">
+        <div
+          className="mt-12 border-t border-white/10 pt-8 text-center animate-fade-in-up"
+          style={{ animationDelay: '0.5s' }}
+        >
+          <p className="text-sm text-white/80">
             © 2026 FinValora. All rights reserved. |
             <Link href="/privacy" className="ml-2 transition-colors duration-300 hover:text-teal hover:underline">
               Privacy Policy

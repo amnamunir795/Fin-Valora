@@ -5,6 +5,66 @@ import LandingHeader from '../components/LandingHeader';
 import LandingFooter from '../components/LandingFooter';
 import FeaturesSection from '@/components/FeaturesSection';
 
+function RoadmapStepCard({ step, title, description, delay, children, className = '' }) {
+  return (
+    <div
+      className={`group flex w-full max-w-[168px] flex-col items-center text-center animate-fade-in-up ${className}`}
+      style={{ animationDelay: delay }}
+    >
+      <span className="mb-3 inline-flex h-8 min-w-[2rem] items-center justify-center rounded-full bg-gradient-to-br from-forest to-void px-2 text-xs font-bold tabular-nums text-white shadow-md ring-2 ring-white">
+        {String(step).padStart(2, '0')}
+      </span>
+      <div className="relative mb-4 flex h-[7.25rem] w-[7.25rem] items-center justify-center rounded-2xl border border-lavender/50 bg-gradient-to-b from-white to-teal-soft/50 shadow-md ring-1 ring-teal/10 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-teal/50 group-hover:shadow-lg md:h-[7.75rem] md:w-[7.75rem]">
+        {children}
+      </div>
+      <h3 className="mb-1.5 text-sm font-semibold leading-snug text-void transition-colors duration-300 group-hover:text-forest">
+        {title}
+      </h3>
+      <p className="px-0.5 text-xs leading-relaxed text-void/55">{description}</p>
+    </div>
+  );
+}
+
+function RoadmapArrowRight({ delay, className = '' }) {
+  return (
+    <div
+      className={`hidden items-start justify-center pt-10 md:flex animate-fade-in-up ${className}`}
+      style={{ animationDelay: delay }}
+      aria-hidden
+    >
+      <svg
+        className="h-8 w-8 text-teal/45"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </div>
+  );
+}
+
+function RoadmapArrowLeft({ delay, className = '' }) {
+  return (
+    <div
+      className={`hidden items-start justify-center pt-10 md:flex animate-fade-in-up ${className}`}
+      style={{ animationDelay: delay }}
+      aria-hidden
+    >
+      <svg
+        className="h-8 w-8 rotate-180 text-teal/45"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </div>
+  );
+}
+
 export default function Home() {
   const router = useRouter();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -30,19 +90,15 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-mist">
+    <div className="min-h-screen bg-gradient-to-b from-surface via-mist to-lavender/30">
       <LandingHeader />
 
       {showSuccess && (
-        <div className="bg-teal/20 border-b border-teal">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-forest"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
+        <div className="border-b border-lavender/80 bg-gradient-to-r from-teal/20 via-lavender/30 to-teal/25">
+          <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-4 rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-sm shadow-forest/5 backdrop-blur-sm md:px-5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal/40 to-forest/90 text-white shadow-md ring-2 ring-white">
+                <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
                   <path
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -50,63 +106,61 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-forest">
-                  {successMessage}
-                </p>
-              </div>
+              <p className="text-sm font-medium leading-snug text-forest">{successMessage}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-surface py-16 lg:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-surface via-teal-soft/90 to-lavender/35 py-20 lg:py-28">
+        <div
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.75)_0%,transparent_35%,transparent_100%)]"
+          aria-hidden
+        />
         {/* Background decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-teal/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-forest/5 rounded-full blur-3xl"></div>
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute right-10 top-20 h-72 w-72 rounded-full bg-teal/25 blur-3xl" />
+          <div className="absolute bottom-20 left-10 h-96 w-96 rounded-full bg-void/8 blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lavender/25 blur-3xl" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-16">
             {/* Left Content */}
-            <div className="space-y-6">
-              <h1 className="font-display text-4xl font-bold leading-tight text-void md:text-5xl lg:text-6xl">
+            <div className="space-y-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-forest/85">
+                Personal finance, simplified
+              </p>
+              <h1 className="font-display text-4xl font-bold leading-[1.12] text-void md:text-5xl lg:text-[3.25rem]">
                 Master Your{" "}
                 <span className="italic text-forest">Money,</span>
                 <span className="mt-2 block text-void">
                   Shape Your <span className="italic text-forest">Future</span>
                 </span>
               </h1>
-              
-              <p className="text-lg text-void/70 max-w-xl leading-relaxed">
-                Take control of your financial journey with intelligent budgeting tools, real-time insights, and personalized guidance designed for your success.
+              <div className="h-px w-16 bg-gradient-to-r from-teal to-transparent" aria-hidden />
+              <p className="max-w-xl text-lg leading-relaxed text-void/75">
+                Take control of your financial journey with intelligent budgeting, real-time insights, and
+                guidance tuned to your goals—without the spreadsheet overload.
               </p>
 
               {/* Feature highlights */}
-              <div className="flex flex-wrap gap-4 pt-2">
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-sm font-medium text-void/80">Smart Budgeting</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-sm font-medium text-void/80">Real-time Tracking</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-sm font-medium text-void/80">Secure & Private</span>
-                </div>
+              <div className="flex flex-wrap gap-3 pt-1">
+                {['Smart budgeting', 'Real-time tracking', 'Bank-grade privacy'].map((label) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-2 rounded-full border border-lavender/70 bg-white/80 px-4 py-2 text-sm font-medium text-void/85 shadow-sm shadow-forest/5 backdrop-blur-sm"
+                  >
+                    <svg className="h-4 w-4 shrink-0 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {label}
+                  </span>
+                ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center">
                 <Link
                   href="/signup"
                   className="fv-btn-primary group relative min-h-[52px] overflow-hidden px-8 text-lg shadow-fv-md transition-all duration-300 hover:shadow-fv-lg"
@@ -127,12 +181,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Animated Dashboard Preview */}
-            <div className="relative lg:pl-8">
-              {/* Decorative background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-teal/20 to-forest/20 rounded-3xl blur-3xl transform rotate-6"></div>
-              
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/50 backdrop-blur-sm group">
+            {/* Right — dashboard preview */}
+            <div className="relative lg:pl-4">
+              <div className="absolute inset-0 rotate-6 transform rounded-3xl bg-gradient-to-br from-teal/25 to-forest/15 blur-3xl" aria-hidden />
+              <div className="group relative overflow-hidden rounded-2xl border-2 border-lavender/60 shadow-2xl shadow-forest/10 ring-2 ring-teal/25 backdrop-blur-sm">
                 <img
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"
                   alt="Financial analytics and data visualization"
@@ -143,7 +195,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-forest/10 via-transparent to-teal/10"></div>
                 
                 {/* Floating Stats Cards */}
-                <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-teal/20">
+                <div className="animate-float absolute left-6 top-6 rounded-xl border border-lavender bg-white/95 p-4 shadow-xl backdrop-blur-md">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-teal to-forest rounded-lg flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,17 +207,17 @@ export default function Home() {
                       <div className="text-xl font-bold text-forest">$12,450</div>
                     </div>
                   </div>
-                  <div className="mt-2 flex items-center text-green-600 text-xs font-semibold">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="mt-2 flex items-center text-xs font-semibold text-forest">
+                    <svg className="mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd"/>
                     </svg>
                     +12.5% this month
                   </div>
                 </div>
                 
-                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md rounded-xl shadow-xl p-4 animate-float border border-teal/20" style={{animationDelay: '1s'}}>
+                <div className="animate-float absolute bottom-6 right-6 rounded-xl border border-lavender bg-white/95 p-4 shadow-xl backdrop-blur-md" style={{animationDelay: '1s'}}>
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-teal to-forest">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                       </svg>
@@ -175,8 +227,8 @@ export default function Home() {
                       <div className="text-xl font-bold text-forest">+24.5%</div>
                     </div>
                   </div>
-                  <div className="mt-2 flex items-center text-green-600 text-xs font-semibold">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="mt-2 flex items-center text-xs font-semibold text-forest">
+                    <svg className="mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd"/>
                     </svg>
                     Above target
@@ -189,187 +241,209 @@ export default function Home() {
               </div>
 
               {/* Additional decorative elements */}
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-teal to-forest rounded-full opacity-20 blur-2xl"></div>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-forest to-void rounded-full opacity-10 blur-2xl"></div>
+              <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-gradient-to-br from-teal to-forest opacity-25 blur-2xl"></div>
+              <div className="absolute -left-4 -top-4 h-32 w-32 rounded-full bg-gradient-to-br from-void/40 to-teal/30 opacity-40 blur-2xl"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Simple Steps to Financial Freedom */}
-      <section id="steps" className="py-20 bg-mist">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-void mb-6 leading-tight">
+      {/* Roadmap — 8-step journey */}
+      <section id="steps" className="relative overflow-hidden bg-gradient-to-b from-lavender/35 via-mist to-surface py-24 md:py-28">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(138,191,178,0.18),transparent_55%)]" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-14 max-w-3xl text-center animate-fade-in-up md:mb-16">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-forest/80">
+              How it works
+            </p>
+            <h2 className="font-display text-4xl font-semibold leading-tight text-void md:text-5xl">
               Your Roadmap to Financial
-              <span className="block bg-gradient-to-r from-teal to-forest bg-clip-text text-transparent mt-2">
+              <span className="mt-2 block bg-gradient-to-r from-teal via-forest to-void bg-clip-text text-transparent">
                 Empowerment
               </span>
             </h2>
-            <p className="text-lg text-void/70 max-w-3xl mx-auto leading-relaxed">
-              Transform your financial future with our comprehensive 8-step process. From setup to insights, 
-              we guide you every step of the way to achieve complete financial clarity and control.
+            <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-teal to-transparent" aria-hidden />
+            <p className="mt-6 text-lg leading-relaxed text-void/70">
+              Eight clear stages—from account setup to full visibility—so you always know what comes next
+              on the path to confident money management.
             </p>
           </div>
 
-          {/* Steps Flow Container with Box */}
-          <div className="relative max-w-7xl mx-auto bg-gradient-to-br from-surface to-mist/20 rounded-3xl shadow-2xl p-12 md:p-16 animate-fade-in-up hover:shadow-3xl transition-all duration-500 border border-teal/20" style={{animationDelay: '0.2s'}}>
-            {/* Top Row - Steps 1-4 */}
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-4 mb-8 items-center">
-              {/* Step 1: Signup/Login */}
-              <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          <div
+            className="animate-fade-in-up rounded-[1.75rem] bg-gradient-to-br from-teal/45 via-lavender/55 to-void/25 p-px shadow-[0_24px_60px_-12px_rgba(1,51,43,0.15)]"
+            style={{ animationDelay: '0.1s' }}
+          >
+            <div className="relative overflow-hidden rounded-[1.7rem] bg-gradient-to-br from-surface via-teal-soft/45 to-lavender/20 px-5 py-10 ring-1 ring-white/80 md:px-10 md:py-14">
+              <div
+                className="pointer-events-none absolute -right-24 top-0 h-64 w-64 rounded-full bg-teal/10 blur-3xl"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-lavender/30 blur-3xl"
+                aria-hidden
+              />
+
+              {/* Phase 1 */}
+              <div className="mb-8 text-center md:mb-10">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-void/45">
+                  Phase 1
+                </p>
+                <p className="mt-1 text-sm font-medium text-forest">Foundation — capture &amp; automate</p>
+              </div>
+
+              <div className="grid grid-cols-1 items-start justify-items-center gap-y-12 md:grid-cols-7 md:gap-y-0 md:gap-x-1">
+                <RoadmapStepCard
+                  step={1}
+                  title="Signup / Login"
+                  description="Create your secure account"
+                  delay="0.15s"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                </RoadmapStepCard>
+                <RoadmapArrowRight delay="0.2s" />
+                <RoadmapStepCard
+                  step={2}
+                  title="Budget Setup"
+                  description="Define goals and limits"
+                  delay="0.22s"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                  </svg>
+                </RoadmapStepCard>
+                <RoadmapArrowRight delay="0.26s" />
+                <RoadmapStepCard
+                  step={3}
+                  title="Add Income & Expense"
+                  description="Track cash flow in real time"
+                  delay="0.28s"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+                  </svg>
+                </RoadmapStepCard>
+                <RoadmapArrowRight delay="0.32s" />
+                <RoadmapStepCard
+                  step={4}
+                  title="OCR Integration"
+                  description="Digitize receipts instantly"
+                  delay="0.34s"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M21 5v6.59l-3-3.01-4 4.01-4-4-4 4-3-3.01V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2zm-3 6.42l3 3.01V19c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6.58l3 2.99 4-4 4 4 4-3.99z" />
+                  </svg>
+                </RoadmapStepCard>
+              </div>
+
+              {/* Connector */}
+              <div className="my-10 flex flex-col items-center gap-2 md:my-12">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-void/40">
+                  Continue
+                </span>
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-lavender/60 bg-white/90 shadow-sm">
+                  <svg
+                    className="h-5 w-5 text-teal"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Signup / Login</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Create your account
+              </div>
+
+              {/* Phase 2 */}
+              <div className="mb-8 text-center md:mb-10">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-void/45">
+                  Phase 2
                 </p>
+                <p className="mt-1 text-sm font-medium text-forest">Optimization — organize &amp; insight</p>
               </div>
 
-              {/* Arrow 1 */}
-              <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 2: Budget Setup */}
-              <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.45s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              <div className="grid grid-cols-1 items-start justify-items-center gap-y-12 md:grid-cols-7 md:gap-y-0 md:gap-x-1">
+                <RoadmapStepCard
+                  step={5}
+                  title="Categorize Items"
+                  description="Organize transactions cleanly"
+                  delay="0.4s"
+                  className="md:order-1"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
                   </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Budget Setup</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Set your budget goals
-                </p>
-              </div>
-
-              {/* Arrow 2 */}
-              <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 3: Add Income & Expense */}
-              <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.55s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                </RoadmapStepCard>
+                <RoadmapArrowLeft delay="0.42s" className="md:order-2" />
+                <RoadmapStepCard
+                  step={6}
+                  title="Ask AI"
+                  description="Guidance tailored to you"
+                  delay="0.44s"
+                  className="md:order-3"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3zM7.5 11.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S9.83 13 9 13s-1.5-.67-1.5-1.5zM16 17H8v-2h8v2zm-1-4c-.83 0-1.5-.67-1.5-1.5S14.17 10 15 10s1.5.67 1.5 1.5S15.83 13 15 13z" />
                   </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Add Income & Expense</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Track your finances
-                </p>
-              </div>
-
-              {/* Arrow 3 */}
-              <div className="hidden md:flex items-start justify-center pt-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                <svg className="w-12 h-12 text-void/60 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 4: OCR Integration */}
-              <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.65s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M21 5v6.59l-3-3.01-4 4.01-4-4-4 4-3-3.01V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2zm-3 6.42l3 3.01V19c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6.58l3 2.99 4-4 4 4 4-3.99z"/>
+                </RoadmapStepCard>
+                <RoadmapArrowLeft delay="0.46s" className="md:order-4" />
+                <RoadmapStepCard
+                  step={7}
+                  title="Recurring Transaction"
+                  description="Automate recurring entries"
+                  delay="0.48s"
+                  className="md:order-5"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
                   </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">OCR Integration</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Scan receipts automatically
-                </p>
-              </div>
-            </div>
-
-            {/* Down Arrow - positioned to the right */}
-            <div className="flex justify-end mb-8 pr-16 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
-              <svg className="w-12 h-12 text-void/60 animate-bounce" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-              </svg>
-            </div>
-
-            {/* Bottom Row - Steps 8-5 (Reversed) */}
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-center">
-              {/* Step 8: Financial overview */}
-              <div className="flex flex-col items-center text-center md:order-7 animate-fade-in-up" style={{animationDelay: '1.0s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                </RoadmapStepCard>
+                <RoadmapArrowLeft delay="0.5s" className="md:order-6" />
+                <RoadmapStepCard
+                  step={8}
+                  title="Financial overview"
+                  description="One view of your full picture"
+                  delay="0.52s"
+                  className="md:order-7"
+                >
+                  <svg
+                    className="h-12 w-12 text-teal transition-transform duration-300 group-hover:scale-105 group-hover:text-forest"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
                   </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Financial overview</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Review income, expenses, and budget in one place
-                </p>
-              </div>
-
-              {/* Arrow 4 (Left pointing) */}
-              <div className="hidden md:flex items-start justify-center pt-8 md:order-6 animate-fade-in-up" style={{animationDelay: '0.95s'}}>
-                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 7: Recurring Transaction */}
-              <div className="flex flex-col items-center text-center md:order-5 animate-fade-in-up" style={{animationDelay: '0.9s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
-                  </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Recurring Transaction</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Manage recurring payments
-                </p>
-              </div>
-
-              {/* Arrow 5 (Left pointing) */}
-              <div className="hidden md:flex items-start justify-center pt-8 md:order-4 animate-fade-in-up" style={{animationDelay: '0.85s'}}>
-                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 6: Ask AI */}
-              <div className="flex flex-col items-center text-center md:order-3 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3zM7.5 11.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S9.83 13 9 13s-1.5-.67-1.5-1.5zM16 17H8v-2h8v2zm-1-4c-.83 0-1.5-.67-1.5-1.5S14.17 10 15 10s1.5.67 1.5 1.5S15.83 13 15 13z"/>
-                  </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Ask AI</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Get AI financial advice
-                </p>
-              </div>
-
-              {/* Arrow 6 (Left pointing) */}
-              <div className="hidden md:flex items-start justify-center pt-8 md:order-2 animate-fade-in-up" style={{animationDelay: '0.75s'}}>
-                <svg className="w-12 h-12 text-void/60 rotate-180 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                </svg>
-              </div>
-
-              {/* Step 5: Categorize Items */}
-              <div className="flex flex-col items-center text-center md:order-1 animate-fade-in-up" style={{animationDelay: '0.75s'}}>
-                <div className="w-40 h-40 bg-surface rounded-full shadow-lg flex items-center justify-center mb-6 hover:scale-110 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-2 border-teal/30 hover:border-teal">
-                  <svg className="w-14 h-14 text-teal group-hover:scale-110 group-hover:text-forest transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
-                  </svg>
-                </div>
-                <h3 className="text-base font-bold text-void mb-2 group-hover:text-forest transition-colors duration-300">Categorize Items</h3>
-                <p className="text-void/60 text-xs leading-relaxed px-2">
-                  Organize transactions
-                </p>
+                </RoadmapStepCard>
               </div>
             </div>
           </div>
@@ -379,19 +453,31 @@ export default function Home() {
     <FeaturesSection />
 
       {/* Feedback Section */}
-      <section id="feedback" className="py-20 bg-mist">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-void mb-4 hover:text-teal transition-colors duration-300">
+      <section
+        id="feedback"
+        className="relative overflow-hidden bg-gradient-to-b from-teal-soft/80 via-lavender/30 to-mist py-24 md:py-28"
+      >
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_0%,rgba(196,196,219,0.35),transparent_60%)]"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 animate-fade-in-up text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-forest/80">We&apos;re listening</p>
+            <h2 className="font-display text-4xl font-semibold text-void md:text-[2.35rem]">
               Share Your Feedback
             </h2>
-            <p className="text-void/60 text-lg">
-              Help us improve FinValora with your valuable insights
+            <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-teal to-transparent" />
+            <p className="mt-5 text-lg text-void/70">
+              Help us improve FinValora with your ideas, issues, and suggestions.
             </p>
           </div>
 
-          {/* Feedback Form Box */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-teal/20 animate-fade-in-up hover:shadow-3xl hover:border-teal/40 transition-all duration-500">
+          <div
+            className="animate-fade-in-up rounded-[1.75rem] bg-gradient-to-br from-teal/35 via-lavender/45 to-void/20 p-px shadow-xl shadow-forest/10"
+            style={{ animationDelay: '0.08s' }}
+          >
+            <div className="rounded-[1.7rem] border border-white/80 bg-white/95 p-8 shadow-inner shadow-white/40 md:p-12">
             <form className="space-y-6">
             {/* Feedback Type */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
@@ -400,7 +486,7 @@ export default function Home() {
               </label>
               <select
                 id="feedbackType"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void bg-white transition-all duration-300 hover:border-teal"
+                className="w-full rounded-lg border-2 border-lavender bg-white px-4 py-3 text-void transition-all duration-300 hover:border-teal focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
               >
                 <option value="">Select feedback type</option>
                 <option value="bug">Bug Report</option>
@@ -447,7 +533,7 @@ export default function Home() {
               <input
                 type="text"
                 id="subject"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void transition-all duration-300 hover:border-teal hover:shadow-md"
+                className="w-full rounded-lg border-2 border-lavender px-4 py-3 text-void transition-all duration-300 hover:border-teal hover:shadow-md focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
                 placeholder="Brief summary of your feedback"
               />
             </div>
@@ -460,7 +546,7 @@ export default function Home() {
               <textarea
                 id="feedback"
                 rows="6"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest focus:ring-2 focus:ring-teal/20 text-void resize-none transition-all duration-300 hover:border-teal hover:shadow-md"
+                className="w-full resize-none rounded-lg border-2 border-lavender px-4 py-3 text-void transition-all duration-300 hover:border-teal hover:shadow-md focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
                 placeholder="Share your thoughts, suggestions, or report issues..."
               ></textarea>
             </div>
@@ -470,39 +556,54 @@ export default function Home() {
               <input
                 type="checkbox"
                 id="updates"
-                className="w-5 h-5 mt-0.5 border-2 border-gray-300 rounded text-forest focus:ring-2 focus:ring-forest focus:ring-offset-0 transition-all duration-300"
+                className="mt-0.5 h-5 w-5 rounded border-2 border-lavender text-forest transition-all duration-300 focus:ring-2 focus:ring-forest focus:ring-offset-0"
               />
-              <label htmlFor="updates" className="ml-3 text-base text-void/60 hover:text-void transition-colors duration-300 cursor-pointer">
-                I agree to receive updates about FinanceFlow
+              <label htmlFor="updates" className="ml-3 cursor-pointer text-base text-void/60 transition-colors duration-300 hover:text-void">
+                I agree to receive product updates from FinValora
               </label>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-forest text-white py-4 rounded-lg font-semibold text-lg hover:bg-forest/90 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 active:scale-95"
+              className="group w-full rounded-xl bg-gradient-to-r from-forest to-void py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:from-forest-hover hover:to-void hover:shadow-2xl active:scale-[0.99]"
             >
               <span className="flex items-center justify-center">
                 Submit Feedback
-                <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </span>
             </button>
           </form>
+            </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="bg-mist py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-void mb-4 hover:scale-105 transition-transform duration-300">
+      <section
+        id="faq"
+        className="relative overflow-hidden bg-gradient-to-b from-surface via-mist to-teal-soft/45 py-24 md:py-28"
+      >
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-lavender/15 to-transparent"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 animate-fade-in-up text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-forest/80">Support</p>
+            <h2 className="font-display text-4xl font-semibold text-void md:text-[2.35rem]">
               Frequently <span className="text-forest">Asked Questions</span>
             </h2>
-            <p className="text-void/70 text-lg">
-              Find answers to common questions about FIN-VALORA
+            <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-teal to-transparent" />
+            <p className="mt-5 text-lg text-void/70">
+              Quick answers about FinValora—before you even open a ticket.
             </p>
           </div>
 
@@ -513,7 +614,7 @@ export default function Home() {
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'All'
                   ? 'bg-forest text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
+                  : 'border border-lavender/60 bg-white/90 text-void shadow-sm hover:border-teal hover:bg-lavender/35 hover:shadow-md'
               }`}
             >
               All
@@ -523,7 +624,7 @@ export default function Home() {
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Getting Started'
                   ? 'bg-forest text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
+                  : 'border border-lavender/60 bg-white/90 text-void shadow-sm hover:border-teal hover:bg-lavender/35 hover:shadow-md'
               }`}
             >
               Getting Started
@@ -533,7 +634,7 @@ export default function Home() {
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Features'
                   ? 'bg-forest text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
+                  : 'border border-lavender/60 bg-white/90 text-void shadow-sm hover:border-teal hover:bg-lavender/35 hover:shadow-md'
               }`}
             >
               Features
@@ -543,7 +644,7 @@ export default function Home() {
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === 'Technical'
                   ? 'bg-forest text-white shadow-lg scale-105'
-                  : 'bg-white/80 text-void hover:bg-white hover:shadow-md'
+                  : 'border border-lavender/60 bg-white/90 text-void shadow-sm hover:border-teal hover:bg-lavender/35 hover:shadow-md'
               }`}
             >
               Technical
@@ -556,12 +657,12 @@ export default function Home() {
             {(activeCategory === 'All' || activeCategory === 'Getting Started') && (
             <div className="animate-fade-in-up">
               <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
+                <span className="mr-3 h-6 w-1 rounded-full bg-gradient-to-b from-teal to-forest" />
                 Getting Started
               </h3>
               <div className="space-y-3">
                 {/* FAQ 1 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.1s'}}>
                   <button
                     onClick={() => setOpenFAQ(openFAQ === 1 ? null : 1)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -583,7 +684,7 @@ export default function Home() {
             </div>
 
                 {/* FAQ 2 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.2s'}}>
                   <button
                     onClick={() => setOpenFAQ(openFAQ === 2 ? null : 2)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -605,7 +706,7 @@ export default function Home() {
                 </div>
 
                 {/* FAQ 3 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.3s'}}>
                   <button
                     onClick={() => setOpenFAQ(openFAQ === 3 ? null : 3)}
                     className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -633,12 +734,12 @@ export default function Home() {
             {(activeCategory === 'All' || activeCategory === 'Features') && (
             <div className="animate-fade-in-up">
               <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
+                <span className="mr-3 h-6 w-1 rounded-full bg-gradient-to-b from-teal to-forest" />
                 Features
               </h3>
               <div className="space-y-3">
                 {/* FAQ 4 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.1s'}}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === 4 ? null : 4)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -666,12 +767,12 @@ export default function Home() {
             {(activeCategory === 'All' || activeCategory === 'Technical') && (
             <div className="animate-fade-in-up">
               <h3 className="text-xl font-bold text-void mb-4 flex items-center animate-slide-in-left">
-                <span className="w-1 h-6 bg-teal rounded-full mr-3 animate-pulse"></span>
+                <span className="mr-3 h-6 w-1 rounded-full bg-gradient-to-b from-teal to-forest" />
                 Technical
               </h3>
               <div className="space-y-3">
                 {/* FAQ 5 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.1s'}}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === 5 ? null : 5)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -693,7 +794,7 @@ export default function Home() {
             </div>
 
                 {/* FAQ 6 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.2s'}}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === 6 ? null : 6)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -715,7 +816,7 @@ export default function Home() {
             </div>
 
                 {/* FAQ 7 */}
-                <div className="bg-white/80 backdrop-blur rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                <div className="bg-white/90 backdrop-blur rounded-2xl overflow-hidden border border-lavender/50 shadow-lg hover:border-teal/40 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] animate-fade-in-up" style={{animationDelay: '0.3s'}}>
               <button
                 onClick={() => setOpenFAQ(openFAQ === 7 ? null : 7)}
                 className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/50 transition-all duration-300 group"
@@ -743,57 +844,74 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden bg-forest py-20">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-white rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+      <section className="relative overflow-hidden border-t border-lavender/30 bg-gradient-to-br from-void via-forest to-void py-24 md:py-28">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(138,191,178,0.22),transparent_55%)]" aria-hidden />
+        <div className="absolute inset-0 opacity-25">
+          <div className="absolute left-10 top-10 h-32 w-32 rounded-full bg-teal/35 blur-2xl" />
+          <div className="absolute bottom-10 right-10 h-40 w-40 rounded-full bg-lavender/30 blur-2xl" style={{ animationDelay: '1s' }} />
+          <div className="absolute left-1/4 top-1/2 h-24 w-24 rounded-full bg-white/10 blur-xl" style={{ animationDelay: '0.5s' }} />
         </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in-up hover:scale-105 transition-transform duration-300">
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="mb-3 animate-fade-in-up text-xs font-semibold uppercase tracking-[0.22em] text-teal/90">
+            Start today
+          </p>
+          <h2 className="animate-fade-in-up font-display text-3xl font-semibold text-white md:text-4xl lg:text-[2.75rem]">
             Ready to take control of your finances?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            Join thousands of users who are already managing their money smarter
-            with FinValora.
+          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+          <p
+            className="mx-auto mb-10 mt-6 max-w-2xl animate-fade-in-up text-lg text-white/88"
+            style={{ animationDelay: '0.15s' }}
+          >
+            Join others who use FinValora to budget smarter, see the full picture, and move forward with
+            confidence.
           </p>
           <Link
             href="/signup"
-            className="group relative inline-flex min-h-[52px] animate-fade-in-up items-center justify-center overflow-hidden rounded-full bg-surface px-8 text-lg font-semibold text-forest shadow-fv-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal hover:shadow-fv-xl"
-            style={{ animationDelay: "0.4s" }}
+            className="group relative inline-flex min-h-[52px] animate-fade-in-up items-center justify-center overflow-hidden rounded-full border border-white/15 bg-surface px-10 text-lg font-semibold text-forest shadow-fv-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal hover:text-forest hover:shadow-fv-xl"
+            style={{ animationDelay: '0.3s' }}
           >
             <span className="relative z-10 flex items-center justify-center">
-              Get Started for Free
-              <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              Get started for free
+              <svg
+                className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </span>
-            {/* Animated shine effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
           </Link>
-          
-          {/* Floating icons */}
-          <div className="mt-12 flex justify-center gap-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-            <div className="flex items-center text-white/80 hover:text-white transition-colors duration-300 transform hover:scale-110">
-              <svg className="w-6 h-6 mr-2 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-sm font-medium">Free Forever</span>
-            </div>
-            <div className="flex items-center text-white/80 hover:text-white transition-colors duration-300 transform hover:scale-110">
-              <svg className="w-6 h-6 mr-2 animate-bounce" style={{animationDelay: '0.2s'}} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-sm font-medium">No Credit Card</span>
-            </div>
-            <div className="flex items-center text-white/80 hover:text-white transition-colors duration-300 transform hover:scale-110">
-              <svg className="w-6 h-6 mr-2 animate-bounce" style={{animationDelay: '0.4s'}} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-sm font-medium">Setup in 2 Minutes</span>
-            </div>
+
+          <div
+            className="mt-14 flex flex-wrap items-center justify-center gap-3 sm:gap-4 animate-fade-in-up"
+            style={{ animationDelay: '0.45s' }}
+          >
+            {[
+              { label: 'Free to start', sub: 'Core tools included' },
+              { label: 'No credit card', sub: 'Upgrade when you want' },
+              { label: 'Quick setup', sub: 'Live in minutes' },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex min-w-[10rem] flex-col rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-left backdrop-blur-sm transition-colors duration-300 hover:border-teal/40 hover:bg-white/10"
+              >
+                <span className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <svg className="h-4 w-4 shrink-0 text-teal" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {item.label}
+                </span>
+                <span className="mt-0.5 text-xs text-white/65">{item.sub}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

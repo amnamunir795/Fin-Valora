@@ -108,9 +108,9 @@ export default function Categories() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-surface to-mist/20 shadow-lg border-b border-lavender/40 px-6 py-4">
+        <div className="fv-app-page-header px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-void">Categories</h1>
+            <h1 className="text-2xl font-bold text-white">Categories</h1>
           </div>
         </div>
 

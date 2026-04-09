@@ -2,6 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import FinValoraLogo from "../components/FinValoraLogo";
 
 export default function Terms() {
   const [accepted, setAccepted] = useState(false);
@@ -23,6 +24,9 @@ export default function Terms() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-6 flex justify-center sm:justify-start">
+            <FinValoraLogo size={48} className="drop-shadow-sm" />
+          </div>
           <Link
             href="/signup"
             className="inline-flex items-center text-void hover:text-teal transition-colors mb-6"

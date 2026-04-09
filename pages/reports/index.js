@@ -200,15 +200,15 @@ export default function ReportsPage() {
       <AppSidebar />
 
       <div className="flex-1 min-w-0 overflow-x-auto">
-        <div className="bg-gradient-to-r from-surface to-mist/20 shadow-lg border-b border-lavender/40 px-6 py-4">
+        <div className="fv-app-page-header px-6 py-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-2xl font-bold text-void">Report</h1>
+            <h1 className="text-2xl font-bold text-white">Report</h1>
             <button
               type="button"
               onClick={() => setFiltersOpen((o) => !o)}
               aria-expanded={filtersOpen}
               aria-controls="report-filters-panel"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-teal to-forest text-white text-sm font-semibold shadow-md hover:from-forest hover:to-void focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 transition-all duration-200 w-full sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-lg border border-lavender bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-teal/20 hover:text-teal focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-forest sm:w-auto"
             >
               Filter Data
             </button>

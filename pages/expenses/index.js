@@ -98,16 +98,16 @@ export default function Expenses() {
       <AppSidebar />
 
       <div className="flex-1">
-        <div className="bg-gradient-to-r from-surface to-mist/20 shadow-lg border-b border-lavender/40 px-6 py-4">
+        <div className="fv-app-page-header px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-void">Expenses</h1>
+            <h1 className="text-2xl font-bold text-white">Expenses</h1>
             <div className="flex items-center gap-3">
-              <label className="text-sm text-forest whitespace-nowrap" htmlFor="expenses-month">Month</label>
+              <label className="text-sm whitespace-nowrap text-white" htmlFor="expenses-month">Month</label>
               <select
                 id="expenses-month"
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="px-4 py-2 border border-lavender rounded-lg text-void bg-surface hover:border-teal focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-200 min-w-[10rem]"
+                className="min-w-[10rem] rounded-lg border border-lavender bg-white px-4 py-2 text-forest transition-all duration-200 hover:border-teal focus:border-transparent focus:ring-2 focus:ring-teal"
               >
                 {MONTHS.map((m) => (
                   <option key={m} value={m}>{m}</option>

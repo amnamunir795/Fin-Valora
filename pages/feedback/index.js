@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FinValoraLogo from "../../components/FinValoraLogo";
 
 export default function Feedback() {
   const [mood, setMood] = useState("");
@@ -111,7 +112,10 @@ export default function Feedback() {
       <main className="relative z-10 max-w-3xl mx-auto my-12 px-4">
         <div className="card overflow-hidden rounded-2xl border border-border-subtle bg-surface shadow-fv-lg">
           <div className="header border-b border-dashed border-teal/30 bg-teal-soft p-6">
-            <h1 className="font-display text-3xl font-semibold text-forest">Feedback</h1>
+            <div className="flex flex-wrap items-center gap-4">
+              <FinValoraLogo size={44} className="drop-shadow-sm" />
+              <h1 className="font-display text-3xl font-semibold text-forest">Feedback</h1>
+            </div>
           </div>
 
           <div className="p-6">

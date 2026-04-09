@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FinValoraLogo from '../components/FinValoraLogo';
 
 export default function TestLogin() {
   const [result, setResult] = useState(null);
@@ -135,7 +136,10 @@ export default function TestLogin() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold mb-6">Login Debug Test</h1>
+        <div className="mb-6 flex items-center gap-3">
+          <FinValoraLogo size={40} />
+          <h1 className="text-2xl font-bold">Login Debug Test</h1>
+        </div>
         
         <div className="space-y-4 mb-6">
           <button

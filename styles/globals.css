@@ -82,6 +82,30 @@
     box-shadow: var(--glow-teal);
   }
 
+  @keyframes fv-logo-pulse {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 0 rgba(138, 191, 178, 0.2));
+    }
+    50% {
+      filter: drop-shadow(0 0 9px rgba(138, 191, 178, 0.42));
+    }
+  }
+
+  .fv-logo-animated {
+    animation: fv-logo-pulse 2.8s ease-in-out infinite;
+  }
+
+  /**
+   * Top page bar: bg #01332B, text #FFFFFF, divider #C4C4DB, nav hover #8ABFB2
+   */
+  .fv-app-page-header {
+    background-color: #01332b;
+    color: #ffffff;
+    border-bottom: 1px solid #c4c4db;
+    box-shadow: var(--shadow-fv-sm);
+  }
+
   .fv-btn-primary {
     display: inline-flex;
     align-items: center;

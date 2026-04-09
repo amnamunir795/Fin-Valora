@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
 import { authenticatedFetch } from '../../utils/auth';
 import AppSidebar from '../../components/AppSidebar';
+import FinValoraLogo from '../../components/FinValoraLogo';
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -296,10 +297,8 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-mist flex items-center justify-center">
         <div className="max-w-md mx-auto bg-surface rounded-2xl shadow-xl border border-lavender/40 p-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal to-forest rounded-full mb-4 shadow-lg">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-            </svg>
+          <div className="flex justify-center mb-4">
+            <FinValoraLogo size={64} className="drop-shadow-lg" />
           </div>
           <h1 className="text-2xl font-bold text-void mb-4">No Budget Found</h1>
           <p className="text-forest mb-6">Let's set up your first budget to get started!</p>
@@ -321,14 +320,14 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-gradient-to-r from-surface to-mist/20 shadow-lg border-b border-lavender/40 px-6 py-4">
+        <div className="fv-app-page-header px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-void">Dashboard</h1>
+            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
             <div ref={filterPanelRef} className="relative flex items-center">
               <button
                 type="button"
                 onClick={() => setShowMonthFilter((open) => !open)}
-                className="px-4 py-2 bg-gradient-to-r from-teal to-forest text-white rounded-lg hover:from-forest hover:to-void flex items-center font-medium shadow-md transition-all duration-200 gap-2"
+                className="flex items-center gap-2 rounded-lg border border-lavender bg-white/10 px-4 py-2 font-medium text-white shadow-md transition-all duration-200 hover:bg-teal/20 hover:text-teal"
                 aria-expanded={showMonthFilter}
                 aria-haspopup="dialog"
               >

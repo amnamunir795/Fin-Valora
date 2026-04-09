@@ -102,7 +102,17 @@ export default function FeaturesSection() {
 
   return (
     <div id="features" className="features-section">
-      <h2 className="section-title">Features</h2>
+      <div className="features-section-intro mx-auto mb-14 max-w-2xl px-4 text-center md:mb-16">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-forest/80">
+          Platform capabilities
+        </p>
+        <h2 className="font-display text-4xl font-semibold text-void md:text-5xl">Features</h2>
+        <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-teal to-transparent" />
+        <p className="mt-5 text-lg leading-relaxed text-void/70">
+          Budgeting, tracking, AI help, and receipt capture—designed to work together in one calm,
+          coherent experience.
+        </p>
+      </div>
 
       <div className="features-container">
         {/* Feature 1: Money Tracking */}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import FinValoraLogo from "../components/FinValoraLogo";
 
 export default function Privacy() {
   const [accepted, setAccepted] = useState(false);
@@ -17,6 +18,9 @@ export default function Privacy() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-6 flex justify-center sm:justify-start">
+            <FinValoraLogo size={48} className="drop-shadow-sm" />
+          </div>
           <Link
             href="/signup"
             className="inline-flex items-center text-void hover:text-forest transition-colors mb-6"

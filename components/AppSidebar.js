@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { logout } from '../utils/auth';
+import FinValoraLogo from './FinValoraLogo';
 
+/* Sidebar: bg #8ABFB2, text #01332B, active #FFFFFF, hover #C4C4DB */
 const NAV_ACTIVE =
-  'flex items-center px-4 py-3 text-white bg-gradient-to-r from-teal to-forest rounded-lg shadow-md';
+  'flex items-center px-4 py-3 rounded-lg bg-white text-forest shadow-md font-semibold';
 const NAV_IDLE =
-  'flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200';
+  'flex items-center px-4 py-3 rounded-lg text-forest transition-all duration-200 hover:bg-lavender';
 
 function navClass(pathname, href) {
   return pathname === href ? NAV_ACTIVE : NAV_IDLE;
@@ -20,82 +22,24 @@ export default function AppSidebar({ featuredLogo = false, onOcrClick }) {
   const { pathname } = useRouter();
 
   return (
-    <div className="w-64 bg-surface shadow-xl border-r border-lavender/40 relative min-h-screen shrink-0">
-      <div className="p-6 border-b border-lavender/30 bg-gradient-to-r from-surface to-mist/10">
-        {featuredLogo ? (
-          <Link href="/dashboard" className="flex items-center group cursor-pointer">
-            <div className="relative w-10 h-10 mr-3">
-              <div className="absolute inset-0 bg-gradient-to-br from-teal to-forest rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-br from-teal via-forest to-void rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              </div>
-              <svg className="relative w-10 h-10 p-1.5" viewBox="0 0 48 48" fill="none">
-                <g className="group-hover:translate-y-[-1px] transition-transform duration-300">
-                  <ellipse cx="16" cy="38" rx="8" ry="3" fill="white" opacity="0.6" />
-                  <ellipse cx="16" cy="35" rx="8" ry="3" fill="white" opacity="0.7" />
-                  <ellipse cx="16" cy="32" rx="8" ry="3" fill="white" opacity="0.8" />
-                  <ellipse cx="16" cy="29" rx="8" ry="3" fill="white" />
-                  <text x="16" y="31" textAnchor="middle" fill="var(--color-forest)" fontSize="6" fontWeight="bold">
-                    $
-                  </text>
-                </g>
-                <g className="group-hover:scale-105 transition-transform duration-300">
-                  <rect x="28" y="32" width="3" height="8" rx="1.5" fill="white" opacity="0.7" />
-                  <rect x="33" y="28" width="3" height="12" rx="1.5" fill="white" opacity="0.8" />
-                  <rect x="38" y="24" width="3" height="16" rx="1.5" fill="white" />
-                </g>
-                <g className="group-hover:translate-x-[1px] group-hover:translate-y-[-1px] transition-transform duration-300">
-                  <path
-                    d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12"
-                    stroke="var(--color-teal)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="group-hover:stroke-white transition-colors duration-300"
-                  />
-                </g>
-                <g className="animate-pulse" style={{ animationDuration: '2s' }}>
-                  <text x="8" y="12" fill="var(--color-teal)" fontSize="6" fontWeight="bold" opacity="0.8">
-                    $
-                  </text>
-                  <text x="38" y="14" fill="var(--color-forest)" fontSize="5" fontWeight="bold" opacity="0.7">
-                    €
-                  </text>
-                  <text x="6" y="22" fill="var(--color-forest)" fontSize="5" fontWeight="bold" opacity="0.6">
-                    £
-                  </text>
-                </g>
-                <circle cx="42" cy="10" r="1.5" fill="var(--color-teal)" className="animate-ping" style={{ animationDuration: '2s' }} />
-                <circle cx="10" cy="38" r="1" fill="var(--color-forest)" className="animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
-              </svg>
+    <div className="relative min-h-screen w-64 shrink-0 border-r border-forest/15 bg-teal shadow-xl">
+      <div className="border-b border-forest/20 p-6">
+        <Link href="/dashboard" className="group flex cursor-pointer items-center" aria-label="FinValora home">
+          <div className="relative mr-3 h-10 w-10 shrink-0">
+            {featuredLogo ? (
+              <div className="absolute inset-0 rounded-xl bg-white/25 blur-md transition-opacity group-hover:opacity-100" />
+            ) : null}
+            <div className="relative">
+              <FinValoraLogo size={40} animated={Boolean(featuredLogo)} className="drop-shadow-sm transition-transform group-hover:scale-[1.03]" />
             </div>
-            <span className="text-xl font-bold text-void group-hover:text-forest transition-colors duration-300">FinValora</span>
-          </Link>
-        ) : (
-          <Link href="/dashboard" className="flex items-center group cursor-pointer">
-            <div className="relative w-10 h-10 mr-3">
-              <div className="absolute inset-0 bg-gradient-to-br from-teal to-forest rounded-full blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-br from-teal via-forest to-void rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-500 transform group-hover:scale-110 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              </div>
-              <svg className="relative w-10 h-10 p-1.5" viewBox="0 0 48 48" fill="none">
-                <ellipse cx="16" cy="29" rx="8" ry="3" fill="white" />
-                <rect x="28" y="24" width="3" height="16" rx="1.5" fill="white" />
-                <path
-                  d="M24 18 L24 8 M24 8 L20 12 M24 8 L28 12"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  className="text-teal"
-                />
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-void group-hover:text-forest transition-colors duration-300">FinValora</span>
-          </Link>
-        )}
+          </div>
+          <span className="text-xl font-bold text-forest transition-colors duration-300 group-hover:text-forest/90">
+            FinValora
+          </span>
+        </Link>
       </div>
 
-      <nav className="mt-6 px-4 space-y-2" aria-label="Main navigation">
+      <nav className="mt-6 space-y-2 px-4 pb-40" aria-label="Main navigation">
         <Link
           href="/dashboard"
           className={navClass(pathname, '/dashboard')}
@@ -182,17 +126,39 @@ export default function AppSidebar({ featuredLogo = false, onOcrClick }) {
         </Link>
       </nav>
 
-      <div className="absolute bottom-6 left-6">
+      <div className="absolute bottom-6 left-4 right-4 flex flex-col gap-2.5">
         <button
           type="button"
           onClick={() => logout()}
-          className="flex items-center px-4 py-3 text-void hover:bg-mist/30 hover:text-forest rounded-lg transition-all duration-200"
+          aria-label="Log out of your account"
+          className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-forest to-forest-hover px-4 py-3.5 text-sm font-semibold text-white shadow-fv-md ring-1 ring-white/15 transition-all duration-200 hover:brightness-110 hover:shadow-fv-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-teal"
         >
-          <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Logout
+          Log out
         </button>
+        <Link
+          href="/"
+          className="group flex w-full items-center justify-center gap-2 rounded-xl border-2 border-forest/35 bg-white px-4 py-3 text-sm font-semibold text-forest shadow-sm transition-all duration-200 hover:border-forest hover:bg-lavender focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-teal"
+        >
+          <svg
+            className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Go back to home
+        </Link>
       </div>
     </div>
   );

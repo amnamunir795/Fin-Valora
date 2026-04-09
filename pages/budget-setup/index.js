@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { CURRENCY_OPTIONS } from "../../constants/currencies";
+import FinValoraLogo from "../../components/FinValoraLogo";
 
 export default function BudgetSetup() {
   const [formData, setFormData] = useState({
@@ -243,15 +244,8 @@ export default function BudgetSetup() {
         </div>
 
         <div className="text-center mb-8">
-          <div
-            className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-forest shadow-fv-lg"
-            style={{
-              boxShadow: "0 10px 25px -3px rgba(1, 51, 43, 0.3), 0 4px 6px -2px rgba(1, 51, 43, 0.2)",
-            }}
-          >
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-            </svg>
+          <div className="mb-4 flex justify-center">
+            <FinValoraLogo size={64} className="drop-shadow-lg" />
           </div>
           <h1 className="text-3xl font-bold text-void mb-2">
             {router.query.edit ? 'Edit Budget' : 'Budget Setup'}

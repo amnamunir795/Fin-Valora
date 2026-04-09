@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { signup, isAuthenticated } from "../../utils/auth";
 import { CURRENCY_OPTIONS, DEFAULT_CURRENCY } from "../../constants/currencies";
+import FinValoraLogo from "../../components/FinValoraLogo";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -247,6 +248,12 @@ export default function SignUp() {
       >
         {/* Create Account Heading with Avatar */}
         <div className="text-center mb-6 animate-fade-in-up">
+          <div className="mb-5 flex justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-2xl bg-teal/20 blur-xl scale-110" aria-hidden />
+              <FinValoraLogo size={56} className="relative drop-shadow-lg" />
+            </div>
+          </div>
           {/* Avatar Upload Section */}
           <div className="mb-4">
             <div className="relative inline-block group">
