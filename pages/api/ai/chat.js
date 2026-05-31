@@ -162,7 +162,10 @@ export default async function handler(req, res) {
   const userId = user.id;
   const systemPrompt = buildSystemPrompt(user);
 
-  const openai = new OpenAI({ apiKey });
+  const openai = new OpenAI({
+    apiKey,
+    baseURL: process.env.OPENAI_BASE_URL || undefined,
+  });
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
 
   const chatMessages = [
