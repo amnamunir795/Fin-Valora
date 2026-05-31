@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -182,7 +181,6 @@ export default function SignUp() {
   };
 
   return (
-    <><Head><title>Create Account — FinValora</title></Head>
     <div className="min-h-screen bg-gradient-to-br from-mist via-mist/90 to-teal/20 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -518,7 +516,7 @@ export default function SignUp() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                 />
               </svg>
               Email Address
@@ -534,191 +532,347 @@ export default function SignUp() {
                   ? "border-red-400 bg-red-50"
                   : "border-teal/30 hover:border-teal"
               }`}
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
             />
             {errors.email && (
               <p className="mt-1 text-sm text-red-600">{errors.email}</p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4 animate-fade-in-up" style={{animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards'}}>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-semibold text-void mb-2 flex items-center group"
+          <div className="animate-fade-in-up" style={{animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards'}}>
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-void mb-2 flex items-center group"
+            >
+              <svg
+                className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white text-void placeholder-void/50 shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] pr-10 ${
-                    errors.password
-                      ? "border-red-400 bg-red-50"
-                      : "border-teal/30 hover:border-teal"
-                  }`}
-                  placeholder="Min 6 characters"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-teal/60 hover:text-teal"
-                >
-                  {showPassword ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-semibold text-void mb-2 flex items-center group"
+              </svg>
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white text-void placeholder-void/50 shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
+                  errors.password
+                    ? "border-red-400 bg-red-50"
+                    : "border-teal/30 hover:border-teal"
+                }`}
+                placeholder="Create a strong password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-teal hover:text-forest transition-all duration-300 hover:scale-110"
               >
-                <svg
-                  className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white text-void placeholder-void/50 shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] pr-10 ${
-                    errors.confirmPassword
-                      ? "border-red-400 bg-red-50"
-                      : "border-teal/30 hover:border-teal"
-                  }`}
-                  placeholder="Re-enter password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-teal/60 hover:text-teal"
-                >
-                  {showConfirmPassword ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
+                {showPassword ? (
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                )}
+              </button>
             </div>
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+            )}
           </div>
 
-          {/* Terms and Conditions */}
           <div className="animate-fade-in-up" style={{animationDelay: '0.5s', opacity: 0, animationFillMode: 'forwards'}}>
-            <div className="flex items-start space-x-3">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-semibold text-void mb-2 flex items-center group"
+            >
+              <svg
+                className="w-4 h-4 mr-2 text-teal group-hover:text-forest transition-colors duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Confirm Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`w-full px-4 py-3 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent transition-all duration-300 bg-white/50 hover:bg-white text-void placeholder-void/50 shadow-sm hover:shadow-md focus:shadow-lg transform hover:scale-[1.02] ${
+                  errors.confirmPassword
+                    ? "border-red-400 bg-red-50"
+                    : "border-teal/30 hover:border-teal"
+                }`}
+                placeholder="Confirm your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-teal hover:text-forest transition-all duration-300 hover:scale-110"
+              >
+                {showConfirmPassword ? (
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+
+          {errors.submit && (
+            <div className="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-400 rounded-lg p-4 shadow-md animate-fade-in">
+              <div className="flex items-center">
+                <svg
+                  className="w-5 h-5 text-red-400 mr-2 animate-pulse"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p className="text-sm font-medium text-red-700">
+                  {errors.submit}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Terms and Conditions Checkbox */}
+          <div className="space-y-3 animate-fade-in-up" style={{animationDelay: '0.6s', opacity: 0, animationFillMode: 'forwards'}}>
+            <div className="flex items-start">
               <div className="flex items-center h-5">
                 <input
                   id="terms"
                   name="terms"
                   type="checkbox"
                   checked={acceptedTerms}
-                  onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  className="w-4 h-4 border-2 border-teal/30 rounded bg-white text-teal focus:ring-2 focus:ring-teal focus:ring-offset-0 cursor-pointer"
+                  onChange={(e) => {
+                    setAcceptedTerms(e.target.checked);
+                    if (errors.terms) {
+                      setErrors((prev) => ({ ...prev, terms: "" }));
+                    }
+                  }}
+                  className="w-5 h-5 border-2 border-teal/30 rounded bg-white/50 text-teal focus:ring-2 focus:ring-teal focus:ring-offset-0 cursor-pointer transition-all hover:scale-110"
                 />
               </div>
-              <div className="flex-1">
-                <label htmlFor="terms" className="text-sm text-void/80 cursor-pointer select-none">
+              <div className="ml-3">
+                <label
+                  htmlFor="terms"
+                  className="text-sm text-void/90 cursor-pointer"
+                >
                   I agree to the{" "}
-                  <Link href="/privacy" className="text-teal hover:text-forest font-semibold transition-colors underline">
+                  <Link
+                    href="/terms"
+                    className="text-teal hover:text-forest underline font-medium transition-colors"
+                    target="_blank"
+                  >
                     Terms and Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy"
+                    className="text-teal hover:text-forest underline font-medium transition-colors"
+                    target="_blank"
+                  >
+                    Privacy Policy
                   </Link>
                 </label>
               </div>
             </div>
             {errors.terms && (
-              <p className="mt-1 text-sm text-red-600">{errors.terms}</p>
+              <p className="text-sm text-red-400 ml-8">{errors.terms}</p>
             )}
           </div>
 
-          {/* Submit Error */}
-          {errors.submit && (
-            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 animate-fade-in" role="alert">
-              {errors.submit}
-            </div>
-          )}
+          <button
+            type="submit"
+            disabled={isLoading || !acceptedTerms}
+            className="w-full bg-gradient-to-r from-forest via-teal to-forest bg-size-200 bg-pos-0 hover:bg-pos-100 text-white py-4 px-6 rounded-xl font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all duration-500 shadow-lg hover:shadow-2xl animate-fade-in-up"
+            style={{
+              boxShadow:
+                "0 10px 25px -3px rgba(1, 51, 43, 0.4), 0 4px 6px -2px rgba(138, 191, 178, 0.3)",
+              backgroundSize: '200% 100%',
+              animationDelay: '0.7s',
+              opacity: 0,
+              animationFillMode: 'forwards'
+            }}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Creating Account...
+              </div>
+            ) : (
+              <div className="flex items-center justify-center group">
+                <svg
+                  className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                  />
+                </svg>
+                Create Account
+              </div>
+            )}
+          </button>
 
-          {/* Submit Button */}
-          <div className="animate-fade-in-up" style={{animationDelay: '0.6s', opacity: 0, animationFillMode: 'forwards'}}>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 px-6 bg-gradient-to-br from-teal to-forest text-white font-semibold rounded-xl shadow-lg hover:from-forest hover:to-void focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="h-5 w-5 rounded-full border-2 border-white/30 border-t-white animate-spin" aria-hidden />
-                  Creating Account...
-                </span>
-              ) : (
-                "Create Account"
-              )}
-            </button>
-          </div>
-
-          {/* Login Link */}
-          <div className="text-center animate-fade-in-up" style={{animationDelay: '0.7s', opacity: 0, animationFillMode: 'forwards'}}>
-            <p className="text-sm text-void/60">
-              Already have an account?{" "}
-              <Link href="/login" className="text-teal hover:text-forest font-semibold transition-colors">
-                Sign in
-              </Link>
-            </p>
+          {/* Security Badge */}
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-teal/80 animate-fade-in">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span className="font-medium">Your data is secure and encrypted</span>
           </div>
         </form>
+
+        <div className="mt-8 text-center animate-fade-in-up" style={{animationDelay: '0.8s', opacity: 0, animationFillMode: 'forwards'}}>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-teal/30"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white/95 text-void/70">
+                Already have an account?
+              </span>
+            </div>
+          </div>
+          <div className="mt-4">
+            <Link
+              href="/login"
+              className="inline-flex items-center px-6 py-3 border-2 border-teal text-forest font-semibold rounded-xl hover:bg-forest hover:text-white hover:border-forest transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-md hover:shadow-xl group"
+            >
+              <svg
+                className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
+              Sign In Instead
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
-    </>
   );
 }

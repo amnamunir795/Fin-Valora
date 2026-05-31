@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import React, { useState, useEffect, useMemo } from "react";
+﻿import React, { useState, useEffect, useMemo } from "react";
 import { authenticatedFetch } from "../../utils/auth";
 import AppSidebar from "../../components/AppSidebar";
 import { CURRENCY_OPTIONS } from "../../constants/currencies";
@@ -11,7 +10,7 @@ const MONTHS = [
 
 function currencySymbolForCode(code) {
   const c = CURRENCY_OPTIONS.find((x) => x.code === code);
-  return c?.symbol ?? "₨";
+  return c?.symbol ?? "$";
 }
 
 export default function Income() {
@@ -92,11 +91,10 @@ export default function Income() {
 
   const openEditModal = (tx) => {
     setEditingTx(tx);
-    const catId = tx.category?.id || tx.category?._id || "";
     setForm({
       description: tx.description,
       amount: String(tx.amount),
-      categoryId: catId,
+      categoryId: tx.category?.id || "",
       date: tx.date ? tx.date.split("T")[0] : "",
       notes: tx.notes || "",
     });
@@ -179,7 +177,6 @@ export default function Income() {
     "w-full rounded-xl border border-lavender px-4 py-3 text-void bg-surface placeholder:text-ink-muted transition-all hover:border-teal/50 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/25";
 
   return (
-    <><Head><title>Income — FinValora</title></Head>
     <div className="min-h-screen bg-linear-to-br from-mist via-surface to-teal-soft/35 flex">
       <AppSidebar />
 
@@ -187,11 +184,10 @@ export default function Income() {
         <header className="fv-app-page-header px-5 sm:px-8 py-5 shrink-0">
           <div className="max-w-6xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-teal/90 mb-1">Cash out</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-teal/90 mb-1">Cash in</p>
               <h1 className="font-display text-3xl font-semibold text-white tracking-tight">Income</h1>
               <p className="text-sm text-white/80 mt-1.5 max-w-xl">
-                Track spending by category for each month. Use search to narrow the list without changing the month
-                total.
+                Record salary, refunds, and other inflows. Totals below reflect the selected month.
               </p>
             </div>
             <div className="flex flex-col gap-1.5 shrink-0">
@@ -216,10 +212,10 @@ export default function Income() {
 
         <main className="flex-1 p-5 sm:p-8 max-w-6xl w-full mx-auto space-y-6">
           <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-lavender/35 bg-surface p-6 shadow-(--shadow-fv-md) ring-1 ring-forest/4">
+            <div className="rounded-2xl border border-lavender/35 bg-surface p-6 shadow-(--shadow-fv-md) ring-1 ring-forest/4 sm:col-span-1">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Total income</p>
               <p className="text-xs text-ink-secondary mt-0.5 mb-3">{selectedMonth}</p>
-              <p className="font-display text-3xl sm:text-4xl font-semibold text-void tabular-nums">
+              <p className="font-display text-3xl sm:text-4xl font-semibold text-teal tabular-nums">
                 {currencySymbol}
                 {monthTotal.toLocaleString()}
               </p>
@@ -297,19 +293,19 @@ export default function Income() {
                 </div>
               ) : filtered.length === 0 ? (
                 <div className="px-6 py-16 text-center">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-forest ring-1 ring-lavender/40">
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-soft text-forest ring-1 ring-teal/25">
                     <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                       />
                     </svg>
                   </div>
                   <p className="font-medium text-void">No income to show</p>
                   <p className="text-sm text-ink-secondary mt-1 max-w-sm mx-auto">
-                    {searchTerm ? "Try a different search." : `Add income for ${selectedMonth} to see them here.`}
+                    {searchTerm ? "Try a different search." : `Add income for ${selectedMonth} to see it here.`}
                   </p>
                   {!searchTerm ? (
                     <button
@@ -323,7 +319,7 @@ export default function Income() {
                 </div>
               ) : (
                 <>
-                  <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)_minmax(0,0.75fr)_minmax(0,0.75fr)_auto] gap-4 px-6 py-3.5 bg-mist/60 border-b border-border-subtle text-left items-center">
+                  <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)_minmax(0,0.75fr)_minmax(0,0.75fr)_auto] gap-4 px-6 py-3.5 bg-teal-soft/40 border-b border-border-subtle text-left items-center">
                     <span className="text-xs font-semibold uppercase tracking-wide text-forest">Description</span>
                     <span className="text-xs font-semibold uppercase tracking-wide text-forest">Category</span>
                     <span className="text-xs font-semibold uppercase tracking-wide text-forest">Amount</span>
@@ -336,13 +332,13 @@ export default function Income() {
                         <div className="lg:hidden px-5 py-4 space-y-3 hover:bg-mist/40 transition-colors">
                           <div className="flex justify-between gap-3 items-start">
                             <span className="font-semibold text-void leading-snug min-w-0">{tx.description}</span>
-                            <span className="shrink-0 font-display text-lg font-semibold text-void tabular-nums">
+                            <span className="shrink-0 font-display text-lg font-semibold text-teal tabular-nums">
                               {currencySymbol}
                               {tx.amount?.toLocaleString()}
                             </span>
                           </div>
                           <div className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
-                            <span className="inline-flex rounded-full bg-mist px-2.5 py-1 text-xs font-semibold text-void ring-1 ring-lavender/40">
+                            <span className="inline-flex rounded-full bg-teal-soft px-2.5 py-1 text-xs font-semibold text-forest ring-1 ring-teal/20">
                               {tx.category?.name || "—"}
                             </span>
                             <span>{tx.date ? new Date(tx.date).toLocaleDateString() : "—"}</span>
@@ -377,11 +373,11 @@ export default function Income() {
                         <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)_minmax(0,0.75fr)_minmax(0,0.75fr)_auto] gap-4 px-6 py-4 items-center hover:bg-mist/30 transition-colors group">
                           <span className="font-medium text-void truncate min-w-0">{tx.description}</span>
                           <span>
-                            <span className="inline-flex rounded-full bg-mist px-2.5 py-1 text-xs font-semibold text-void ring-1 ring-lavender/40">
+                            <span className="inline-flex rounded-full bg-teal-soft px-2.5 py-1 text-xs font-semibold text-forest ring-1 ring-teal/20">
                               {tx.category?.name || "—"}
                             </span>
                           </span>
-                          <span className="font-display font-semibold text-void tabular-nums">
+                          <span className="font-display font-semibold text-teal tabular-nums">
                             {currencySymbol}
                             {tx.amount?.toLocaleString()}
                           </span>
@@ -445,25 +441,25 @@ export default function Income() {
             </h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="exp-desc" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
+                <label htmlFor="inc-desc" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
                   Description
                 </label>
                 <input
-                  id="exp-desc"
+                  id="inc-desc"
                   type="text"
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="e.g. Groceries"
+                  placeholder="e.g. Monthly salary"
                   autoFocus
                   className={inputClass}
                 />
               </div>
               <div>
-                <label htmlFor="exp-amt" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
+                <label htmlFor="inc-amt" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
                   Amount
                 </label>
                 <input
-                  id="exp-amt"
+                  id="inc-amt"
                   type="number"
                   min="0.01"
                   step="0.01"
@@ -474,11 +470,11 @@ export default function Income() {
                 />
               </div>
               <div>
-                <label htmlFor="exp-cat" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
+                <label htmlFor="inc-cat" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
                   Category
                 </label>
                 <select
-                  id="exp-cat"
+                  id="inc-cat"
                   value={form.categoryId}
                   onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
                   className={inputClass}
@@ -492,11 +488,11 @@ export default function Income() {
                 </select>
               </div>
               <div>
-                <label htmlFor="exp-date" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
+                <label htmlFor="inc-date" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
                   Date
                 </label>
                 <input
-                  id="exp-date"
+                  id="inc-date"
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm({ ...form, date: e.target.value })}
@@ -504,31 +500,32 @@ export default function Income() {
                 />
               </div>
               <div>
-                <label htmlFor="exp-notes" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
-                  Notes
+                <label htmlFor="inc-notes" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
+                  Notes (optional)
                 </label>
                 <textarea
-                  id="exp-notes"
+                  id="inc-notes"
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  placeholder="Optional notes"
-                  rows={3}
-                  className={inputClass}
+                  placeholder="Any additional notes…"
+                  rows={2}
+                  className={`${inputClass} resize-none`}
                 />
               </div>
+              {formError ? (
+                <p className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-error flex items-start gap-2" role="alert">
+                  <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {formError}
+                </p>
+              ) : null}
             </div>
-
-            {formError && (
-              <p className="mt-4 text-sm text-error bg-red-50 border border-red-100 rounded-xl px-4 py-3" role="alert">
-                {formError}
-              </p>
-            )}
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={closeModal}
-                className="inline-flex items-center justify-center rounded-xl border border-lavender px-5 py-2.5 text-sm font-semibold text-void hover:bg-mist transition-colors"
+                className="w-full sm:w-auto rounded-xl border border-lavender px-5 py-3 text-sm font-semibold text-void hover:bg-mist/80 transition-colors"
               >
                 Cancel
               </button>
@@ -536,22 +533,14 @@ export default function Income() {
                 type="button"
                 onClick={handleSave}
                 disabled={saving}
-                className="inline-flex items-center justify-center rounded-xl bg-linear-to-br from-teal to-forest px-5 py-2.5 text-sm font-semibold text-white shadow-(--shadow-fv-sm) hover:from-forest hover:to-void disabled:opacity-50 disabled:pointer-events-none transition-all"
+                className="w-full sm:w-auto rounded-xl bg-linear-to-br from-teal to-forest px-5 py-3 text-sm font-semibold text-white shadow-(--shadow-fv-sm) hover:from-forest hover:to-void disabled:opacity-55 transition-all"
               >
-                {saving ? (
-                  <span className="flex items-center gap-2">
-                    <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" aria-hidden />
-                    Saving…
-                  </span>
-                ) : (
-                  editingTx ? "Update income" : "Add income"
-                )}
+                {saving ? "Saving…" : editingTx ? "Save changes" : "Add income"}
               </button>
             </div>
           </div>
         </div>
       ) : null}
     </div>
-    </>
   );
 }

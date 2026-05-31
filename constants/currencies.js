@@ -2,8 +2,8 @@
 
 export const SUPPORTED_CURRENCIES = [
   'USD', 'EUR', 'GBP', 'AUD', 'CAD',
-  'INR', 'CNY', 'JPY', 'KRW', 'SGD', 'HKD', 'THB', 'MYR', 
-  'IDR', 'PHP', 'VND', 'TWD', 'PKR', 'BDT', 'LKR', 'NPR', 
+  'INR', 'CNY', 'JPY', 'KRW', 'SGD', 'HKD', 'THB', 'MYR',
+  'IDR', 'PHP', 'VND', 'TWD', 'PKR', 'BDT', 'LKR', 'NPR',
   'MMK', 'KHR', 'LAK', 'BND'
 ];
 

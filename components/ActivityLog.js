@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { authenticatedFetch } from '../../utils/auth';
+import { authenticatedFetch } from '../utils/auth';
 
 const ACTION_ICONS = {
   transaction_created: { icon: '💰', color: 'from-teal to-forest' },

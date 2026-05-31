@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
 import { authenticatedFetch } from "../../utils/auth";
@@ -132,7 +131,6 @@ export default function AiChat() {
 
   if (userLoading) {
     return (
-    <><Head><title>AI Chat — FinValora</title></Head>
       <div className="min-h-screen bg-mist flex flex-col items-center justify-center gap-4">
         <div
           className="h-11 w-11 rounded-full border-2 border-teal/30 border-t-teal animate-spin"
@@ -140,7 +138,6 @@ export default function AiChat() {
         />
         <p className="text-sm text-ink-secondary">Loading assistant…</p>
       </div>
-    </>
     );
   }
 

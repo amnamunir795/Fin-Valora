@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -179,7 +178,7 @@ export default function BudgetSetup() {
 
   const getCurrencySymbol = (currencyCode) => {
     const currency = CURRENCY_OPTIONS.find((c) => c.code === currencyCode);
-    return currency ? currency.symbol : "₨";
+    return currency ? currency.symbol : "$";
   };
 
   const incomeNum = parseFloat(formData.monthlyIncome) || 0;
@@ -202,12 +201,10 @@ export default function BudgetSetup() {
 
   if (!user) {
     return (
-    <><Head><title>Budget Setup — FinValora</title></Head>
       <div className="min-h-screen bg-linear-to-br from-mist via-surface to-teal-soft/40 flex flex-col items-center justify-center gap-4">
         <div className="h-11 w-11 rounded-full border-2 border-teal/30 border-t-teal animate-spin" aria-hidden />
         <p className="text-sm text-ink-secondary">Loading budget setup…</p>
       </div>
-    </>
     );
   }
 

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import LandingHeader from '../components/LandingHeader';
@@ -91,10 +90,6 @@ export default function Home() {
   }, [router]);
 
   return (
-    <>
-    <Head>
-      <title>FinValora — Master Your Money, Shape Your Future</title>
-    </Head>
     <div className="min-h-screen bg-gradient-to-b from-surface via-mist to-lavender/30">
       <LandingHeader />
 
@@ -923,6 +918,5 @@ export default function Home() {
 
       <LandingFooter />
     </div>
-    </>
   );
 }

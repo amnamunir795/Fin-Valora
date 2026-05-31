@@ -175,10 +175,9 @@ export default async function handler(req, res) {
         // Populate category for response
         await transaction.populate('categoryId', 'name type color');
 
-        // Log activity (fire-and-forget)
-        logTransactionCreated(userId, transaction, transaction.currency);
+                logTransactionCreated(userId, transaction, transaction.currency);
 
-        res.status(201).json({
+                res.status(201).json({
           success: true,
           message: 'Transaction created successfully',
           transaction: {

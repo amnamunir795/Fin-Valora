@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -113,7 +112,6 @@ export default function Login() {
   };
 
   return (
-    <><Head><title>Sign In — FinValora</title></Head>
     <div className="min-h-screen bg-gradient-to-br from-mist via-mist/90 to-teal/20 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -347,6 +345,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-    </>
   );
 }

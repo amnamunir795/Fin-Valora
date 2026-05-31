@@ -1,4 +1,3 @@
-import { logOcrUpload } from '../../../lib/activityLogger';
 import connectDB from '../../../lib/mongodb';
 import OCRScan from '../../../models/OCRScan';
 import { verifyRequestAuth } from '../../../middleware/auth';

@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React, { useState, useEffect, useMemo } from "react";
 import { authenticatedFetch } from "../../utils/auth";
 import AppSidebar from "../../components/AppSidebar";
@@ -11,7 +10,7 @@ const MONTHS = [
 
 function currencySymbolForCode(code) {
   const c = CURRENCY_OPTIONS.find((x) => x.code === code);
-  return c?.symbol ?? "₨";
+  return c?.symbol ?? "$";
 }
 
 export default function Expenses() {
@@ -179,7 +178,6 @@ export default function Expenses() {
     "w-full rounded-xl border border-lavender px-4 py-3 text-void bg-surface placeholder:text-ink-muted transition-all hover:border-teal/50 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/25";
 
   return (
-    <><Head><title>Expenses — FinValora</title></Head>
     <div className="min-h-screen bg-linear-to-br from-mist via-surface to-teal-soft/35 flex">
       <AppSidebar />
 
@@ -505,30 +503,31 @@ export default function Expenses() {
               </div>
               <div>
                 <label htmlFor="exp-notes" className="block text-xs font-semibold uppercase tracking-wide text-ink-secondary mb-2">
-                  Notes
+                  Notes (optional)
                 </label>
                 <textarea
                   id="exp-notes"
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  placeholder="Optional notes"
-                  rows={3}
-                  className={inputClass}
+                  placeholder="Any additional notes…"
+                  rows={2}
+                  className={`${inputClass} resize-none`}
                 />
               </div>
+              {formError ? (
+                <p className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-error flex items-start gap-2" role="alert">
+                  <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {formError}
+                </p>
+              ) : null}
             </div>
-
-            {formError && (
-              <p className="mt-4 text-sm text-error bg-red-50 border border-red-100 rounded-xl px-4 py-3" role="alert">
-                {formError}
-              </p>
-            )}
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={closeModal}
-                className="inline-flex items-center justify-center rounded-xl border border-lavender px-5 py-2.5 text-sm font-semibold text-void hover:bg-mist transition-colors"
+                className="w-full sm:w-auto rounded-xl border border-lavender px-5 py-3 text-sm font-semibold text-void hover:bg-mist/80 transition-colors"
               >
                 Cancel
               </button>
@@ -536,22 +535,14 @@ export default function Expenses() {
                 type="button"
                 onClick={handleSave}
                 disabled={saving}
-                className="inline-flex items-center justify-center rounded-xl bg-linear-to-br from-teal to-forest px-5 py-2.5 text-sm font-semibold text-white shadow-(--shadow-fv-sm) hover:from-forest hover:to-void disabled:opacity-50 disabled:pointer-events-none transition-all"
+                className="w-full sm:w-auto rounded-xl bg-linear-to-br from-teal to-forest px-5 py-3 text-sm font-semibold text-white shadow-(--shadow-fv-sm) hover:from-forest hover:to-void disabled:opacity-55 transition-all"
               >
-                {saving ? (
-                  <span className="flex items-center gap-2">
-                    <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" aria-hidden />
-                    Saving…
-                  </span>
-                ) : (
-                  editingTx ? "Update expense" : "Add expense"
-                )}
+                {saving ? "Saving…" : editingTx ? "Save changes" : "Add expense"}
               </button>
             </div>
           </div>
         </div>
       ) : null}
     </div>
-    </>
   );
 }

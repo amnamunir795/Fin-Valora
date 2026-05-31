@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React, { useState, useEffect, useMemo } from 'react';
 import { authenticatedFetch } from '../../utils/auth';
 import AppSidebar from '../../components/AppSidebar';
@@ -112,7 +111,6 @@ export default function Categories() {
       : 'bg-mist text-void ring-1 ring-lavender/40';
 
   return (
-    <><Head><title>Categories — FinValora</title></Head>
     <div className="min-h-screen bg-linear-to-br from-mist via-surface to-teal-soft/35 flex">
       <AppSidebar />
 
@@ -420,6 +418,5 @@ export default function Categories() {
         </div>
       ) : null}
     </div>
-    </>
   );
 }

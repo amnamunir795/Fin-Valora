@@ -100,7 +100,7 @@ export default function AppSidebar({ featuredLogo = false, onOcrClick }) {
           Activity Log
         </Link>
         {typeof onOcrClick === 'function' ? (
-          <button
+                  <button
             type="button"
             onClick={onOcrClick}
             className={`w-full text-left ${NAV_IDLE}`}

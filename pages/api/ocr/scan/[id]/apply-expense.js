@@ -123,11 +123,11 @@ export default async function handler(req, res) {
     await budget.save();
 
     scan.transactionId = transaction._id;
-    scan.isReviewed = true;
-    scan.isApproved = true;
-    await scan.save();
+        scan.isReviewed = true;
+        scan.isApproved = true;
+        await scan.save();
 
-    logOcrExpenseCreated(userId, transaction, scan);
+        logOcrExpenseCreated(userId, transaction, scan);
 
     await transaction.populate('categoryId', 'name type color');
 

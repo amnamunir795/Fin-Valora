@@ -46,7 +46,7 @@ export default function FeaturesSection() {
           }
         }
 
-        // Always show text immediately (typing effect is decorative)
+        // Show text immediately, typing is decorative
         title.textContent = text;
 
         // Start typing effect when element is in view

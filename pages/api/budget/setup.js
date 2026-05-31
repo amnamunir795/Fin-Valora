@@ -102,8 +102,6 @@ export default async function handler(req, res) {
 
           await existingBudget.save();
 
-          logBudgetSaved(userId, existingBudget, false);
-
           res.status(200).json({
             success: true,
             message: "Budget updated successfully",
@@ -127,8 +125,6 @@ export default async function handler(req, res) {
           });
 
           await newBudget.save();
-
-          logBudgetSaved(userId, newBudget, true);
 
           res.status(201).json({
             success: true,

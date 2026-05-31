@@ -87,11 +87,9 @@ export default async function handler(req, res) {
       createdAt: user.createdAt
     };
 
-    logActivity({ userId: user._id, action: 'user_login', entityType: 'User', entityId: user._id, description: `User logged in: ${user.email}` });
-
-          res.status(200).json({
-            success: true,
-            message: 'Login successful',
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
       user: userResponse,
       token: token
     });

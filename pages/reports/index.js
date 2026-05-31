@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { authenticatedFetch } from '../../utils/auth';
@@ -498,9 +497,21 @@ export default function ReportsPage() {
                     <span className="text-sm font-semibold text-void">Outflow (expenses)</span>
                     <span className="text-base font-display font-semibold tabular-nums text-void">{formatAmount(derived.totalExpenses)}</span>
                   </div>
-                  <div className={`flex items-center justify-between gap-4 px-5 py-4 rounded-xl border ${derived.netSavings >= 0 ? 'bg-teal-soft/40 border-teal/20' : 'bg-red-50/60 border-error/20'}`}>
-                    <span className="text-sm font-semibold text-void">Net flow</span>
-                    <span className={`text-base font-display font-semibold tabular-nums ${derived.netSavings >= 0 ? 'text-teal' : 'text-error'}`}>{formatAmount(derived.netSavings)}</span>
+                  <div
+                    className={`flex items-center justify-between gap-4 px-5 py-4 rounded-xl border-2 ${
+                      derived.netSavings >= 0
+                        ? 'bg-linear-to-r from-teal-soft/50 to-transparent border-teal/30'
+                        : 'bg-red-50/80 border-error/20'
+                    }`}
+                  >
+                    <span className="text-sm font-semibold text-forest">Net flow</span>
+                    <span
+                      className={`text-base font-display font-semibold tabular-nums ${
+                        derived.netSavings >= 0 ? 'text-forest' : 'text-error'
+                      }`}
+                    >
+                      {formatAmount(derived.netSavings)}
+                    </span>
                   </div>
                 </div>
               </section>
