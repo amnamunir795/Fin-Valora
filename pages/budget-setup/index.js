@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { CURRENCY_OPTIONS } from "../../constants/currencies";
+import { authenticatedFetch } from "../../utils/auth";
 import FinValoraLogo from "../../components/FinValoraLogo";
 
 const inputBase =
@@ -143,7 +144,7 @@ export default function BudgetSetup() {
     setErrors({});
 
     try {
-      const response = await fetch("/api/budget/setup", {
+      const response = await authenticatedFetch("/api/budget/setup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
