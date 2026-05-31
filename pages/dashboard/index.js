@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CURRENCY_OPTIONS } from '../../constants/currencies';
@@ -6,6 +7,8 @@ import { authenticatedFetch } from '../../utils/auth';
 import AppSidebar from '../../components/AppSidebar';
 import ActivityLog from '../../components/ActivityLog';
 import FinValoraLogo from '../../components/FinValoraLogo';
+
+const ReactECharts = dynamic(() => import('echarts-for-react'), { ssr: false });
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -207,6 +210,150 @@ export default function Dashboard() {
   const maxExpenseBar = Math.max(...expenseCategoryRows.map(([, v]) => v), 1);
   const maxIncomeBar = Math.max(...incomeCategoryRows.map(([, v]) => v), 1);
 
+  const currencySym = getCurrencySymbol(user?.currency);
+
+  /* ── ECharts: Expense Trend (daily line chart) ── */
+  const expenseTrendOption = useMemo(() => {
+    const expenses = monthTransactions.filter(t => t.type === 'Expense');
+    if (expenses.length === 0) return null;
+
+    // Group by day
+    const dailyMap = {};
+    expenses.forEach(t => {
+      const d = new Date(t.date || t.createdAt);
+      const key = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      dailyMap[key] = (dailyMap[key] || 0) + (t.amount || 0);
+    });
+
+    // Sort by actual date
+    const sorted = Object.entries(dailyMap).sort((a, b) => {
+      const da = new Date(a[0] + ', ' + new Date().getFullYear());
+      const db = new Date(b[0] + ', ' + new Date().getFullYear());
+      return da - db;
+    });
+
+    const dates = sorted.map(([d]) => d);
+    const amounts = sorted.map(([, v]) => v);
+
+    // Cumulative
+    const cumulative = [];
+    let running = 0;
+    amounts.forEach(a => { running += a; cumulative.push(Math.round(running * 100) / 100); });
+
+    return {
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: '#fff',
+        borderColor: '#e5e5ef',
+        textStyle: { color: '#251b28', fontSize: 12 },
+        axisPointer: { type: 'cross', crossStyle: { color: '#c4c4db' } }
+      },
+      legend: {
+        data: ['Daily', 'Cumulative'],
+        bottom: 0,
+        textStyle: { color: '#5a5468', fontSize: 11 },
+        itemWidth: 12,
+        itemHeight: 8
+      },
+      grid: { top: 10, right: 16, bottom: 36, left: 12, containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: dates,
+        axisLine: { lineStyle: { color: '#e5e5ef' } },
+        axisLabel: { color: '#9b96a8', fontSize: 10, rotate: dates.length > 10 ? 30 : 0 },
+        axisTick: { show: false }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#9b96a8', fontSize: 10 },
+        splitLine: { lineStyle: { color: '#f4f4f8', type: 'dashed' } }
+      },
+      series: [
+        {
+          name: 'Daily',
+          type: 'bar',
+          data: amounts,
+          barMaxWidth: 24,
+          itemStyle: {
+            color: {
+              type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: '#8abfb2' },
+                { offset: 1, color: '#01332b' }
+              ]
+            },
+            borderRadius: [4, 4, 0, 0]
+          }
+        },
+        {
+          name: 'Cumulative',
+          type: 'line',
+          data: cumulative,
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 6,
+          lineStyle: { color: '#01332b', width: 2 },
+          itemStyle: { color: '#01332b', borderColor: '#fff', borderWidth: 2 },
+          areaStyle: {
+            color: {
+              type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: 'rgba(138,191,178,0.25)' },
+                { offset: 1, color: 'rgba(138,191,178,0)' }
+              ]
+            }
+          }
+        }
+      ]
+    };
+  }, [monthTransactions]);
+
+  /* ── ECharts: Category Split (pie chart) ── */
+  const categoryPieOption = useMemo(() => {
+    if (expenseCategoryRows.length === 0) return null;
+
+    const colors = ['#01332b', '#8abfb2', '#c4c4db', '#2d9e6b', '#d97706', '#dc2626', '#6366f1', '#8b5cf6', '#06b6d4', '#f59e0b'];
+
+    return {
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: '#fff',
+        borderColor: '#e5e5ef',
+        textStyle: { color: '#251b28', fontSize: 12 },
+        formatter: (p) => `<b>${p.name}</b><br/>${currencySym}${p.value.toLocaleString()} (${p.percent}%)`
+      },
+      legend: {
+        orient: 'vertical',
+        right: 0,
+        top: 'center',
+        textStyle: { color: '#5a5468', fontSize: 11 },
+        itemWidth: 10,
+        itemHeight: 10,
+        itemGap: 8
+      },
+      color: colors,
+      series: [{
+        type: 'pie',
+        radius: ['45%', '75%'],
+        center: ['35%', '50%'],
+        avoidLabelOverlap: true,
+        label: { show: false },
+        emphasis: {
+          label: { show: true, fontSize: 13, fontWeight: '600', color: '#251b28' },
+          itemStyle: { shadowBlur: 10, shadowColor: 'rgba(1,51,43,0.15)' }
+        },
+        labelLine: { show: false },
+        data: expenseCategoryRows.map(([name, value], i) => ({
+          name,
+          value: Math.round(value * 100) / 100,
+          itemStyle: { borderColor: '#fff', borderWidth: 2 }
+        }))
+      }]
+    };
+  }, [expenseCategoryRows, currencySym]);
+
   const handleOcrFile = async (e) => {
     const file = e.target?.files?.[0];
     if (!file) return;
@@ -331,8 +478,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  const currencySym = getCurrencySymbol(user?.currency);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-mist via-surface to-teal-soft/35 flex">
@@ -530,54 +675,52 @@ export default function Dashboard() {
             </div>
           </section>
 
-          <section aria-label="Charts placeholder" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <section aria-label="Charts" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Expense Trend Chart */}
             <div className="rounded-2xl border border-lavender/35 bg-surface p-6 sm:p-7 shadow-(--shadow-fv-md) ring-1 ring-forest/4">
-              <div className="flex items-start justify-between gap-4 mb-5">
+              <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Visualization</p>
                   <h3 className="font-display text-xl font-semibold text-void mt-0.5">Expense trend</h3>
                 </div>
-                <span className="shrink-0 rounded-full border border-lavender/50 bg-mist/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-ink-secondary">
-                  Soon
-                </span>
               </div>
-              <div className="h-64 flex items-center justify-center rounded-xl border border-dashed border-lavender/50 bg-linear-to-b from-mist/40 to-transparent text-ink-secondary">
-                <div className="text-center px-4">
-                  <svg className="w-11 h-11 mx-auto mb-3 text-teal/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  <p className="text-sm font-medium text-void">Chart coming soon</p>
-                  <p className="text-xs mt-1 text-ink-muted">Trend charts will appear here</p>
+              {expenseTrendOption ? (
+                <ReactECharts option={expenseTrendOption} style={{ height: 260 }} opts={{ renderer: 'svg' }} />
+              ) : (
+                <div className="h-64 flex items-center justify-center rounded-xl border border-dashed border-lavender/50 bg-mist/30 text-ink-secondary">
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-void">No expense data</p>
+                    <p className="text-xs mt-1 text-ink-muted">Add expenses to see the trend</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
+
+            {/* Category Split Pie Chart */}
             <div className="rounded-2xl border border-lavender/35 bg-surface p-6 sm:p-7 shadow-(--shadow-fv-md) ring-1 ring-forest/4">
-              <div className="flex items-start justify-between gap-4 mb-5">
+              <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Visualization</p>
                   <h3 className="font-display text-xl font-semibold text-void mt-0.5">Category split</h3>
                 </div>
-                <span className="shrink-0 rounded-full border border-lavender/50 bg-mist/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-ink-secondary">
-                  Soon
-                </span>
               </div>
-              <div className="h-64 flex items-center justify-center rounded-xl border border-dashed border-lavender/50 bg-linear-to-b from-mist/40 to-transparent text-ink-secondary">
-                <div className="text-center px-4">
-                  <svg className="w-11 h-11 mx-auto mb-3 text-teal/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                  </svg>
-                  <p className="text-sm font-medium text-void">Pie chart coming soon</p>
-                  <p className="text-xs mt-1 text-ink-muted">Share of spend by category</p>
+              {categoryPieOption ? (
+                <ReactECharts option={categoryPieOption} style={{ height: 260 }} opts={{ renderer: 'svg' }} />
+              ) : (
+                <div className="h-64 flex items-center justify-center rounded-xl border border-dashed border-lavender/50 bg-mist/30 text-ink-secondary">
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-void">No expense data</p>
+                    <p className="text-xs mt-1 text-ink-muted">Add expenses to see the split</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </section>
 
           {/* Categories Breakdown and AI Assistant Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            <div className="rounded-2xl border border-lavender/35 bg-surface p-6 sm:p-7 shadow-(--shadow-fv-md) ring-1 ring-forest/4 flex flex-col h-full min-h-0">
-              <div className="mb-6">
+            <div className="rounded-2xl border border-lavender/35 bg-surface shadow-(--shadow-fv-md) ring-1 ring-forest/4 flex flex-col h-full min-h-0 overflow-hidden">
+              <div className="px-6 pt-6 pb-4">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-teal">Breakdown</p>
                 <h3 className="font-display text-xl font-semibold text-void mt-0.5">Categories</h3>
                 <p className="text-xs text-ink-muted mt-1">
@@ -585,96 +728,98 @@ export default function Dashboard() {
                 </p>
               </div>
 
-              <div className="space-y-8 flex-1">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-forest/10 text-forest">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
-                      </span>
-                      <span className="text-sm font-semibold text-void truncate">Expenses</span>
-                    </div>
-                    <span className="text-xs font-medium text-ink-secondary shrink-0 tabular-nums">
-                      {expenseCategoryRows.length} {expenseCategoryRows.length === 1 ? 'category' : 'categories'}
+              <div className="flex-1 overflow-y-auto">
+                {/* Expense Table */}
+                <div className="px-6 pb-2">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-forest/10">
+                      <svg className="w-3 h-3 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
                     </span>
+                    <span className="text-xs font-semibold text-void uppercase tracking-wide">Expenses</span>
+                    <span className="ml-auto text-xs font-mono text-ink-muted">{currencySym}{expenseRecorded.toLocaleString()}</span>
                   </div>
-                  <p className="font-display text-2xl font-semibold text-teal tabular-nums mb-4">
-                    {currencySym}
-                    {expenseRecorded.toLocaleString()}
-                  </p>
+
                   {expenseCategoryRows.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-lavender/50 bg-mist/40 px-4 py-8 text-center">
-                      <p className="text-sm text-ink-secondary">No expense transactions this period.</p>
-                      <p className="text-xs text-ink-muted mt-1">Try another month or filter.</p>
+                    <div className="rounded-xl border border-dashed border-lavender/40 bg-mist/30 px-4 py-6 text-center mb-4">
+                      <p className="text-xs text-ink-muted">No expenses this period</p>
                     </div>
                   ) : (
-                    <ul className="space-y-3">
-                      {expenseCategoryRows.slice(0, 6).map(([name, amt]) => (
-                        <li key={name}>
-                          <div className="flex justify-between gap-2 text-xs sm:text-sm mb-1">
-                            <span className="font-medium text-void truncate">{name}</span>
-                            <span className="tabular-nums text-ink-secondary shrink-0">
-                              {currencySym}
-                              {amt.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="h-2 rounded-full bg-mist overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-linear-to-r from-teal to-forest transition-[width] duration-300"
-                              style={{ width: `${Math.min(100, (amt / maxExpenseBar) * 100)}%` }}
-                            />
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="rounded-xl border border-lavender/25 overflow-hidden mb-4">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="bg-mist/40">
+                            <th className="text-left text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2">Category</th>
+                            <th className="text-right text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2">Amount</th>
+                            <th className="text-right text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2 w-16">%</th>
+                            <th className="text-left text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2 w-24">Share</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-lavender/10">
+                          {expenseCategoryRows.map(([name, amt]) => {
+                            const pct = expenseRecorded ? Math.round((amt / expenseRecorded) * 100) : 0;
+                            return (
+                              <tr key={name} className="hover:bg-mist/20 transition-colors">
+                                <td className="px-3 py-2 text-sm font-medium text-void">{name}</td>
+                                <td className="px-3 py-2 text-sm font-mono text-void text-right">{currencySym}{amt.toLocaleString()}</td>
+                                <td className="px-3 py-2 text-xs font-mono text-ink-muted text-right">{pct}%</td>
+                                <td className="px-3 py-2">
+                                  <div className="h-1.5 rounded-full bg-mist overflow-hidden">
+                                    <div className="h-full rounded-full bg-linear-to-r from-teal to-forest" style={{ width: pct + '%' }} />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-teal-soft text-forest">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                      </span>
-                      <span className="text-sm font-semibold text-void truncate">Income</span>
-                    </div>
-                    <span className="text-xs font-medium text-ink-secondary shrink-0 tabular-nums">
-                      {incomeCategoryRows.length} {incomeCategoryRows.length === 1 ? 'category' : 'categories'}
+                {/* Income Table */}
+                <div className="px-6 pb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-teal-soft">
+                      <svg className="w-3 h-3 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                     </span>
+                    <span className="text-xs font-semibold text-void uppercase tracking-wide">Income</span>
+                    <span className="ml-auto text-xs font-mono text-ink-muted">{currencySym}{incomeRecorded.toLocaleString()}</span>
                   </div>
-                  <p className="font-display text-2xl font-semibold text-forest tabular-nums mb-4">
-                    {currencySym}
-                    {incomeRecorded.toLocaleString()}
-                  </p>
+
                   {incomeCategoryRows.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-lavender/50 bg-mist/40 px-4 py-8 text-center">
-                      <p className="text-sm text-ink-secondary">No income transactions this period.</p>
-                      <p className="text-xs text-ink-muted mt-1">Try another month or filter.</p>
+                    <div className="rounded-xl border border-dashed border-lavender/40 bg-mist/30 px-4 py-6 text-center">
+                      <p className="text-xs text-ink-muted">No income this period</p>
                     </div>
                   ) : (
-                    <ul className="space-y-3">
-                      {incomeCategoryRows.slice(0, 6).map(([name, amt]) => (
-                        <li key={name}>
-                          <div className="flex justify-between gap-2 text-xs sm:text-sm mb-1">
-                            <span className="font-medium text-void truncate">{name}</span>
-                            <span className="tabular-nums text-ink-secondary shrink-0">
-                              {currencySym}
-                              {amt.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="h-2 rounded-full bg-mist overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-linear-to-r from-teal/90 to-teal transition-[width] duration-300"
-                              style={{ width: `${Math.min(100, (amt / maxIncomeBar) * 100)}%` }}
-                            />
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="rounded-xl border border-lavender/25 overflow-hidden">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="bg-mist/40">
+                            <th className="text-left text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2">Category</th>
+                            <th className="text-right text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2">Amount</th>
+                            <th className="text-right text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2 w-16">%</th>
+                            <th className="text-left text-[10px] font-semibold uppercase tracking-wide text-ink-muted px-3 py-2 w-24">Share</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-lavender/10">
+                          {incomeCategoryRows.map(([name, amt]) => {
+                            const pct = incomeRecorded ? Math.round((amt / incomeRecorded) * 100) : 0;
+                            return (
+                              <tr key={name} className="hover:bg-mist/20 transition-colors">
+                                <td className="px-3 py-2 text-sm font-medium text-void">{name}</td>
+                                <td className="px-3 py-2 text-sm font-mono text-void text-right">{currencySym}{amt.toLocaleString()}</td>
+                                <td className="px-3 py-2 text-xs font-mono text-ink-muted text-right">{pct}%</td>
+                                <td className="px-3 py-2">
+                                  <div className="h-1.5 rounded-full bg-mist overflow-hidden">
+                                    <div className="h-full rounded-full bg-teal" style={{ width: pct + '%' }} />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </div>
               </div>
