@@ -1,0 +1,100 @@
+/**
+ * FinValora design tokens — source of truth aligned with docs/DESIGN_SYSTEM.md
+ * Use via var(--token) in custom CSS; prefer Tailwind theme utilities in JSX.
+ */
+
+:root {
+  /* Core palette */
+  --color-white: #ffffff;
+  --color-lavender: #c4c4db;
+  --color-teal: #8abfb2;
+  --color-forest: #01332b;
+  --color-void: #251b28;
+
+  /* Semantic — backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f8;
+  --bg-dark: #01332b;
+  --bg-deep: #251b28;
+  --bg-teal-soft: #eaf4f2;
+
+  /* Semantic — text */
+  --text-primary: #251b28;
+  --text-secondary: #5a5468;
+  --text-muted: #9b96a8;
+  --text-inverse: #ffffff;
+  --text-accent: #01332b;
+
+  /* Borders */
+  --border-default: #c4c4db;
+  --border-subtle: #e5e5ef;
+  --border-strong: #8abfb2;
+  --border-nav: rgba(196, 196, 219, 0.4);
+
+  /* Interactive */
+  --interactive-primary: #01332b;
+  --interactive-hover: #024a3e;
+  --interactive-active: #012820;
+  --interactive-accent: #8abfb2;
+  --interactive-focus: rgba(138, 191, 178, 0.35);
+
+  /* Status */
+  --status-success: #2d9e6b;
+  --status-warning: #d97706;
+  --status-error: #dc2626;
+  --status-info: #8abfb2;
+
+  /* Nav (frosted) */
+  --nav-bg: rgba(255, 255, 255, 0.92);
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* Layout */
+  --container-max: 1200px;
+  --container-narrow: 760px;
+  --container-wide: 1440px;
+  --grid-gap: 24px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 3px rgba(1, 51, 43, 0.06);
+  --shadow-sm: 0 2px 8px rgba(1, 51, 43, 0.08), 0 1px 3px rgba(1, 51, 43, 0.04);
+  --shadow-md: 0 4px 16px rgba(1, 51, 43, 0.1), 0 2px 6px rgba(1, 51, 43, 0.06);
+  --shadow-lg: 0 8px 32px rgba(1, 51, 43, 0.12), 0 4px 12px rgba(1, 51, 43, 0.07);
+  --shadow-xl: 0 16px 48px rgba(1, 51, 43, 0.14), 0 8px 20px rgba(1, 51, 43, 0.08);
+  --glow-teal: 0 0 0 4px rgba(138, 191, 178, 0.35);
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Components */
+  --input-height: 48px;
+  --nav-height: 64px;
+  --btn-height-md: 44px;
+  --btn-height-lg: 52px;
+}

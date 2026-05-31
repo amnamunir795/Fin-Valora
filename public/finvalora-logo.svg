@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="fv-panel" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#251B28"/>
+      <stop offset="0.45" stop-color="#1a1420"/>
+      <stop offset="1" stop-color="#01332B"/>
+    </linearGradient>
+    <linearGradient id="fv-vignette" x1="32" y1="36" x2="32" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#01332B" stop-opacity="0"/>
+      <stop offset="1" stop-color="#01332B" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="fv-lav" cx="35%" cy="35%" r="65%">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.45" stop-color="#C4C4DB"/>
+      <stop offset="1" stop-color="#8a8ab0"/>
+    </radialGradient>
+    <radialGradient id="fv-teal" cx="35%" cy="35%" r="65%">
+      <stop stop-color="#eaf4f2"/>
+      <stop offset="0.5" stop-color="#8ABFB2"/>
+      <stop offset="1" stop-color="#4a8a7a"/>
+    </radialGradient>
+    <radialGradient id="fv-white" cx="32%" cy="28%" r="70%">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#e8e8ee"/>
+      <stop offset="1" stop-color="#C4C4DB"/>
+    </radialGradient>
+    <linearGradient id="fv-gloss" x1="8" y1="8" x2="40" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="58" height="58" rx="15" fill="url(#fv-panel)"/>
+  <rect x="3" y="3" width="58" height="58" rx="15" fill="url(#fv-vignette)"/>
+  <rect x="3" y="3" width="58" height="58" rx="15" stroke="#C4C4DB" stroke-opacity="0.45" stroke-width="1.25"/>
+  <line x1="10" y1="14" x2="54" y2="14" stroke="#C4C4DB" stroke-opacity="0.1" stroke-width="0.75"/>
+  <line x1="10" y1="18" x2="54" y2="18" stroke="#C4C4DB" stroke-opacity="0.08" stroke-width="0.75"/>
+  <line x1="10" y1="22" x2="54" y2="22" stroke="#C4C4DB" stroke-opacity="0.06" stroke-width="0.75"/>
+  <path d="M 30 38 L 36 34 L 42 30 L 48 24 L 54 22 L 54 52 L 30 52 Z" fill="#8ABFB2" fill-opacity="0.2"/>
+  <path d="M 30 38 L 36 34 L 42 30 L 48 24 L 54 22" stroke="#8ABFB2" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="54" cy="22" r="2.5" fill="#FFFFFF" stroke="#8ABFB2" stroke-width="1"/>
+  <ellipse cx="23" cy="49" rx="14" ry="4" fill="#01332B" fill-opacity="0.45"/>
+  <ellipse cx="19" cy="44" rx="9" ry="2.9" fill="url(#fv-lav)"/>
+  <ellipse cx="23" cy="38" rx="10" ry="3.1" fill="url(#fv-teal)"/>
+  <ellipse cx="21" cy="31" rx="11" ry="3.4" fill="url(#fv-white)"/>
+  <ellipse cx="21" cy="31" rx="11" ry="3.4" stroke="#C4C4DB" stroke-opacity="0.5" stroke-width="0.6" fill="none"/>
+  <text x="21" y="34.5" text-anchor="middle" fill="#01332B" font-size="13" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">$</text>
+  <rect x="43" y="38" width="4.5" height="10" rx="1" fill="#C4C4DB" fill-opacity="0.85"/>
+  <rect x="48.5" y="32" width="4.5" height="16" rx="1" fill="#8ABFB2"/>
+  <rect x="54" y="26" width="4.5" height="22" rx="1" fill="#FFFFFF" fill-opacity="0.95"/>
+  <path d="M 8 10 L 28 8 L 14 24 Z" fill="url(#fv-gloss)"/>
+</svg>
