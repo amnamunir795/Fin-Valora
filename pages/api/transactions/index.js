@@ -130,7 +130,7 @@ export default async function handler(req, res) {
         }
 
         // Get current budget
-        const transactionDate = new Date(date);
+        const transactionDate = new Date(date + 'T00:00:00'); // Force local time parsing
         const budget = await Budget.findOne({
           userId,
           budgetYear: transactionDate.getFullYear(),

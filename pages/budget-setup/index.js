@@ -80,8 +80,9 @@ export default function BudgetSetup() {
 
   useEffect(() => {
     const now = new Date();
-    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-    const defaultDate = firstDay.toISOString().split("T")[0];
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const defaultDate = `${year}-${month}-01`;
     setFormData((prev) => ({
       ...prev,
       startDate: defaultDate,

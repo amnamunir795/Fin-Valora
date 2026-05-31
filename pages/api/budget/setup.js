@@ -54,7 +54,8 @@ export default async function handler(req, res) {
         }
 
         // Parse the start date to get month and year
-        const budgetStartDate = new Date(startDate);
+        // Append T00:00:00 to treat the date string as local time, not UTC
+        const budgetStartDate = new Date(startDate + "T00:00:00");
         const budgetMonth = budgetStartDate.getMonth() + 1; // JavaScript months are 0-indexed
         const budgetYear = budgetStartDate.getFullYear();
 

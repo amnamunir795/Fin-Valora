@@ -109,7 +109,7 @@ export default async function handler(req, res) {
 
       applyLedgerToBudget(oldBudget, transaction.type, transaction.amount, -1);
 
-      const transactionDate = new Date(date);
+      const transactionDate = new Date(date + 'T00:00:00'); // Force local time parsing
       const targetBudget = await Budget.findOne({
         userId,
         budgetYear: transactionDate.getFullYear(),
