@@ -73,6 +73,50 @@ export default function Home() {
   const [openFAQ, setOpenFAQ] = useState(null);
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
+  const [feedbackType, setFeedbackType] = useState('');
+  const [subject, setSubject] = useState('');
+  const [feedbackMsg, setFeedbackMsg] = useState('');
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackSuccess, setFeedbackSuccess] = useState(false);
+  const [feedbackError, setFeedbackError] = useState('');
+
+  async function handleFeedbackSubmit(e) {
+    e.preventDefault();
+    setFeedbackError('');
+    if (!rating) { setFeedbackError('Please select a rating.'); return; }
+    if (!feedbackMsg.trim()) { setFeedbackError('Please enter your feedback.'); return; }
+    setFeedbackLoading(true);
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('finvalora_token') : null;
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          rating,
+          feedbackType: feedbackType || 'general',
+          subject,
+          message: feedbackMsg,
+        }),
+      });
+      if (res.ok) {
+        setFeedbackSuccess(true);
+        setRating(0);
+        setFeedbackType('');
+        setSubject('');
+        setFeedbackMsg('');
+        setTimeout(() => setFeedbackSuccess(false), 4000);
+      } else {
+        const data = await res.json();
+        setFeedbackError(data.message || 'Failed to submit feedback.');
+      }
+    } catch {
+      setFeedbackError('Network error. Please try again.');
+    } finally {
+      setFeedbackLoading(false);
+    }
+  }
 
   useEffect(() => {
     // Check for success messages
@@ -478,7 +522,19 @@ export default function Home() {
             style={{ animationDelay: '0.08s' }}
           >
             <div className="rounded-[1.7rem] border border-white/80 bg-white/95 p-8 shadow-inner shadow-white/40 md:p-12">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleFeedbackSubmit}>
+            {/* Success/Error Messages */}
+            {feedbackSuccess && (
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                Thank you for your feedback!
+              </div>
+            )}
+            {feedbackError && (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                {feedbackError}
+              </div>
+            )}
+
             {/* Feedback Type */}
             <div className="transform transition-all duration-300 hover:translate-x-1">
               <label htmlFor="feedbackType" className="block text-base font-semibold text-void mb-2">
@@ -486,6 +542,8 @@ export default function Home() {
               </label>
               <select
                 id="feedbackType"
+                value={feedbackType}
+                onChange={(e) => setFeedbackType(e.target.value)}
                 className="w-full rounded-lg border-2 border-lavender bg-white px-4 py-3 text-void transition-all duration-300 hover:border-teal focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
               >
                 <option value="">Select feedback type</option>
@@ -533,6 +591,8 @@ export default function Home() {
               <input
                 type="text"
                 id="subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
                 className="w-full rounded-lg border-2 border-lavender px-4 py-3 text-void transition-all duration-300 hover:border-teal hover:shadow-md focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
                 placeholder="Brief summary of your feedback"
               />
@@ -546,6 +606,8 @@ export default function Home() {
               <textarea
                 id="feedback"
                 rows="6"
+                value={feedbackMsg}
+                onChange={(e) => setFeedbackMsg(e.target.value)}
                 className="w-full resize-none rounded-lg border-2 border-lavender px-4 py-3 text-void transition-all duration-300 hover:border-teal hover:shadow-md focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal/20"
                 placeholder="Share your thoughts, suggestions, or report issues..."
               ></textarea>
@@ -566,10 +628,11 @@ export default function Home() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="group w-full rounded-xl bg-gradient-to-r from-forest to-void py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:from-forest-hover hover:to-void hover:shadow-2xl active:scale-[0.99]"
+              disabled={feedbackLoading}
+              className="group w-full rounded-xl bg-gradient-to-r from-forest to-void py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:from-forest-hover hover:to-void hover:shadow-2xl active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <span className="flex items-center justify-center">
-                Submit Feedback
+                {feedbackLoading ? 'Submitting...' : 'Submit Feedback'}
                 <svg
                   className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
                   fill="none"

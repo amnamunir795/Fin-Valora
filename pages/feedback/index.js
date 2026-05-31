@@ -47,18 +47,43 @@ export default function Feedback() {
   };
 
   /* Handle send */
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!mood || !rating) {
       alert("Please choose your mood and rating.");
       return;
     }
     setLoading(true);
-    setTimeout(() => {
+    try {
+      // Get token for authenticated submission
+      const token = typeof window !== 'undefined' ? localStorage.getItem('finvalora_token') : null;
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ mood, rating: Number(rating), features, message: feedback }),
+      });
+
+      if (response.ok) {
+        setLoading(false);
+        setShowSuccess(true);
+        confettiBurst();
+        // Reset form
+        setMood('');
+        setRating('');
+        setFeatures([]);
+        setFeedback('');
+        setTimeout(() => setShowSuccess(false), 1800);
+      } else {
+        const data = await response.json();
+        setLoading(false);
+        alert(data.message || 'Failed to send feedback. Please try again.');
+      }
+    } catch (err) {
       setLoading(false);
-      setShowSuccess(true);
-      confettiBurst();
-      setTimeout(() => setShowSuccess(false), 1800);
-    }, 900);
+      alert('Network error. Please try again.');
+    }
   };
 
   /* Handle feature checkbox */
