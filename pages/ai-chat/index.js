@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
+import { marked } from "marked";
 import { authenticatedFetch } from "../../utils/auth";
 import AppSidebar from "../../components/AppSidebar";
 
@@ -242,7 +243,14 @@ export default function AiChat() {
                         : "bg-surface border border-border-subtle text-void rounded-tl-md shadow-(--shadow-fv-xs)"
                     }`}
                   >
-                    <p className="whitespace-pre-wrap wrap-break-word">{m.content}</p>
+                    {m.role === "user" ? (
+                      <p className="whitespace-pre-wrap wrap-break-word">{m.content}</p>
+                    ) : (
+                      <div
+                        className="ai-markdown break-words"
+                        dangerouslySetInnerHTML={{ __html: marked.parse(m.content || '') }}
+                      />
+                    )}
                   </div>
                 </div>
               ))}
