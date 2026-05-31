@@ -67,7 +67,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         // Get user info
-        const userResponse = await fetch('/api/auth/me');
+        const userResponse = await authenticatedFetch('/api/auth/me');
         if (!userResponse.ok) {
           router.push('/login');
           return;
@@ -76,7 +76,7 @@ export default function Dashboard() {
         setUser(userData.user);
 
         // Get current budget
-        const budgetResponse = await fetch('/api/budget/current');
+        const budgetResponse = await authenticatedFetch('/api/budget/current');
         if (budgetResponse.ok) {
           const budgetData = await budgetResponse.json();
           setBudget(budgetData.budget);

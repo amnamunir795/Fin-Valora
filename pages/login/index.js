@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { login, isAuthenticated } from '../../utils/auth';
+import { login, isAuthenticated, authenticatedFetch } from '../../utils/auth';
 import FinValoraLogo from '../../components/FinValoraLogo';
 
 export default function Login() {
@@ -19,7 +19,7 @@ export default function Login() {
     const checkAuth = async () => {
       if (isAuthenticated()) {
         try {
-          const response = await fetch('/api/auth/me');
+          const response = await authenticatedFetch('/api/auth/me');
           if (response.ok) {
             // User is authenticated, redirect to dashboard
             router.push('/dashboard');
@@ -87,7 +87,7 @@ export default function Login() {
         console.log('Login successful:', result.user);
         
         try {
-          const budgetResponse = await fetch('/api/budget/current');
+          const budgetResponse = await authenticatedFetch('/api/budget/current');
           if (budgetResponse.ok) {
             // User has active budget, go to dashboard
             router.push('/dashboard?login=success');
