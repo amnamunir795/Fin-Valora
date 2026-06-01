@@ -182,6 +182,9 @@ export default async function handler(req, res) {
         messages: chatMessages,
         tools: TOOLS,
         tool_choice: 'auto',
+        extra_body: {
+          thinking: { type: 'disabled' },
+        },
       });
 
       const choice = completion.choices[0];
