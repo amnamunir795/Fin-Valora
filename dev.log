@@ -1,0 +1,13 @@
+
+> finvalora@0.1.0 dev
+> next dev --webpack
+
+ ⚠ Port 3000 is in use by an unknown process, using available port 3002 instead.
+   ▲ Next.js 16.0.0 (webpack)
+   - Local:        http://localhost:3002
+   - Network:      http://192.168.10.4:3002
+   - Environments: .env.local
+
+ ✓ Starting...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Ready in 4.4s

@@ -61,6 +61,10 @@ export default function DashboardHeader({ user }) {
               <span className={navLinkHoverBg} />
               <span className="relative z-10">Transactions</span>
             </Link>
+            <Link href="/settings" className={navLink}>
+              <span className={navLinkHoverBg} />
+              <span className="relative z-10">Settings</span>
+            </Link>
           </nav>
 
           <div className="flex items-center space-x-3">
@@ -152,6 +156,9 @@ export default function DashboardHeader({ user }) {
               </Link>
               <Link href="#" className="rounded-lg px-4 py-3 font-medium text-white transition-colors hover:bg-white/10 hover:text-teal">
                 Transactions
+              </Link>
+              <Link href="/settings" className="rounded-lg px-4 py-3 font-medium text-white transition-colors hover:bg-white/10 hover:text-teal">
+                Settings
               </Link>
               <button
                 type="button"
